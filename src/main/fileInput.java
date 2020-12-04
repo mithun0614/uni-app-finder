@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class Test {
+public class fileInput {
     public static void main(String[] args) {
         String[] names = new String[14];
         String[] col1 = new String[14];
@@ -13,12 +13,12 @@ public class Test {
 
 
         try {
-            input = new Scanner(new File("dataTables/(CSV) Secondary School Averages 2016.csv")); //Input from Treasures file
-            input.useDelimiter(","); //Knows when next item starts
+            input = new Scanner(new File("uni-app-finder/resources/dataTables/(CSV) Secondary School Averages 2016.csv"));
+            input.useDelimiter(",");
             int index = 0;
             int arrayIndex = 0;
             int col1ArrayIndex = 0;
-            while (input.hasNext()) { //Gets every input from text file
+            while (input.hasNext()) {
                 String value = input.next();
                 if (index%9 == 0) {
                     names[arrayIndex] = value;
