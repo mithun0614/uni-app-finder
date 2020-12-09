@@ -1,5 +1,6 @@
 package main;
 
+// Comment for adding purposes
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
