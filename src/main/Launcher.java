@@ -1,10 +1,12 @@
 package main;
 
 public class Launcher {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-        System.out.println("Hello, World! is overrated");
-        System.out.println("shrek");
-        // >:))
-    }
+
+	public static void main(String[] args) {
+
+		// Create and launch first screen
+		Welcome.CreateWelcome();
+		Welcome.GUI.setVisible(true);
+
+	}
 }
