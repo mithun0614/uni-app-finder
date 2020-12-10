@@ -1,17 +1,17 @@
 package main;
 
 public class University {
-	public String name;
-	public double average;
-	public double cutoff;
-	public int tuition;
-	public int classSize;
-	public double latitude;
-	public double longitude;
+	private String name;
+	private double average;
+	private double cutoff;
+	private int tuition;
+	private int classSize;
+	private double latitude;
+	private double longitude;
 
+	// constructor method University
 	public University(String name, double average, double cutoff, int tuition, int classSize, double latitude,
 			double longitude) {
-		super();
 		this.name = name;
 		this.average = average;
 		this.cutoff = cutoff;
@@ -21,6 +21,7 @@ public class University {
 		this.longitude = longitude;
 	}
 
+	// getters and setters
 	public String getName() {
 		return name;
 	}

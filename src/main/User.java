@@ -2,17 +2,16 @@ package main;
 
 import java.util.ArrayList;
 
-public class User extends Login{
+public class User extends Login {
 	public double average;
 	public int tuition;
 	public int preferredClassSize;
 	public double latitude;
 	public double longitude;
-		
-	public ArrayList<String> bookmarked= new ArrayList<>();
 
-	
-	
+	public ArrayList<String> bookmarked = new ArrayList<>();
+
+	// Constructor method User
 	public User(String name, String password, double average, int tuition, int preferredClassSize, double latitude,
 			double longitude) {
 		super(name, password);
@@ -23,6 +22,7 @@ public class User extends Login{
 		this.longitude = longitude;
 	}
 
+	// getters and setters
 	public double getAverage() {
 		return average;
 	}
@@ -63,9 +63,4 @@ public class User extends Login{
 		this.longitude = longitude;
 	}
 
-	
-	
-	
-	
-	
 }
