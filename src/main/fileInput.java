@@ -29,7 +29,6 @@ public class fileInput {
                     col1ArrayIndex++;
                 }
 
-
                 index++;
             }
             input.close();
