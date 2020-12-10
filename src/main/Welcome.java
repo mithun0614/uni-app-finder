@@ -22,8 +22,7 @@ public class Welcome {
 	public static JPasswordField passwordField;
 
 	/**
-	 * @wbp.parser.entryPoint
-	 * ^^ Allows me to use window builder
+	 * @wbp.parser.entryPoint ^^ Allows me to use window builder
 	 */
 	public static void CreateWelcome() {
 
