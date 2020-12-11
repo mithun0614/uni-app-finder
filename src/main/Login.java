@@ -1,8 +1,8 @@
 package main;
 
 public class Login {
-	public String name;
-	public String password;
+	private String name;
+	private String password;
 
 	// Constructor method Login
 	public Login(String name, String password) {
