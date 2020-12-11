@@ -44,7 +44,7 @@ public class MainPanelGUI extends JFrame implements ActionListener {
         setLayout(null);
 
 
-        uniPanel = createUniPanel(UniversitiesInformation.universities.get(0).getName(), info);
+        uniPanel = createUniPanel(names[0], info);
         uniPanel.setBounds(0, 0, 400, 400);
         add(uniPanel);
         uniPanel.setVisible(true);
