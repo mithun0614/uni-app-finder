@@ -5,11 +5,14 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class fileInput {
-    public static void main(String[] args) {
-        String[] names = new String[14];
-        String[] col1 = new String[14];
-        Scanner input;
 
+    public static String[] names = new String[14];
+    public static String[] overallAverages = new String[14];
+    public static double[] intOverallAverages = new double[14];
+    public fileInput() {
+
+
+        Scanner input;
 
 
         try {
@@ -17,16 +20,16 @@ public class fileInput {
             input.useDelimiter(",");
             int index = 0;
             int arrayIndex = 0;
-            int col1ArrayIndex = 0;
+            int overallAveragesArrayIndex = 0;
             while (input.hasNext()) {
                 String value = input.next();
-                if (index%9 == 0) {
+                if (index % 9 == 0) {
                     names[arrayIndex] = value;
                     arrayIndex++;
                 }
-                if (index%9 == 1) {
-                    col1[col1ArrayIndex] = value;
-                    col1ArrayIndex++;
+                if (index % 9 == 8) {
+                    overallAverages[overallAveragesArrayIndex] = value;
+                    overallAveragesArrayIndex++;
                 }
 
                 index++;
@@ -35,15 +38,12 @@ public class fileInput {
             for (String name : names) {
                 System.out.print(name + " ");
             }
-
-            System.out.println("95+");
-            for (String value : col1) {
-                System.out.print(value + ", ");
+            for(int i = 0; i < 14; i++) {
+                intOverallAverages[i] = Double.parseDouble(overallAverages[i]);
             }
+
         } catch (FileNotFoundException e) { //Safety Check
             System.out.println("FILE ERROR");
         }
-
-
     }
 }
