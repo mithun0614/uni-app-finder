@@ -7,7 +7,8 @@ import java.util.Scanner;
 
 public class UniversitiesInformation {
 
-	public static ArrayList<University> universities = new ArrayList<>(14);
+	public static ArrayList<University> universities = new ArrayList<>();
+	private static University[] uni = new University[14];
 
 	// Reads information from Universities.txt, and creates University objects for
 	// each University.
@@ -25,10 +26,11 @@ public class UniversitiesInformation {
 			int index = 0;
 
 			while (input.hasNext()) {
-				universities.add(index,
-						new University(input.next().replaceAll("\n", "").replaceAll("\r", ""), input.nextDouble(),
-								input.nextDouble(), input.nextInt(), input.nextInt(), input.nextDouble(),
-								input.nextDouble()));
+
+				universities.add(new University((input.next().replaceAll("\n", "").replaceAll("\r", "")),
+						input.nextDouble(), input.nextDouble(), input.nextInt(), input.nextInt(), input.nextDouble(),
+						input.nextDouble()));
+
 				index++;
 			}
 
