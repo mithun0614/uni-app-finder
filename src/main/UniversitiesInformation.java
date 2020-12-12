@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class UniversitiesInformation {
 
-	private static ArrayList<University> universities = new ArrayList<>(14);
+	public static ArrayList<University> universities = new ArrayList<>(14);
 
 	// Reads information from Universities.txt, and creates University objects for
 	// each University.
