@@ -5,8 +5,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 public class Account extends JPanel {
 
@@ -31,7 +35,7 @@ public class Account extends JPanel {
 		// Create title label
 		for (int counter = 0; counter < personsLabel.length; counter++) {
 			personsLabel[counter] = new JLabel(Welcome.usernameField.getText() + "'s Account");
-			personsLabel[counter].setFont(new Font("Tahoma", Font.PLAIN, 20));
+			personsLabel[counter].setFont(new Font("Tahoma", Font.PLAIN, 28));
 			personsLabel[counter].setBounds(50, 30, 280, 65);
 
 			if (counter == 0)
@@ -55,8 +59,8 @@ public class Account extends JPanel {
 		// Create edit button
 		for (int counter = 0; counter < editButton.length; counter++) {
 			editButton[counter] = new JButton("Edit");
-			editButton[counter].setFont(new Font("Tahoma", Font.PLAIN, 16));
-			editButton[counter].setBounds(750, 50, 100, 25);
+			editButton[counter].setFont(new Font("Tahoma", Font.PLAIN, 14));
+			editButton[counter].setBounds(750, 60, 100, 25);
 
 			if (counter == 0) {
 				accountPanel.add(editButton[counter]);
@@ -84,7 +88,7 @@ public class Account extends JPanel {
 		for (int counter = 0; counter < courseLabel.length; counter++) {
 			courseLabel[counter] = new JLabel((counter + 1) + ". " + AccountEdit.courseTextField[counter].getText()
 					+ " - " + AccountEdit.gradeTextField[counter].getText() + "%");
-			courseLabel[counter].setFont(new Font("Tahoma", Font.PLAIN, 16));
+			courseLabel[counter].setFont(new Font("Tahoma", Font.PLAIN, 14));
 			courseLabel[counter].setBounds(30, 210 + 50 * counter, 200, 40);
 			accountPanel.add(courseLabel[counter]);
 		}
@@ -92,8 +96,8 @@ public class Account extends JPanel {
 		// Create proximity label
 		for (int counter = 0; counter < proximityLabel.length; counter++) {
 			proximityLabel[counter] = new JLabel("Proximity:");
-			proximityLabel[counter].setFont(new Font("Tahoma", Font.PLAIN, 20));
-			proximityLabel[counter].setBounds(330, 150, 150, 25);
+			proximityLabel[counter].setFont(new Font("Tahoma", Font.PLAIN, 16));
+			proximityLabel[counter].setBounds(330, 180, 75, 25);
 
 			if (counter == 0)
 				accountPanel.add(proximityLabel[counter]);
@@ -104,8 +108,8 @@ public class Account extends JPanel {
 		// Create tuition label
 		for (int counter = 0; counter < tuitionLabel.length; counter++) {
 			tuitionLabel[counter] = new JLabel("Tuition:");
-			tuitionLabel[counter].setFont(new Font("Tahoma", Font.PLAIN, 20));
-			tuitionLabel[counter].setBounds(650, 150, 75, 25);
+			tuitionLabel[counter].setFont(new Font("Tahoma", Font.PLAIN, 16));
+			tuitionLabel[counter].setBounds(650, 180, 75, 25);
 
 			if (counter == 0)
 				accountPanel.add(tuitionLabel[counter]);
@@ -116,8 +120,8 @@ public class Account extends JPanel {
 		// Create culture label
 		for (int counter = 0; counter < cultureLabel.length; counter++) {
 			cultureLabel[counter] = new JLabel("Culture:");
-			cultureLabel[counter].setFont(new Font("Tahoma", Font.PLAIN, 20));
-			cultureLabel[counter].setBounds(330, 290, 75, 25);
+			cultureLabel[counter].setFont(new Font("Tahoma", Font.PLAIN, 16));
+			cultureLabel[counter].setBounds(330, 320, 75, 25);
 
 			if (counter == 0)
 				accountPanel.add(cultureLabel[counter]);
@@ -128,8 +132,8 @@ public class Account extends JPanel {
 		// Create university size label
 		for (int counter = 0; counter < sizeLabel.length; counter++) {
 			sizeLabel[counter] = new JLabel("Univeristy Size:");
-			sizeLabel[counter].setFont(new Font("Tahoma", Font.PLAIN, 20));
-			sizeLabel[counter].setBounds(650, 290, 150, 25);
+			sizeLabel[counter].setFont(new Font("Tahoma", Font.PLAIN, 16));
+			sizeLabel[counter].setBounds(650, 320, 150, 25);
 
 			if (counter == 0)
 				accountPanel.add(sizeLabel[counter]);
@@ -138,23 +142,23 @@ public class Account extends JPanel {
 		}
 
 		JLabel proximityValueLabel = new JLabel("Selected: " + AccountEdit.dropDownLists[0].getSelectedItem());
-		proximityValueLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		proximityValueLabel.setBounds(330, 200, 200, 30);
+		proximityValueLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		proximityValueLabel.setBounds(330, 210, 200, 30);
 		accountPanel.add(proximityValueLabel);
 
 		JLabel tuitionValueLabel = new JLabel("~ $" + AccountEdit.sliders[0].getValue());
-		tuitionValueLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		tuitionValueLabel.setBounds(655, 200, 150, 30);
+		tuitionValueLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tuitionValueLabel.setBounds(655, 210, 150, 30);
 		accountPanel.add(tuitionValueLabel);
 
 		JLabel cultureValueLabel = new JLabel("Selected: " + AccountEdit.dropDownLists[1].getSelectedItem());
-		cultureValueLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		cultureValueLabel.setBounds(330, 340, 150, 30);
+		cultureValueLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		cultureValueLabel.setBounds(330, 350, 150, 30);
 		accountPanel.add(cultureValueLabel);
 
 		JLabel uniSizeValueLabel = new JLabel("~ " + AccountEdit.sliders[1].getValue() + " Students");
-		uniSizeValueLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		uniSizeValueLabel.setBounds(655, 340, 150, 30);
+		uniSizeValueLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		uniSizeValueLabel.setBounds(655, 350, 150, 30);
 		accountPanel.add(uniSizeValueLabel);
 
 	}

@@ -39,14 +39,14 @@ public class AccountEdit extends JPanel {
 		// Create sliders and combo boxes for preference adjustments
 		for (int counter = 0; counter < dropDownLists.length; counter++) {
 			dropDownLists[counter] = new JComboBox();
-			dropDownLists[counter].setBounds(330, 200 + 140 * counter, 200, 30);
+			dropDownLists[counter].setBounds(330, 210 + 140 * counter, 200, 30);
 			accountEditPanel.add(dropDownLists[counter]);
 
 			sliders[counter] = new JSlider();
-			sliders[counter].setBounds(655, 200 + 140 * counter, 200, 30);
+			sliders[counter].setBounds(655, 210 + 140 * counter, 200, 30);
 			accountEditPanel.add(sliders[counter]);
 
-			sliderLabels[counter].setBounds(655, 220 + 140 * counter, 200, 30);
+			sliderLabels[counter].setBounds(655, 230 + 140 * counter, 200, 30);
 			accountEditPanel.add(sliderLabels[counter]);
 		}
 

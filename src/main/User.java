@@ -3,13 +3,13 @@ package main;
 import java.util.ArrayList;
 
 public class User extends Login {
-	private double average;
-	private int tuition;
-	private int preferredClassSize;
-	private double latitude;
-	private double longitude;
+	public double average;
+	public int tuition;
+	public int preferredClassSize;
+	public double latitude;
+	public double longitude;
 
-	private ArrayList<String> bookmarked = new ArrayList<>();
+	public ArrayList<String> bookmarked = new ArrayList<>();
 
 	// Constructor method User
 	public User(String name, String password, double average, int tuition, int preferredClassSize, double latitude,
