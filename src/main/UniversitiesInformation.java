@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UniversitiesInformation {
-	public static String[] names = new String[14];
-	public static double[] overallAverages = new double[14];
-	public static double[] cutoff = new double[14];
-	public static int[] tuition = new int[14];
-	public static int[] classSize = new int[14];
-	public static double[] longitude = new double[14];
-	public static double[] latitude = new double[14];
+	private static String[] names = new String[14];
+	private static double[] overallAverages = new double[14];
+	private static double[] cutoff = new double[14];
+	private static int[] tuition = new int[14];
+	private static int[] classSize = new int[14];
+	private static double[] longitude = new double[14];
+	private static double[] latitude = new double[14];
 	public static ArrayList<University> universities = new ArrayList<>(14);
 
 	// Reads information from Universities.txt, and creates University objects for
