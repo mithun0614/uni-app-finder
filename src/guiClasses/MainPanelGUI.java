@@ -33,7 +33,6 @@ public class MainPanelGUI extends JFrame implements ActionListener, AdjustmentLi
     private JPanel uniPanel;
 
     public MainPanelGUI() {
-
         setSize(1152, 864);
         setLayout(null);
 
