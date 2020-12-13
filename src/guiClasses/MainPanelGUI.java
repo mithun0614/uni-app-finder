@@ -12,27 +12,27 @@ import java.awt.event.AdjustmentListener;
 import java.util.ArrayList;
 
 public class MainPanelGUI extends JFrame implements ActionListener, AdjustmentListener{
-    private static JLabel title = new JLabel("All Programs");
-    private static JButton nextBtn = new JButton();
-    private static JButton backBtn = new JButton();
-    private static JComboBox<String> combobox1 = new JComboBox<>();
-    private static JComboBox<String> combobox2 = new JComboBox<>();
-    private static JLabel sortBy = new JLabel("Sort by:");
-    private static JLabel picture = new JLabel();
-    private static ArrayList<University> uniArrayCopy = UniversitiesInformation.universities;
-    private static int currentPage = 0;
-    private static boolean reversed = false;
-    private static int oldLocation = 0;
-    private static JTextField keyword = new JTextField();
-    private static JButton searchButton = new JButton("Search");
-    private static JLabel searchLabel = new JLabel("Search");
-    private static JScrollBar scrollBar = new JScrollBar(JScrollBar.VERTICAL,0,1,0,14);
-    private static String[] sorting = new String[]{"Alpha: A-Z", "Alpha: Z-A", "Average: Low to High", "Average: High to Low"};
-    private static String info = "insert info about uni ~~this uni was founded in xxxx~~";
-    private static JPanel uniPanel;
+    UniversitiesInformation uniClass = new UniversitiesInformation();
+    private JLabel title = new JLabel("All Programs");
+    private JButton nextBtn = new JButton();
+    private JButton backBtn = new JButton();
+    private JComboBox<String> combobox1 = new JComboBox<>();
+    private JComboBox<String> combobox2 = new JComboBox<>();
+    private JLabel sortBy = new JLabel("Sort by:");
+    private JLabel picture = new JLabel();
+    private ArrayList<University> uniArrayCopy = uniClass.getUniversities();
+    private int currentPage = 0;
+    private boolean reversed = false;
+    private int oldLocation = 0;
+    private JTextField keyword = new JTextField();
+    private JButton searchButton = new JButton("Search");
+    private JLabel searchLabel = new JLabel("Search");
+    private JScrollBar scrollBar = new JScrollBar(JScrollBar.VERTICAL,0,1,0,14);
+    private String[] sorting = new String[]{"Alpha: A-Z", "Alpha: Z-A", "Average: Low to High", "Average: High to Low"};
+    private String info = "insert info about uni ~~this uni was founded in xxxx~~";
+    private JPanel uniPanel;
 
     public MainPanelGUI() {
-        UniversitiesInformation.setUniversities();
 
         setSize(1152, 864);
         setLayout(null);
@@ -89,32 +89,31 @@ public class MainPanelGUI extends JFrame implements ActionListener, AdjustmentLi
         searchButton.addActionListener(this);
         add(searchButton);
 
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setVisible(true);
     }
 
     //Override Method
     @Override
     public void actionPerformed(ActionEvent event) {
+
         if (event.getSource() == combobox2) {
 
 
             if (combobox2.getSelectedIndex() == 0) {            // if its A-Z
-                uniArrayCopy = UniversitiesInformation.universities;
+                uniArrayCopy = uniClass.getUniversities();
                 currentPage = 0;
             }
             else if (combobox2.getSelectedIndex() == 1) {                //if its Z-A
-                uniArrayCopy = UniversitiesInformation.universities;
+                uniArrayCopy = uniClass.getUniversities();
                 reverse();
                 currentPage = 0;
             }
 
 
             else if (combobox2.getSelectedIndex() == 2 || combobox2.getSelectedIndex() == 3) {                //Low to High, Average
-                uniArrayCopy = UniversitiesInformation.universities;
+                uniArrayCopy = uniClass.getUniversities();
                 insertionSort();
                 if (combobox2.getSelectedIndex() == 3) {
-                    uniArrayCopy = UniversitiesInformation.universities;
+                    uniArrayCopy = uniClass.getUniversities();
                     insertionSort();
                     reverse();
                 }
@@ -162,7 +161,7 @@ public class MainPanelGUI extends JFrame implements ActionListener, AdjustmentLi
         }
     }
 
-    static void reverse() {
+    public void reverse() {
         ArrayList<University> temp = new ArrayList<University>(14);
 
         for (int i = uniArrayCopy.size(); i > 0; i--) {
@@ -172,7 +171,7 @@ public class MainPanelGUI extends JFrame implements ActionListener, AdjustmentLi
     }
 
 
-    public static JPanel createUniPanel(String name, String info) {
+    public JPanel createUniPanel(String name, String info) {
         JPanel panel = new JPanel();
         panel.setLayout(null);
         panel.setSize(300, 300);
@@ -189,7 +188,7 @@ public class MainPanelGUI extends JFrame implements ActionListener, AdjustmentLi
 
     }
 
-    public static void insertionSort() {
+    public void insertionSort() {
         //Runs for every index of the array except the first
         for (int x = 1; x < uniArrayCopy.size(); x++) {
             /* In the for loop below it will...
@@ -209,7 +208,7 @@ public class MainPanelGUI extends JFrame implements ActionListener, AdjustmentLi
     }
 
 
-    private static void swap(ArrayList<University> universities, int x, int smallest) {
+    public void swap(ArrayList<University> universities, int x, int smallest) {
         University temp = universities.get(x);
         universities.set(x, universities.get(smallest));
         universities.set(smallest, temp);
@@ -228,7 +227,7 @@ public class MainPanelGUI extends JFrame implements ActionListener, AdjustmentLi
         uniPanel = createUniPanel(uniArrayCopy.get(currentPage).getName(), info);
         uniPanel.setBounds(800,0,400,300);
         remove(picture);
-        temp.setIcon(new ImageIcon("uni-app-finder/resources/uniPictures/"+uniArrayCopy.get(currentPage).getName()+".jpg"));
+        picture = changePicture(uniArrayCopy.get(currentPage).getName());
         System.out.println(uniArrayCopy.get(currentPage).getName()+".jpg");
         picture = temp;
         combobox1.setSelectedItem(uniArrayCopy.get(currentPage).getName());
@@ -238,5 +237,13 @@ public class MainPanelGUI extends JFrame implements ActionListener, AdjustmentLi
         add(uniPanel);
 
         repaint();
+    }
+
+    public JLabel changePicture(String uniName) {
+        JLabel label = new JLabel();
+        label.setIcon(new ImageIcon("uni-app-finder/resources/uniPictures/"+uniName+".jpg"));
+        label.setBounds(300,300,700,500);
+        label.setVisible(true);
+        return label;
     }
 }
