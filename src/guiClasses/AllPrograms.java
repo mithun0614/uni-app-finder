@@ -33,7 +33,7 @@ public class AllPrograms extends JFrame implements ActionListener{
     private ImageIcon[] icons = new ImageIcon[14];
     private boolean resetPage = false;
     private String[] names = new String[14];
-    private ArrayList<University> customList = new ArrayList<>(14);
+    private ArrayList<University> customList = new ArrayList<>(0);
     public AllPrograms() {
 
         uniArrayCopy = uniClass.getUniversities();
@@ -209,6 +209,25 @@ public class AllPrograms extends JFrame implements ActionListener{
 
         if (event.getSource() == searchButton) {
             String text = keyword.getText();
+            System.out.println(uniArrayCopy.size());
+            for (University unis : uniArrayCopy) {
+                ArrayList<String> keywords;
+                keywords = unis.getKeywords();
+                for (int i = 0; i < keywords.size(); i ++) {
+                    String word = keywords.get(i);
+                    System.out.println(word);
+                    if (word.equalsIgnoreCase(text)) {
+                        customList.add(unis);
+                        System.out.println("FUCKING BROKE");
+                        i = 14;
+                    }
+                }
+                System.out.println(customList.size());
+            }
+            for (University uni : customList) {
+                System.out.println(uni.getName());
+            }
+
         }
     }
 

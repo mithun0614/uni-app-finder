@@ -1,1 +1,1 @@
-coop,co-op,work,toronto,toronto university,gta,greater toronto,ontario,ontario university,engineering,downtown,city,university of toronto,uoft,utsg,ut,utsc,utm,rotman,rotman commerce,
+engineering,coop,toronto,

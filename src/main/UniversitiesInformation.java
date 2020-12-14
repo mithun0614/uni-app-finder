@@ -13,6 +13,7 @@ public class UniversitiesInformation {
 	private ArrayList<University> universities = new ArrayList<>(14);
 	private ArrayList<UniversityDistance[]> distances = new ArrayList<>();
 
+
 	// Reads information from Universities.txt, and creates University objects for
 	// each University.
 	// Stores each instance in an ArrayList.
@@ -132,8 +133,10 @@ public class UniversitiesInformation {
 						keyWords.add(input.next());
 					}
 					uni.setKeywords(keyWords);
+					for (String s : keyWords) {
+						System.out.println(s);
+					}
 					input.close();
-
 
 				} catch(FileNotFoundException e){
 					//System.out.println("File not Found :( (searching)");
@@ -153,5 +156,13 @@ public class UniversitiesInformation {
 
 	public ArrayList<UniversityDistance[]> getUniversityDistances() {
 		return distances;
+	}
+
+	public ArrayList<String> getKeyWords() {
+		return keyWords;
+	}
+
+	public void setKeyWords(ArrayList<String> keyWords) {
+		this.keyWords = keyWords;
 	}
 }
