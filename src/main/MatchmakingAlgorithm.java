@@ -14,14 +14,21 @@ public class MatchmakingAlgorithm {
 			slidersValue[counter] = UniMatchmakerInfoEdit.sliders[counter].getValue();
 		}
 
+		double[] uniCutoff = new double[14];
 		int[] ranking = new int[14];
 		int[] tuition = new int[14];
 		int[] uniSize = new int[14];
 		double[] residence = new double[14];
 		int[] classSize = new int[14];
 
+		double personAverage = 0;
+
+		for (int counter = 0; counter < 6; counter++)
+			personAverage += Integer.parseInt(UniMatchmakerInfoEdit.gradeTextField[counter].getText());
+
 		for (int counter = 0; counter < 14; counter++) {
 
+			uniCutoff[counter] = UniversitiesInformation.universities.get(counter).getCutoff();
 			ranking[counter] = UniversitiesInformation.universities.get(counter).getRanking();
 			tuition[counter] = UniversitiesInformation.universities.get(counter).getTuition();
 			uniSize[counter] = UniversitiesInformation.universities.get(counter).getUniSize();
@@ -30,6 +37,9 @@ public class MatchmakingAlgorithm {
 
 			score[counter] = 0;
 
+			if (personAverage >= uniCutoff[counter])
+				score[counter] += 5;
+			
 			int factor = 0;
 
 			if (ranking[counter] <= 5 && dropDownValue[factor] == 0)
