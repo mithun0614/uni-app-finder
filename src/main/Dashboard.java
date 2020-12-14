@@ -56,7 +56,7 @@ public class Dashboard extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				introPanel.setVisible(false);
 				Results.resultsPanel.setVisible(false);
-				Account.accountPanel.setVisible(true);
+				UniMatchmaker.accountPanel.setVisible(true);
 			}
 		});
 		accountButton.setBounds(25, 180, 160, 25);
@@ -70,7 +70,7 @@ public class Dashboard extends JPanel {
 		resultsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				introPanel.setVisible(false);
-				Account.accountPanel.setVisible(false);
+				UniMatchmaker.accountPanel.setVisible(false);
 				Results.resultsPanel.setVisible(true);
 			}
 		});
@@ -110,8 +110,8 @@ public class Dashboard extends JPanel {
 		introPanel.add(creatorLabel);
 
 		// Create all other screens
-		AccountEdit.EditAccount();
-		Account.CreateAccount();
+		UniMatchmakerInfoEdit.EditAccount();
+		UniMatchmaker.CreateAccount();
 		Results.CreateResults();
 
 	}

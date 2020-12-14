@@ -28,7 +28,7 @@ public class UniversitiesInformation {
 				universities.add(index,
 						new University(input.next().replaceAll("\n", "").replaceAll("\r", ""), input.nextDouble(),
 								input.nextDouble(), input.nextInt(), input.nextInt(), input.nextDouble(),
-								input.nextDouble()));
+								input.nextDouble(), input.nextInt(), input.nextDouble(), input.nextInt()));
 				index++;
 			}
 

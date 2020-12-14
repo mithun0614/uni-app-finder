@@ -9,5 +9,5 @@ public class Launcher {
 		Welcome.GUI.setVisible(true);
 
 	}
-	
+
 }
