@@ -1,4 +1,3 @@
-  
 package main;
 
 import java.io.File;
@@ -17,7 +16,7 @@ public class fileInput {
 
 
         try {
-            input = new Scanner(new File("uni-app-finder/resources/dataTables/(CSV) Secondary School Averages 2016.csv"));
+            input = new Scanner(new File("resources/dataTables/(CSV) Secondary School Averages 2016.csv"));
             input.useDelimiter(",");
             int index = 0;
             int arrayIndex = 0;
