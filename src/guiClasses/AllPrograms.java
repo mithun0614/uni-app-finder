@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class AllPrograms extends JFrame implements ActionListener{
-    UniversitiesInformation uniClass = new UniversitiesInformation();
+
     private JLabel title = new JLabel("All Programs");
     private JButton nextBtn = new JButton();
     private JButton backBtn = new JButton();
@@ -18,9 +18,10 @@ public class AllPrograms extends JFrame implements ActionListener{
     private JComboBox<String> combobox2 = new JComboBox<>();
     private JLabel sortBy = new JLabel("Sort by:");
     private JLabel picture = new JLabel();
-    private ArrayList<University> uniArrayCopy = uniClass.getUniversities();
+    private ArrayList<University> uniArrayCopy;
     private int currentPage = 0;
     private boolean reversed = false;
+    UniversitiesInformation uniClass = new UniversitiesInformation();
     private int oldLocation = 0;
     private JTextField keyword = new JTextField();
     private JButton searchButton = new JButton("Search");
@@ -34,11 +35,10 @@ public class AllPrograms extends JFrame implements ActionListener{
     private String[] names = new String[14];
     private ArrayList<University> customList = new ArrayList<>(14);
     public AllPrograms() {
+
+        uniArrayCopy = uniClass.getUniversities();
         setSize(1152, 864);
         setLayout(null);
-
-        setIcons();
-
         uniPanel = createUniPanel(uniArrayCopy.get(0).getName(), uniArrayCopy.get(0).getDescription());
         uniPanel.setBounds(800, 0, 400, 300);
         add(uniPanel);
@@ -48,7 +48,7 @@ public class AllPrograms extends JFrame implements ActionListener{
             combobox1.addItem(uni.getName());
         }
 
-        picture.setIcon(new ImageIcon("uni-app-finder/resources/uniPictures/Carleton University.jpg"));
+        picture.setIcon(uniArrayCopy.get(0).getIcon());
         picture.setBounds(350,300,700,500);
         add(picture);
 
