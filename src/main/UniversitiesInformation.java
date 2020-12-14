@@ -7,21 +7,24 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UniversitiesInformation {
-	private String[] names = new String[14];
-	private double[] overallAverages = new double[14];
-	private double[] cutoff = new double[14];
-	private int[] tuition = new int[14];
-	private int[] classSize = new int[14];
-	private double[] longitude = new double[14];
-	private double[] latitude = new double[14];
-	private ArrayList<University> universities = new ArrayList<>(14);
-	private int[] nationalRank = new int[14];
+
 	private ArrayList<String> keyWords = new ArrayList<>();
 
 	// Reads information from Universities.txt, and creates University objects for
 	// each University.
 	// Stores each instance in an ArrayList.
 	public UniversitiesInformation() {
+		 String[] names = new String[14];
+		 double[] overallAverages = new double[14];
+		 double[] cutoff = new double[14];
+		 int[] tuition = new int[14];
+		 int[] classSize = new int[14];
+		 double[] longitude = new double[14];
+		 double[] latitude = new double[14];
+		 ArrayList<University> universities = new ArrayList<>(14);
+		 int[] nationalRank = new int[14];
+
+
 			int index = 0;
 			int nameIndex = 0;
 			int overallAvgIndex = 0;

@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class MainPanelGUI extends JFrame implements ActionListener{
+public class AllPrograms extends JFrame implements ActionListener{
     UniversitiesInformation uniClass = new UniversitiesInformation();
     private JLabel title = new JLabel("All Programs");
     private JButton nextBtn = new JButton();
@@ -33,7 +33,7 @@ public class MainPanelGUI extends JFrame implements ActionListener{
     private boolean resetPage = false;
     private String[] names = new String[14];
     private ArrayList<University> customList = new ArrayList<>(14);
-    public MainPanelGUI() {
+    public AllPrograms() {
         setSize(1152, 864);
         setLayout(null);
 
