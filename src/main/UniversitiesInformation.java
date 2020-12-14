@@ -1,5 +1,6 @@
 package main;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ public class UniversitiesInformation {
 	private double[] longitude = new double[14];
 	private double[] latitude = new double[14];
 	private ArrayList<University> universities = new ArrayList<>(14);
+	private int[] nationalRank = new int[14];
+	private ArrayList<String> keyWords = new ArrayList<>();
 
 	// Reads information from Universities.txt, and creates University objects for
 	// each University.
@@ -27,6 +30,8 @@ public class UniversitiesInformation {
 			int classSizeIndex = 0;
 			int longitudeIndex = 0;
 			int latitudeIndex = 0;
+			int nationalRankIndex = 0;
+			int descriptionIndex = 0;
 
 			Scanner input;
 
@@ -73,15 +78,57 @@ public class UniversitiesInformation {
 						latitude[latitudeIndex] = value;
 						latitudeIndex++;
 					}
+					if (index % 9 == 7) {
+						int value = input.nextInt();
+						nationalRank[nationalRankIndex] = value;
+						nationalRankIndex++;
+					}
 
 					index++;
 				}
+				universities.clear();
+				for (int i = 0; i < names.length; i++) {
+					universities.add(new University(names[i],overallAverages[i],cutoff[i],tuition[i],classSize[i],longitude[i],latitude[i],nationalRank[i]));
+				}
 
 				input.close();
+				for (University uni : universities) {
+					System.out.println("uni-app-finder/resources/descriptions/" + uni.getName() + " Description.txt");
+					try {
+						String value = "";
+						input = new Scanner(new File("uni-app-finder/resources/descriptions/" + uni.getName() + " Description.txt"));
+						System.out.println("The path is: " + "uni-app-finder/resources/descriptions/" + uni.getName() + " Description.txt"+ "|");
+						while (input.hasNext()){
 
-				for (int i = 0; i < names.length; i++) {
-					universities.add(new University(names[i], overallAverages[i], cutoff[i], tuition[i], classSize[i], longitude[i], latitude[i]));
+								value = value + " " +input.next();
+
+						}
+						uni.setDescription(value);
+						input.close();
+
+
+						} catch(FileNotFoundException e){
+							System.out.println("File not Found :(");
+						}
+
+					uni.setIcon(new ImageIcon("uni-app-finder/resources/uniPictures/" + uni.getName() + ".jpg"));
+
+					try {
+						input = new Scanner(new File("uni-app-finder/resources/keyWords/" + uni.getName() + ".txt"));
+						input.useDelimiter(",");
+						keyWords.clear();
+						while (input.hasNext()){
+							keyWords.add(input.next());
+						}
+						uni.setKeywords(keyWords);
+						input.close();
+
+
+					} catch(FileNotFoundException e){
+						System.out.println("File not Found :(");
+					}
 				}
+
 			} catch (FileNotFoundException e) {
 				System.out.println("File not Found :(");
 			}

@@ -7,11 +7,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 import java.util.ArrayList;
 
-public class MainPanelGUI extends JFrame implements ActionListener, AdjustmentListener{
+public class MainPanelGUI extends JFrame implements ActionListener{
     UniversitiesInformation uniClass = new UniversitiesInformation();
     private JLabel title = new JLabel("All Programs");
     private JButton nextBtn = new JButton();
@@ -31,13 +29,17 @@ public class MainPanelGUI extends JFrame implements ActionListener, AdjustmentLi
     private String[] sorting = new String[]{"Alpha: A-Z", "Alpha: Z-A", "Average: Low to High", "Average: High to Low"};
     private String info = "insert info about uni ~~this uni was founded in xxxx~~";
     private JPanel uniPanel;
-
+    private ImageIcon[] icons = new ImageIcon[14];
+    private boolean resetPage = false;
+    private String[] names = new String[14];
+    private ArrayList<University> customList = new ArrayList<>(14);
     public MainPanelGUI() {
         setSize(1152, 864);
         setLayout(null);
 
+        setIcons();
 
-        uniPanel = createUniPanel(uniArrayCopy.get(0).getName(), info);
+        uniPanel = createUniPanel(uniArrayCopy.get(0).getName(), uniArrayCopy.get(0).getDescription());
         uniPanel.setBounds(800, 0, 400, 300);
         add(uniPanel);
         uniPanel.setVisible(true);
@@ -47,8 +49,7 @@ public class MainPanelGUI extends JFrame implements ActionListener, AdjustmentLi
         }
 
         picture.setIcon(new ImageIcon("uni-app-finder/resources/uniPictures/Carleton University.jpg"));
-        picture.setBounds(300,300,700,500);
-        picture.setVisible(true);
+        picture.setBounds(350,300,700,500);
         add(picture);
 
         combobox1.setBounds(350, 50, 200, 40);
@@ -72,10 +73,17 @@ public class MainPanelGUI extends JFrame implements ActionListener, AdjustmentLi
         title.setFont(new Font(title.getFont().getName(), Font.PLAIN, 30));
         add(title);
 
+        nextBtn.setText("Next");
+        nextBtn.setBounds(350, 200, 100, 50);
+        nextBtn.addActionListener(this);
+        nextBtn.setVisible(true);
+        add(nextBtn);
 
-        scrollBar.setBounds(565,50,30,120);
-        scrollBar.addAdjustmentListener((AdjustmentListener) this);
-        add(scrollBar);
+        backBtn.setText("Back");
+        backBtn.setBounds(450, 200, 100, 50);
+        backBtn.addActionListener(this);
+        backBtn.setVisible(true);
+        add(backBtn);
 
         keyword.setBounds(600, 60, 150,40);
         keyword.addActionListener(this);
@@ -88,6 +96,8 @@ public class MainPanelGUI extends JFrame implements ActionListener, AdjustmentLi
         searchButton.addActionListener(this);
         add(searchButton);
 
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setVisible(true);
     }
 
     //Override Method
@@ -100,11 +110,13 @@ public class MainPanelGUI extends JFrame implements ActionListener, AdjustmentLi
             if (combobox2.getSelectedIndex() == 0) {            // if its A-Z
                 uniArrayCopy = uniClass.getUniversities();
                 currentPage = 0;
+                reversed = false;
             }
             else if (combobox2.getSelectedIndex() == 1) {                //if its Z-A
                 uniArrayCopy = uniClass.getUniversities();
                 reverse();
                 currentPage = 0;
+                reversed = true;
             }
 
 
@@ -115,43 +127,83 @@ public class MainPanelGUI extends JFrame implements ActionListener, AdjustmentLi
                     uniArrayCopy = uniClass.getUniversities();
                     insertionSort();
                     reverse();
+                    reversed = true;
                 }
                 currentPage = 0;
             }
 
-
+            resetPage = true;
             remove(uniPanel);
-            uniPanel = createUniPanel(uniArrayCopy.get(0).getName(), info);
-            remove(picture);
-            picture.setIcon(new ImageIcon("uni-app-finder/resources/uniPictures/"+uniArrayCopy.get(0).getName()+".jpg"));
-            picture.repaint();
+            uniPanel = createUniPanel(uniArrayCopy.get(0).getName(), uniArrayCopy.get(0).getDescription());
             uniPanel.setBounds(800,0,400,300);
             uniPanel.repaint();
 
             add(uniPanel);
             uniPanel.setVisible(true);
-
+            picture.setIcon(uniArrayCopy.get(currentPage).getIcon());
+            picture.setVisible(true);
             repaint();
         }
-        int comboboxIndex = combobox1.getSelectedIndex();
-        if (reversed) {
-            comboboxIndex = 13 - comboboxIndex;
-        }
+
 
         if (event.getSource() == combobox1) {
+            reversed = false;
+            int comboboxIndex = combobox1.getSelectedIndex();
+            if (reversed) {
+                comboboxIndex = 13 - comboboxIndex;
+            }
             remove(uniPanel);
-            uniPanel = createUniPanel(uniArrayCopy.get(comboboxIndex).getName(), info);
-            picture.setIcon(new ImageIcon("uni-app-finder/resources/uniPictures/"+ uniArrayCopy.get(comboboxIndex).getName()+" .jpg"));
-            picture.setVisible(true);
-
-            picture.repaint();
-
+            uniPanel = createUniPanel(uniArrayCopy.get(comboboxIndex).getName(), uniArrayCopy.get(comboboxIndex).getDescription());
             uniPanel.setBounds(800,0,500,500);
+
+
+            scrollBar.setValue(comboboxIndex);
             currentPage = comboboxIndex;
             uniPanel.repaint();
             uniPanel.setVisible(true);
             add(uniPanel);
+            picture.setIcon(uniArrayCopy.get(comboboxIndex).getIcon());
+            picture.setVisible(true);
+            repaint();
+        }
+        if (event.getSource() == nextBtn) {
+            System.out.println(reversed);
+            currentPage += 1;
+            if (currentPage== 14) {
+                currentPage = 0;
+            }
+            if (currentPage == -1) {
+                currentPage = 13;
+            }
+            System.out.println(currentPage);
+            remove(uniPanel);
+            uniPanel = createUniPanel(uniArrayCopy.get(currentPage).getName(), uniClass.getUniversities().get(currentPage).getDescription());
+            uniPanel.setBounds(800, 0, 400, 300);
+            uniPanel.setVisible(true);
+            add(uniPanel);
+            picture.setIcon(uniArrayCopy.get(currentPage).getIcon());
+            picture.setVisible(true);
+            repaint();
+        }
 
+        if (event.getSource() == backBtn) {
+
+                currentPage -= 1;
+            if (currentPage == -1) {
+                currentPage = 13;
+            }
+            if (currentPage== 14) {
+                currentPage = 0;
+            }
+            remove(uniPanel);
+            uniPanel = createUniPanel(uniArrayCopy.get(currentPage).getName(), uniArrayCopy.get(currentPage).getDescription());
+
+            uniPanel.setBounds(800, 0, 400, 300);
+            uniPanel.setVisible(true);
+            add(uniPanel);
+            picture.setIcon(uniArrayCopy.get(currentPage).getIcon());
+
+            picture.setVisible(true);
             repaint();
         }
 
@@ -173,13 +225,15 @@ public class MainPanelGUI extends JFrame implements ActionListener, AdjustmentLi
     public JPanel createUniPanel(String name, String info) {
         JPanel panel = new JPanel();
         panel.setLayout(null);
-        panel.setSize(300, 300);
+        panel.setSize(300, 500);
         JLabel nameLabel = new JLabel(name);
-        JLabel infoLabel = new JLabel(info);
+        JLabel infoLabel = new JLabel("<html>" + info + "<html>");
 
-        nameLabel.setBounds(0, 0, 500, 150);
+        nameLabel.setBounds(0, 0, 500, 80);
         nameLabel.setFont(new Font(title.getFont().getName(), Font.PLAIN, 30));
-        infoLabel.setBounds(0, 50, 500, 150);
+        infoLabel.setBounds(0, 50, 300, 350);
+        infoLabel.setFont(new Font(title.getFont().getName(), Font.PLAIN, 12));
+        panel.setOpaque(false);
         panel.add(nameLabel);
         panel.add(infoLabel);
 
@@ -213,36 +267,9 @@ public class MainPanelGUI extends JFrame implements ActionListener, AdjustmentLi
         universities.set(smallest, temp);
     }
 
-    @Override
-    public void adjustmentValueChanged(AdjustmentEvent e) {
-        JLabel temp = new JLabel();
-        int difference = e.getValue() - oldLocation;
-        oldLocation = e.getValue();
-        currentPage += difference;
-        if (currentPage== 14) {
-            currentPage = 0;
+    public void setIcons() {
+        for (int i = 0; i < 14; i++) {
+            names[i] =uniArrayCopy.get(i).getName();
         }
-        remove(uniPanel);
-        uniPanel = createUniPanel(uniArrayCopy.get(currentPage).getName(), info);
-        uniPanel.setBounds(800,0,400,300);
-        remove(picture);
-        picture = changePicture(uniArrayCopy.get(currentPage).getName());
-        System.out.println(uniArrayCopy.get(currentPage).getName()+".jpg");
-        picture = temp;
-        combobox1.setSelectedItem(uniArrayCopy.get(currentPage).getName());
-        combobox1.repaint();
-        uniPanel.setVisible(true);
-
-        add(uniPanel);
-
-        repaint();
-    }
-
-    public JLabel changePicture(String uniName) {
-        JLabel label = new JLabel();
-        label.setIcon(new ImageIcon("uni-app-finder/resources/uniPictures/"+uniName+".jpg"));
-        label.setBounds(300,300,700,500);
-        label.setVisible(true);
-        return label;
     }
 }
