@@ -1,5 +1,8 @@
 package main;
 
+import javax.swing.*;
+import java.util.ArrayList;
+
 public class University {
 	private String name;
 	private double average;
@@ -8,10 +11,15 @@ public class University {
 	private int classSize;
 	private double latitude;
 	private double longitude;
+	private  int nationalRank;
+	private String description;
+	private Icon icon;
+	private ArrayList<String> keywords;
+
 
 	// constructor method University
 	public University(String name, double average, double cutoff, int tuition, int classSize, double latitude,
-			double longitude) {
+			double longitude, int nationalRank) {
 		this.name = name;
 		this.average = average;
 		this.cutoff = cutoff;
@@ -19,6 +27,7 @@ public class University {
 		this.classSize = classSize;
 		this.latitude = latitude;
 		this.longitude = longitude;
+		this.nationalRank = nationalRank;
 	}
 
 	// getters and setters
@@ -78,4 +87,19 @@ public class University {
 		this.longitude = longitude;
 	}
 
+	public int getNationalRank() { return nationalRank; }
+
+	public void setNationalRank(int nationalRank) { this.nationalRank = nationalRank; }
+
+	public String getDescription() { return description; }
+
+	public void setDescription(String description) { this.description = description; }
+
+	public Icon getIcon() { return icon; }
+
+	public void setIcon(Icon icon) { this.icon = icon; }
+
+	public ArrayList<String> getKeywords() { return keywords; }
+
+	public void setKeywords(ArrayList<String> keywords) { this.keywords = keywords; }
 }
