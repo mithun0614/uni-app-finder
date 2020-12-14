@@ -92,6 +92,9 @@ public class UniversitiesInformation {
 				}
 
 				input.close();
+
+
+				universities.get(0).setName(universities.get(0).getName().substring(1));			//fixes error with a character before C on carleton
 				for (University uni : universities) {
 					System.out.println("uni-app-finder/resources/descriptions/" + uni.getName() + " Description.txt");
 					try {
@@ -103,18 +106,20 @@ public class UniversitiesInformation {
 								value = value + " " +input.next();
 
 						}
+
 						uni.setDescription(value);
 						input.close();
 
 
 						} catch(FileNotFoundException e){
-							System.out.println("File not Found :(");
+							System.out.println("File not Found :( (description)");
 						}
 
 					uni.setIcon(new ImageIcon("uni-app-finder/resources/uniPictures/" + uni.getName() + ".jpg"));
 
 					try {
 						input = new Scanner(new File("uni-app-finder/resources/keyWords/" + uni.getName() + ".txt"));
+
 						input.useDelimiter(",");
 						keyWords.clear();
 						while (input.hasNext()){
@@ -125,12 +130,13 @@ public class UniversitiesInformation {
 
 
 					} catch(FileNotFoundException e){
-						System.out.println("File not Found :(");
+						//System.out.println("File not Found :( (searching)");
+						 System.out.println((int)uni.getName().charAt(0));
 					}
 				}
 
 			} catch (FileNotFoundException e) {
-				System.out.println("File not Found :(");
+				System.out.println("File not Found :( (all other fields)");
 			}
 
 	}
