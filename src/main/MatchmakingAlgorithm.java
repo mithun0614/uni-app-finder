@@ -3,6 +3,8 @@ package main;
 public class MatchmakingAlgorithm {
 
 	public static int[] score = new int[14];
+	public static int greatest = score[0];
+	public static int secondGreatest;
 
 	public static void Matchmaker() {
 
@@ -39,7 +41,7 @@ public class MatchmakingAlgorithm {
 
 			if (personAverage >= uniCutoff[counter])
 				score[counter] += 5;
-			
+
 			int factor = 0;
 
 			if (ranking[counter] <= 5 && dropDownValue[factor] == 0)
@@ -84,6 +86,12 @@ public class MatchmakingAlgorithm {
 				score[counter] += slidersValue[factor];
 
 		}
+
+		for (int counter = 0; counter < 13; counter++)
+			if (greatest < score[counter + 1]) {
+				secondGreatest = greatest;
+				greatest = score[counter + 1];
+			}
 
 	}
 

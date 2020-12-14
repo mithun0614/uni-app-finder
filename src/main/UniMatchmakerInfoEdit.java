@@ -50,7 +50,6 @@ public class UniMatchmakerInfoEdit extends JPanel {
 		editButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		editButton.setBounds(800, 30, 75, 30);
 		editButton.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
 				accountEditPanel.setVisible(false);
 				UniMatchmaker.CreateAccount();

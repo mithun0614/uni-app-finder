@@ -58,6 +58,18 @@ public class UniMatchmaker extends JPanel {
 		});
 		accountPanel.add(editButton);
 
+		JButton resultsButton = new JButton("Results");
+		resultsButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		resultsButton.setBounds(775, 550, 100, 30);
+		resultsButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				accountPanel.setVisible(false);
+				Results.CreateResults();
+				Results.resultsPanel.setVisible(true);
+			}
+		});
+		accountPanel.add(resultsButton);
+
 		// Create external factors headings
 		headings[0] = new JLabel("Ranking:");
 		headings[1] = new JLabel("Tuition:");
@@ -72,7 +84,7 @@ public class UniMatchmaker extends JPanel {
 					(counter + 1) + ". " + UniMatchmakerInfoEdit.courseTextField[counter].getText() + " - "
 							+ UniMatchmakerInfoEdit.gradeTextField[counter].getText() + "%");
 			courseLabel[counter].setFont(new Font("Tahoma", Font.PLAIN, 16));
-			courseLabel[counter].setBounds(30, 150 + 75 * counter, 200, 40);
+			courseLabel[counter].setBounds(30, 150 + 75 * counter, 250, 40);
 			accountPanel.add(courseLabel[counter]);
 
 			headings[counter].setFont(new Font("Tahoma", Font.PLAIN, 18));
