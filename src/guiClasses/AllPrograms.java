@@ -34,14 +34,17 @@ public class AllPrograms extends JFrame implements ActionListener{
     private boolean resetPage = false;
     private String[] names = new String[14];
     private ArrayList<University> customList = new ArrayList<>(0);
+    private int maxIndex = 13;
     public AllPrograms() {
 
         uniArrayCopy = uniClass.getUniversities();
-        System.out.println(uniArrayCopy.get(9).getKeywords());
+        for (University uni : uniClass.getUniversities()) {
+            System.out.println(uni.getKeywords());
+        }
 
         setSize(1152, 864);
         setLayout(null);
-        uniPanel = createUniPanel(uniArrayCopy.get(0).getName(), uniArrayCopy.get(0).getDescription());
+        uniPanel = createUniPanel(uniArrayCopy.get(0));
         uniPanel.setBounds(800, 0, 400, 300);
         add(uniPanel);
         uniPanel.setVisible(true);
@@ -133,10 +136,11 @@ public class AllPrograms extends JFrame implements ActionListener{
                 }
                 currentPage = 0;
             }
+            maxIndex = 13;
 
             resetPage = true;
             remove(uniPanel);
-            uniPanel = createUniPanel(uniArrayCopy.get(0).getName(), uniArrayCopy.get(0).getDescription());
+            uniPanel = createUniPanel(uniArrayCopy.get(0));
             uniPanel.setBounds(800,0,400,300);
             uniPanel.repaint();
 
@@ -152,10 +156,10 @@ public class AllPrograms extends JFrame implements ActionListener{
             reversed = false;
             int comboboxIndex = combobox1.getSelectedIndex();
             if (reversed) {
-                comboboxIndex = 13 - comboboxIndex;
+                comboboxIndex = maxIndex - comboboxIndex;
             }
             remove(uniPanel);
-            uniPanel = createUniPanel(uniArrayCopy.get(comboboxIndex).getName(), uniArrayCopy.get(comboboxIndex).getDescription());
+            uniPanel = createUniPanel(uniArrayCopy.get(comboboxIndex));
             uniPanel.setBounds(800,0,500,500);
 
 
@@ -171,18 +175,19 @@ public class AllPrograms extends JFrame implements ActionListener{
         if (event.getSource() == nextBtn) {
             System.out.println(reversed);
             currentPage += 1;
-            if (currentPage== 14) {
+            if (currentPage== maxIndex) {
                 currentPage = 0;
             }
             if (currentPage == -1) {
-                currentPage = 13;
+                currentPage = maxIndex;
             }
             System.out.println(currentPage);
             remove(uniPanel);
-            uniPanel = createUniPanel(uniArrayCopy.get(currentPage).getName(), uniClass.getUniversities().get(currentPage).getDescription());
+            uniPanel = createUniPanel(uniArrayCopy.get(currentPage));
             uniPanel.setBounds(800, 0, 400, 300);
             uniPanel.setVisible(true);
             add(uniPanel);
+            combobox1.setSelectedItem(uniClass.getUniversities().get(currentPage));
             picture.setIcon(uniArrayCopy.get(currentPage).getIcon());
             picture.setVisible(true);
             repaint();
@@ -192,17 +197,18 @@ public class AllPrograms extends JFrame implements ActionListener{
 
                 currentPage -= 1;
             if (currentPage == -1) {
-                currentPage = 13;
+                currentPage = maxIndex-1;
             }
-            if (currentPage== 14) {
+            if (currentPage== maxIndex) {
                 currentPage = 0;
             }
             remove(uniPanel);
-            uniPanel = createUniPanel(uniArrayCopy.get(currentPage).getName(), uniArrayCopy.get(currentPage).getDescription());
+            uniPanel = createUniPanel(uniArrayCopy.get(currentPage));
 
             uniPanel.setBounds(800, 0, 400, 300);
             uniPanel.setVisible(true);
             add(uniPanel);
+            combobox1.setSelectedItem(uniClass.getUniversities().get(currentPage));
             picture.setIcon(uniArrayCopy.get(currentPage).getIcon());
 
             picture.setVisible(true);
@@ -210,31 +216,62 @@ public class AllPrograms extends JFrame implements ActionListener{
         }
 
         if (event.getSource() == searchButton) {
+
+            ArrayList<String> tempNames = new ArrayList<>();
+            for (University uni : uniClass.getUniversities()){
+                tempNames.add(uni.getName());
+            }
+            for (int x = 0; x < tempNames.size(); x++) {
+                tempNames.set(x, tempNames.get(x).replace("University", ""));
+                tempNames.set(x, tempNames.get(x).replace("of", ""));
+                tempNames.set(x, tempNames.get(x).replace(" ", ""));
+                tempNames.set(x, tempNames.get(x).toLowerCase());
+            }
+            currentPage = 0;
+
             String text = keyword.getText();
-            System.out.println(uniArrayCopy.size());
+            for (int i = 0; i < tempNames.size(); i++) {
+                System.out.println(text);
+                if (text.equalsIgnoreCase(tempNames.get(i))){
+                    customList.add(uniClass.getUniversities().get(i));
+                }
+            }
             for (University unis : uniClass.getUniversities()) {
-                ArrayList<String> keywords;
+
+                String keywords;
                 keywords = unis.getKeywords();
+                text = text.toLowerCase();
 
-                System.out.println("UNIVERSITY:"+ unis.getName() + unis.getKeywords().size());
 
-                for (String w : keywords) {
-                    System.out.println(unis.getName() + w);
-                }
-                for (int i = 0; i < 3; i ++) {
-                    String word = unis.getKeywords().get(i);
-                    System.out.println(word + " ------" + text);
-                    if (word.equalsIgnoreCase(text)) {
+                if (keywords.contains(text))
+                    for (University currentUni : customList) {
+                    if (!unis.getName().equals(currentUni.getName()))
                         customList.add(unis);
-                        System.out.println("broke");
-                        i = 14;
-                    }
                 }
-                System.out.println(customList.size());
             }
-            for (University uni : customList) {
-                System.out.println(uni.getName());
+            System.out.println("Size: " + customList.size());
+            if (customList.size() == 0) {
+                JLabel searchFailed = new JLabel("No Matches");
+                searchFailed.setBounds(600,150,50,30);
+                add(searchFailed);
+
             }
+            else {
+                currentPage = 0;
+                uniArrayCopy = customList;
+                maxIndex = customList.size();
+                remove(uniPanel);
+                uniPanel = createUniPanel(uniArrayCopy.get(currentPage));
+
+                uniPanel.setBounds(800, 0, 400, 300);
+                uniPanel.setVisible(true);
+                add(uniPanel);
+                picture.setIcon(uniArrayCopy.get(currentPage).getIcon());
+
+                picture.setVisible(true);
+                repaint();
+            }
+            customList.clear();
 
         }
     }
@@ -249,19 +286,24 @@ public class AllPrograms extends JFrame implements ActionListener{
     }
 
 
-    public JPanel createUniPanel(String name, String info) {
+    public JPanel createUniPanel(University uni) {
         JPanel panel = new JPanel();
         panel.setLayout(null);
         panel.setSize(300, 500);
-        JLabel nameLabel = new JLabel(name);
-        JLabel infoLabel = new JLabel("<html>" + info + "<html>");
+        JLabel nameLabel = new JLabel(uni.getName());
+        JLabel infoLabel = new JLabel("<html>" + uni.getDescription() + "<html>");
+        JLabel nationalRankLabel = new JLabel(String.valueOf(uni.getNationalRank()));
+
 
         nameLabel.setBounds(0, 0, 500, 80);
         nameLabel.setFont(new Font(title.getFont().getName(), Font.PLAIN, 30));
+        nationalRankLabel.setBounds(0, 30, 500, 80);
+        nationalRankLabel.setFont(new Font(title.getFont().getName(), Font.PLAIN, 30));
         infoLabel.setBounds(0, 50, 300, 350);
         infoLabel.setFont(new Font(title.getFont().getName(), Font.PLAIN, 12));
         panel.setOpaque(false);
         panel.add(nameLabel);
+        panel.add(nationalRankLabel);
         panel.add(infoLabel);
 
         return panel;

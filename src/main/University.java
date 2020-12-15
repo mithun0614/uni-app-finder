@@ -14,7 +14,7 @@ public class University {
 	private  int nationalRank;
 	private String description;
 	private Icon icon;
-	private ArrayList<String> keywords;
+	private String keywords;
 
 
 	// constructor method University
@@ -99,7 +99,7 @@ public class University {
 
 	public void setIcon(Icon icon) { this.icon = icon; }
 
-	public ArrayList<String> getKeywords() { return keywords; }
+	public String getKeywords() { return keywords; }
 
-	public void setKeywords(ArrayList<String> keywords) { this.keywords = keywords; }
+	public void setKeywords(String keywords) { this.keywords = keywords; }
 }

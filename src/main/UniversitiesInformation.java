@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UniversitiesInformation {
-	private ArrayList<String> keyWords = new ArrayList<>();
+
 	private ArrayList<University> universities = new ArrayList<>(14);
 	private ArrayList<UniversityDistance[]> distances = new ArrayList<>();
 
@@ -27,6 +27,7 @@ public class UniversitiesInformation {
 		 double[] longitude = new double[14];
 		 double[] latitude = new double[14];
 		 int[] nationalRank = new int[14];
+		 String keywords = "";
 
 
 		int index = 0;
@@ -44,7 +45,7 @@ public class UniversitiesInformation {
 			System.out.println(path);
 		try {
 
-			input = new Scanner(new File(path+"/resources/dataTables/All Data.csv"));
+			input = new Scanner(new File(path + "/resources/dataTables/All Data.csv"));
 			input.useDelimiter(",");
 
 
@@ -91,26 +92,28 @@ public class UniversitiesInformation {
 					nationalRankIndex++;
 				}
 
+
 				index++;
 			}
 			universities.clear();
 			for (int i = 0; i < names.length; i++) {
-				universities.add(new University(names[i],overallAverages[i],cutoff[i],tuition[i],classSize[i],longitude[i],latitude[i],nationalRank[i]));
+				universities.add(new University(names[i], overallAverages[i], cutoff[i], tuition[i], classSize[i], longitude[i], latitude[i], nationalRank[i]));
 			}
 
 			input.close();
 
 
-			universities.get(0).setName(universities.get(0).getName().substring(1));			//fixes error with a character before C on carleton
+			universities.get(0).setName(universities.get(0).getName().substring(1));            //fixes error with a character before C on carleton
 			for (University uni : universities) {
-				System.out.println(path+"/resources/descriptions/" + uni.getName() + " Description.txt");
+				System.out.println(path + "/resources/descriptions/" + uni.getName() + " Description.txt");
 				try {
-					String value = "";
-					input = new Scanner(new File(path+"/resources/descriptions/" + uni.getName() + " Description.txt"));
-					System.out.println("The path is: " + path+"/resources/descriptions/" + uni.getName() + " Description.txt"+ "|");
-					while (input.hasNext()){
 
-							value = value + " " +input.next();
+					String value = "";
+					input = new Scanner(new File(path + "/resources/descriptions/" + uni.getName() + " Description.txt"));
+					System.out.println("The path is: " + path + "/resources/descriptions/" + uni.getName() + " Description.txt" + "|");
+					while (input.hasNext()) {
+
+						value = value + " " + input.next();
 
 					}
 
@@ -118,37 +121,40 @@ public class UniversitiesInformation {
 					input.close();
 
 
-					} catch(FileNotFoundException e){
-						System.out.println("File not Found :( (description)");
-					}
+				} catch (FileNotFoundException e) {
+					System.out.println("File not Found :( (description)");
+				}
 
-				uni.setIcon(new ImageIcon(path+"/resources/uniPictures/" + uni.getName() + ".jpg"));
+				uni.setIcon(new ImageIcon(path + "/resources/uniPictures/" + uni.getName() + ".jpg"));
 
+			}
+				System.out.println(universities.size());
+
+			for (University university : universities) {
 				try {
-					input = new Scanner(new File(path+"/resources/keyWords/" + uni.getName() + ".txt"));
+					input = new Scanner(new File(path + "/resources/keyWords/" + university.getName() + ".txt"));
 
-					input.useDelimiter(",");
-					keyWords.clear();
-					while (input.hasNext()){
-						keyWords.add(input.next());
+
+					String keyWords = "";
+					System.out.println(university.getName());
+					while (input.hasNext()) {
+						keywords =  input.next();
+
 					}
-					uni.setKeywords(keyWords);
-					for (String s : keyWords) {
-						System.out.println("Keyword" + s);
-					}
+					university.setKeywords(keywords);
+					System.out.println(keyWords);
 					input.close();
 
-				} catch(FileNotFoundException e){
+				} catch (FileNotFoundException e) {
 					//System.out.println("File not Found :( (searching)");
-					 System.out.println((int)uni.getName().charAt(0));
+					System.out.println((int) university.getName().charAt(0));
 				}
 			}
 
-		} catch (FileNotFoundException e) {
-			System.out.println("File not Found :( (all other fields)");
+			} catch(FileNotFoundException e){
+				System.out.println("File not Found :( (all other fields)");
+			}
 		}
-		System.out.println(universities.size());
-	}
 
 	public ArrayList<University> getUniversities() {
 		return universities;
@@ -158,8 +164,5 @@ public class UniversitiesInformation {
 		return distances;
 	}
 
-	public ArrayList<String> getKeyWords() {
-		return keyWords;
-	}
 
 }
