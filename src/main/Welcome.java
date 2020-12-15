@@ -1,20 +1,15 @@
 package main;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
+import tools.Colour;
+
+import javax.swing.*;
 
 import java.awt.Font;
 
-import javax.swing.JButton;
-import javax.swing.SwingConstants;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JPanel;
 import java.awt.CardLayout;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 
 public class Welcome {
 
@@ -39,25 +34,28 @@ public class Welcome {
 		// Create Welcome JPanel
 		welcomePanel = new JPanel();
 		welcomePanel.setLayout(null);
+		welcomePanel.setBackground(Colour.bg);
 		GUI.getContentPane().add(welcomePanel);
 
+		ImageIcon programLogo = new ImageIcon("./resources/misc/program-logo.png");
+
+		JLabel logo = new JLabel();
+		logo.setIcon(new ImageIcon(programLogo.getImage().getScaledInstance(programLogo.getIconWidth()/3, programLogo.getIconHeight()/3, 0)));
+		logo.setBounds(50, 175, 600, 300);
+		welcomePanel.add(logo);
+
 		// Create title label
-		JLabel titleLabel = new JLabel("Welcome to <App Name>");
+		JLabel titleLabel = new JLabel("Welcome to");
 		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		titleLabel.setFont(new Font("Georgia", Font.PLAIN, 36));
-		titleLabel.setBounds(50, 175, 500, 100);
+		titleLabel.setForeground(Colour.highlight);
+		titleLabel.setBounds(75, 50, 500, 100);
 		welcomePanel.add(titleLabel);
-
-		// Create description label
-		JLabel descriptionLabel = new JLabel("<Description Of App>");
-		descriptionLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		descriptionLabel.setFont(new Font("Georgia", Font.PLAIN, 24));
-		descriptionLabel.setBounds(50, 275, 500, 100);
-		welcomePanel.add(descriptionLabel);
 
 		// Create username label
 		JLabel usernameLabel = new JLabel("Username:");
 		usernameLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		usernameLabel.setForeground(Colour.highlight);
 		usernameLabel.setBounds(725, 100, 80, 25);
 		welcomePanel.add(usernameLabel);
 
@@ -69,6 +67,7 @@ public class Welcome {
 		// Create password label
 		JLabel passwordLabel = new JLabel("Password:");
 		passwordLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		passwordLabel.setForeground(Colour.highlight);
 		passwordLabel.setBounds(725, 200, 80, 25);
 		welcomePanel.add(passwordLabel);
 
@@ -90,6 +89,22 @@ public class Welcome {
 				}
 			}
 		});
+		signInButton.setForeground(Colour.strongHighlight);
+		signInButton.setBackground(Colour.lightBg);
+		signInButton.setBorderPainted(false);
+		signInButton.setFocusPainted(false);
+		/*
+		goToMap.setText("BACK");
+        goToMap.setFont(new Font("Tahoma", Font.PLAIN, 32));
+        goToMap.setBounds(775, 500, 100, 50);
+        goToMap.setForeground(highlight);
+        goToMap.setBackground(strongHighlight);
+        goToMap.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        goToMap.setBorderPainted(false);
+        goToMap.setFocusPainted(false);
+        goToMap.addActionListener(this);
+        distancePanel.add(goToMap);
+		 */
 		signInButton.setBounds(725, 300, 300, 30);
 		welcomePanel.add(signInButton);
 
@@ -101,6 +116,10 @@ public class Welcome {
 				
 			}
 		});
+		createAccountButton.setForeground(Colour.highlight);
+		createAccountButton.setBackground(Colour.strike);
+		createAccountButton.setBorderPainted(false);
+		createAccountButton.setFocusPainted(false);
 		createAccountButton.setBounds(725, 350, 300, 30);
 		welcomePanel.add(createAccountButton);
 

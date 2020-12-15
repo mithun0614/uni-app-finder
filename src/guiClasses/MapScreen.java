@@ -3,6 +3,7 @@ package guiClasses;
 import objects.TextFieldLimit;
 import objects.UniversitiesInformation;
 import objects.UniversityDistance;
+import tools.Colour;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -51,9 +52,6 @@ public class MapScreen implements ActionListener {
     private JButton goToDistance = new JButton();
     private JButton goToMap = new JButton();
     private ImageIcon mapIcon = new ImageIcon(new ImageIcon("./res/map.png").getImage().getScaledInstance(600, 360, 0));
-    private Color bg = Color.decode("#072540");
-    private Color highlight = Color.decode("#9C4668");
-    private Color strongHighlight = Color.decode("#FF8AE2");
 
     private SwingWorker worker = null;
 
@@ -85,7 +83,7 @@ public class MapScreen implements ActionListener {
     void setupMap() {
         //map panel
         mapPanel.setLayout(null);
-        mapPanel.setBackground(bg);
+        mapPanel.setBackground(Colour.bg);
         mapPanel.setVisible(true);
 //        mapPanel.setBounds(0, 0, 920, 610);
 //        frame.add(mapPanel);
@@ -93,34 +91,34 @@ public class MapScreen implements ActionListener {
         JLabel header = new JLabel("Budget Google Map");
         header.setFont(new Font("Tahoma", Font.BOLD, 32));
         header.setBounds(80 , 20, 350, 75);
-        header.setForeground(highlight);
+        header.setForeground(Colour.highlight);
         mapPanel.add(header);
 
         //To have a \n in a JLabel, you can use html's \n (<br>) to achieve the same effect
         JLabel headerText = new JLabel("<html>Click on your approximate location<br>and distance to universities will be calculated*</html>");
         headerText.setFont(new Font("Tahoma", Font.PLAIN, 18));
         headerText.setBounds(500, 20, 500, 75);
-        headerText.setForeground(highlight);
+        headerText.setForeground(Colour.highlight);
         mapPanel.add(headerText);
 
         JLabel otherText = new JLabel("<html>OR send your postal code and the <br>distance will also be calculated*</html>");
         otherText.setFont(new Font("Tahoma", Font.PLAIN, 18));
         otherText.setBounds(80, 480, 300, 75);
-        otherText.setForeground(highlight);
+        otherText.setForeground(Colour.highlight);
         mapPanel.add(otherText);
 
         JLabel info = new JLabel("<html>*Postal code takes<br>priority over the map");
         info.setFont(new Font("Tahoma", Font.PLAIN, 12));
         info.setBounds(600, 500, 150, 75);
-        info.setForeground(highlight);
+        info.setForeground(Colour.highlight);
         mapPanel.add(info);
 
         //button to direct user to distance JPanel
         goToDistance.setText("GO");
         goToDistance.setFont(new Font("Tahoma", Font.PLAIN, 32));
         goToDistance.setBounds(800, 500, 50, 50);
-        goToDistance.setForeground(highlight);
-        goToDistance.setBackground(strongHighlight);
+        goToDistance.setForeground(Colour.highlight);
+        goToDistance.setBackground(Colour.strongHighlight);
         goToDistance.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         goToDistance.setBorderPainted(false);
         goToDistance.setFocusPainted(false);
@@ -130,8 +128,8 @@ public class MapScreen implements ActionListener {
         //text field
         text.setFont(new Font("Tahoma", Font.PLAIN, 18));
         text.setBounds(400, 500, 100, 25);
-        text.setForeground(highlight);
-        text.setBackground(strongHighlight);
+        text.setForeground(Colour.highlight);
+        text.setBackground(Colour.strongHighlight);
         text.setDocument(new TextFieldLimit());
         text.setText("A1B2C3"); //so people know its postal code
         mapPanel.add(text);
@@ -145,7 +143,7 @@ public class MapScreen implements ActionListener {
         map = new JLabel();
         map.setIcon(new ImageIcon(new ImageIcon("./res/map.png").getImage().getScaledInstance(600, 360, 0)));
         map.setBounds(80, 100, 600, 360);
-        map.setBorder(BorderFactory.createLineBorder(strongHighlight, 5)); //border covers the JLabel ):);
+        map.setBorder(BorderFactory.createLineBorder(Colour.strongHighlight, 5)); //border covers the JLabel ):);
         map.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {}
@@ -176,7 +174,7 @@ public class MapScreen implements ActionListener {
     public void setupDistance() {
         //distance panel
         distancePanel.setLayout(null);
-        distancePanel.setBackground(bg);
+        distancePanel.setBackground(Colour.bg);
         distancePanel.setVisible(false);
         distancePanel.setBounds(0, 0, 920, 610);
 //        frame.add(distancePanel);
@@ -184,19 +182,19 @@ public class MapScreen implements ActionListener {
         JLabel header = new JLabel("University Proximity");
         header.setFont(new Font("Tahoma", Font.BOLD, 32));
         header.setBounds(80 , 20, 350, 75);
-        header.setForeground(highlight);
+        header.setForeground(Colour.highlight);
         distancePanel.add(header);
 
         JLabel info = new JLabel("<html>You can verify the distance(s) manually on <br>https://www.nhc.noaa.gov/gccalc.shtml</html>");
         info.setFont(new Font("Tahoma", Font.PLAIN, 12));
         info.setBounds(25, 500, 300, 75);
-        info.setForeground(highlight);
+        info.setForeground(Colour.highlight);
         distancePanel.add(info);
 
         JLabel mapPreviewInfo = new JLabel("You last clicked here:");
         mapPreviewInfo.setFont(new Font("Tahoma", Font.PLAIN, 18));
         mapPreviewInfo.setBounds(500, 50, 300,  50);
-        mapPreviewInfo.setForeground(highlight);
+        mapPreviewInfo.setForeground(Colour.highlight);
         distancePanel.add(mapPreviewInfo);
 
         //cursor circle to indicate where the map has been clicked on the mapPreview
@@ -213,8 +211,8 @@ public class MapScreen implements ActionListener {
         goToMap.setText("BACK");
         goToMap.setFont(new Font("Tahoma", Font.PLAIN, 32));
         goToMap.setBounds(775, 500, 100, 50);
-        goToMap.setForeground(highlight);
-        goToMap.setBackground(strongHighlight);
+        goToMap.setForeground(Colour.highlight);
+        goToMap.setBackground(Colour.strongHighlight);
         goToMap.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         goToMap.setBorderPainted(false);
         goToMap.setFocusPainted(false);
@@ -225,7 +223,7 @@ public class MapScreen implements ActionListener {
         for (int i=0;i<14;i++) {
             result[i] = new JLabel();
             result[i].setFont(new Font("Tahoma", Font.PLAIN, 18));
-            result[i].setForeground(highlight);
+            result[i].setForeground(Colour.highlight);
             result[i].setBounds(75+425*(i/7), 150+50*(i%7), 425, 50);
             distancePanel.add(result[i]);
         }
