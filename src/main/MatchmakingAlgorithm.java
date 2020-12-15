@@ -28,10 +28,8 @@ public class MatchmakingAlgorithm {
 		double personAverage = 0;
 
 		for (int counter = 0; counter < 6; counter++)
-			if (UniMatchmakerInfoEdit.gradeTextField[counter].getText().length() > 3)
+			if (UniMatchmakerInfoEdit.gradeTextField[counter].getText().length() <= 3)
 				personAverage += Integer.parseInt(UniMatchmakerInfoEdit.gradeTextField[counter].getText());
-			else
-				System.out.print("Enter Courses and Grades!");
 
 		for (int counter = 0; counter < 14; counter++) {
 
