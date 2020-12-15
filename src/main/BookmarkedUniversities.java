@@ -1,9 +1,11 @@
 package main;
 
+import objects.University;
+
 public class BookmarkedUniversities {
 
 	public static void editBookmarks(University uni, int edit) {
-		if (edit == 0) 
+		if (edit == 0)
 			User.bookmarked.add(uni);
 		else
 			User.bookmarked.remove(uni);
@@ -29,7 +31,8 @@ public class BookmarkedUniversities {
 	}
 
 	// Compares the person's preferred class size to the university's.
-	// Returns true if the university class size is larger, otherwise, returns false.
+	// Returns true if the university class size is larger, otherwise, returns
+	// false.
 	public static boolean compareClassSize(University uni, User account) {
 		if (uni.getClassSize() > account.getPreferredClassSize())
 			return false;

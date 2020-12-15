@@ -9,6 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import objects.UniversitiesInformation;
+
 public class Results extends JPanel {
 
 	public static JPanel resultsPanel;

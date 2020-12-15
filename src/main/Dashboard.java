@@ -1,6 +1,7 @@
 package main;
 
 import guiClasses.MapScreen;
+import objects.UniversitiesInformation;
 
 import java.awt.CardLayout;
 import java.awt.Font;

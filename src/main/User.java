@@ -2,6 +2,8 @@ package main;
 
 import java.util.ArrayList;
 
+import objects.University;
+
 public class User extends Login {
 	public double average;
 	public int tuition;

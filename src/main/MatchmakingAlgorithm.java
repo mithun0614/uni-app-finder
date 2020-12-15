@@ -1,5 +1,7 @@
 package main;
 
+import objects.UniversitiesInformation;
+
 public class MatchmakingAlgorithm {
 
 	public static int[] score = new int[14];
@@ -31,10 +33,10 @@ public class MatchmakingAlgorithm {
 		for (int counter = 0; counter < 14; counter++) {
 
 			uniCutoff[counter] = UniversitiesInformation.universities.get(counter).getCutoff();
-//			ranking[counter] = UniversitiesInformation.universities.get(counter).getRanking();
+			ranking[counter] = UniversitiesInformation.universities.get(counter).getRanking();
 			tuition[counter] = UniversitiesInformation.universities.get(counter).getTuition();
-//			uniSize[counter] = UniversitiesInformation.universities.get(counter).getUniSize();
-//			residence[counter] = UniversitiesInformation.universities.get(counter).getResidenceCost();
+			uniSize[counter] = UniversitiesInformation.universities.get(counter).getUniSize();
+			residence[counter] = UniversitiesInformation.universities.get(counter).getResidenceCost();
 			classSize[counter] = UniversitiesInformation.universities.get(counter).getClassSize();
 
 			score[counter] = 0;

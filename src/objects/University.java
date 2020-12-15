@@ -1,4 +1,4 @@
-package main;
+package objects;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -11,15 +11,17 @@ public class University {
 	private int classSize;
 	private double latitude;
 	private double longitude;
-	private  int nationalRank;
+	private int nationalRank;
+	private int uniSize;
+	private double residenceCost;
+	private int ranking;
 	private String description;
 	private Icon icon;
 	private String keywords;
 
-
 	// constructor method University
 	public University(String name, double average, double cutoff, int tuition, int classSize, double latitude,
-			double longitude, int nationalRank) {
+			double longitude, int nationalRank, int uniSize, double residenceCost, int ranking) {
 		this.name = name;
 		this.average = average;
 		this.cutoff = cutoff;
@@ -28,6 +30,9 @@ public class University {
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.nationalRank = nationalRank;
+		this.uniSize = uniSize;
+		this.residenceCost = residenceCost;
+		this.ranking = ranking;
 	}
 
 	// getters and setters
@@ -63,7 +68,33 @@ public class University {
 
 	public void setNationalRank(int nationalRank) { this.nationalRank = nationalRank; }
 
-	public String getDescription() { return description; }
+	public int getUniSize() {
+		return uniSize;
+	}
+
+	public void setUniSize(int uniSize) {
+		this.uniSize = uniSize;
+	}
+
+	public double getResidenceCost() {
+		return residenceCost;
+	}
+
+	public void setResidenceCost(double residenceCost) {
+		this.residenceCost = residenceCost;
+	}
+
+	public int getRanking() {
+		return ranking;
+	}
+
+	public void setRanking(int ranking) {
+		this.ranking = ranking;
+	}
+
+	public String getDescription() {
+		return description;
+	}
 
 	public void setDescription(String description) { this.description = description; }
 
