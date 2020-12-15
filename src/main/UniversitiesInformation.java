@@ -10,13 +10,13 @@ import java.util.Scanner;
 
 public class UniversitiesInformation {
 
-	private ArrayList<University> universities = new ArrayList<>(14);
-	private ArrayList<UniversityDistance[]> distances = new ArrayList<>();
+	public static ArrayList<University> universities = new ArrayList<>(14);
+	public static ArrayList<UniversityDistance[]> distances = new ArrayList<>();
 
 	// Reads information from Universities.txt, and creates University objects for
 	// each University.
 	// Stores each instance in an ArrayList.
-	public UniversitiesInformation() {
+	public static void setUniversities() {
 		 String[] names = new String[14];
 		 String path = new File("").getAbsolutePath();
 		 double[] overallAverages = new double[14];
