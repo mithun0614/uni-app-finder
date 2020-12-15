@@ -77,7 +77,7 @@ public class UniversitiesInformation {
 			input.close();
 
 			universities.get(0).setName(universities.get(0).getName().substring(1)); // fixes error with a character
-			// before C on carleton
+																						// before C on carleton
 			for (University uni : universities) {
 				System.out.println(path + "/resources/descriptions/" + uni.getName() + " Description.txt");
 				try {
@@ -112,6 +112,7 @@ public class UniversitiesInformation {
 					System.out.println(university.getName());
 					while (input.hasNext()) {
 						keywords = input.next();
+
 					}
 					university.setKeywords(keywords);
 					System.out.println(keyWords);
@@ -124,9 +125,7 @@ public class UniversitiesInformation {
 
 			}
 
-		} catch (
-
-		FileNotFoundException e) {
+		} catch (FileNotFoundException e) {
 			System.out.println("File not Found :( (all other fields)");
 		}
 	}
