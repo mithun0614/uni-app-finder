@@ -1,5 +1,7 @@
 package objects;
 
+import objects.UniversityDistance;
+
 import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,12 +11,12 @@ import java.util.Scanner;
 public class UniversitiesInformation {
 
 	public static ArrayList<University> universities = new ArrayList<>(14);
-	private ArrayList<UniversityDistance[]> distances = new ArrayList<>();
+	public static ArrayList<UniversityDistance[]> distances = new ArrayList<>();
 
 	// Reads information from Universities.txt, and creates University objects for
 	// each University.
 	// Stores each instance in an ArrayList.
-	public UniversitiesInformation() {
+	public static void setUniversities() {
 		String[] names = new String[14];
 		String path = new File("").getAbsolutePath();
 		double[] overallAverages = new double[14];
@@ -43,7 +45,7 @@ public class UniversitiesInformation {
 			input.useDelimiter(",");
 			while (input.hasNext()) {
 
-				if (index % 9 == 0) {
+/*				if (index % 9 == 0) {
 					String value = input.next();
 					names[nameIndex] = value;
 					nameIndex++;
@@ -90,8 +92,10 @@ public class UniversitiesInformation {
 			for (int i = 0; i < names.length; i++) {
 				universities.add(new University(names[i], overallAverages[i], cutoff[i], tuition[i], classSize[i],
 						longitude[i], latitude[i], nationalRank[i]));
-			}
+			}*/
 
+				
+				
 			input.close();
 
 			universities.get(0).setName(universities.get(0).getName().substring(1)); // fixes error with a character
