@@ -1,1 +1,1 @@
-engineering,coop,school,city,toronto,university of toronto,
+engineering,coop,school,city,toronto,university of toronto,ontario,gta,

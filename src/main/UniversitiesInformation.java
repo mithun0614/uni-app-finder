@@ -27,7 +27,6 @@ public class UniversitiesInformation {
 		 double[] longitude = new double[14];
 		 double[] latitude = new double[14];
 		 int[] nationalRank = new int[14];
-		 String keywords = "";
 
 
 		int index = 0;
@@ -132,23 +131,26 @@ public class UniversitiesInformation {
 
 			for (University university : universities) {
 				try {
-					input = new Scanner(new File(path + "/resources/keyWords/" + university.getName() + ".txt"));
 
+					input = new Scanner(new File(path + "/resources/keywords/" + university.getName() + ".txt"));
+					System.out.println(path + "/resources/keywords/" + university.getName() + ".txt");
 
-					String keyWords = "";
+					input.useDelimiter(",");
+
+					String keywords = "";
 					System.out.println(university.getName());
 					while (input.hasNext()) {
-						keywords =  input.next();
-
+						keywords = input.next()+ " " + keywords;
 					}
+					keywords = keywords.replaceAll(","," ");
+
 					university.setKeywords(keywords);
-					System.out.println(keyWords);
 					input.close();
 
 				} catch (FileNotFoundException e) {
-					//System.out.println("File not Found :( (searching)");
-					System.out.println((int) university.getName().charAt(0));
+					System.out.println("File not Found :( (searching)");
 				}
+				System.out.println(university.getKeywords());
 			}
 
 			} catch(FileNotFoundException e){
