@@ -12,6 +12,10 @@ public class VerifyLogin {
 	static Scanner input;
 	static String filepath = "members.txt";
 
+	/*
+	 * Checks if the username and password pair entered matches a pair in the
+	 * members.txt file
+	 */
 	public static boolean verifyLogin(String username, String password) {
 		String tempUsername;
 		String tempPassword;
@@ -36,6 +40,10 @@ public class VerifyLogin {
 		return found;
 	}
 
+	/*
+	 * Checks if the username they entered when creating account already exists. If
+	 * so, they will not be allowed to create another account
+	 */
 	public static boolean existingUsername(String username) {
 		int index = 0;
 		try {
@@ -59,6 +67,10 @@ public class VerifyLogin {
 		return true;
 	}
 
+	/*
+	 * Checks if the password they entered matches the second password. This
+	 * confirms they have entered the correct password.
+	 */
 	public static boolean verifyPassword(String password, String password1) {
 		if (password.trim().equals(password1.trim())) {
 			return true;
@@ -66,11 +78,16 @@ public class VerifyLogin {
 			return false;
 		}
 	}
-	
+
+	/*
+	 * Checks if there are any spaces or commas. There cannot be any spaces/commas
+	 * as we use .trim() which removes spaces, and the comma is used to separate the
+	 * username and password.
+	 */
 	public static boolean unwantedCharacter(String username, String password) {
 		char[] name = username.toCharArray();
 		char[] pw = password.toCharArray();
-		
+
 		for (int x = 0; x < name.length; x++) {
 			if (name[x] == ',' || name[x] == ' ') {
 				return true;
@@ -81,9 +98,13 @@ public class VerifyLogin {
 				return true;
 			}
 		}
-		return false;	
+		return false;
 	}
 
+	/*
+	 * When the user creates their account, this method saves it to the members.txt
+	 * file.
+	 */
 	public static void saveLogin(String username, String password) throws IOException {
 		File file = new File("members.txt");
 		FileWriter fw = new FileWriter(file, true);
