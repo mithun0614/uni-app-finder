@@ -10,6 +10,7 @@ public class User extends Login {
 	public double longitude;
 
 	public ArrayList<String> bookmarked = new ArrayList<>();
+	public static ArrayList<University> bookmarked = new ArrayList<>();
 
 	// Constructor method User
 	public User(String name, String password, double average, int tuition, int preferredClassSize, double latitude,
