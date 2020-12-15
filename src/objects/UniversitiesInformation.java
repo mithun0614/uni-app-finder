@@ -1,6 +1,4 @@
-package main;
-
-import objects.UniversityDistance;
+package objects;
 
 import javax.swing.*;
 import java.io.File;
@@ -10,23 +8,23 @@ import java.util.Scanner;
 
 public class UniversitiesInformation {
 
-	private ArrayList<University> universities = new ArrayList<>(14);
+	public static ArrayList<University> universities = new ArrayList<>(14);
 	private ArrayList<UniversityDistance[]> distances = new ArrayList<>();
 
 	// Reads information from Universities.txt, and creates University objects for
 	// each University.
 	// Stores each instance in an ArrayList.
 	public UniversitiesInformation() {
-		 String[] names = new String[14];
-		 String path = new File("").getAbsolutePath();
-		 double[] overallAverages = new double[14];
-		 double[] cutoff = new double[14];
-		 int[] tuition = new int[14];
-		 int[] classSize = new int[14];
-		 double[] longitude = new double[14];
-		 double[] latitude = new double[14];
-		 int[] nationalRank = new int[14];
-		 String keywords = "";
+		String[] names = new String[14];
+		String path = new File("").getAbsolutePath();
+		double[] overallAverages = new double[14];
+		double[] cutoff = new double[14];
+		int[] tuition = new int[14];
+		int[] classSize = new int[14];
+		double[] longitude = new double[14];
+		double[] latitude = new double[14];
+		int[] nationalRank = new int[14];
+		String keywords = "";
 
 		int index = 0;
 		int nameIndex = 0;
@@ -90,19 +88,23 @@ public class UniversitiesInformation {
 			}
 			universities.clear();
 			for (int i = 0; i < names.length; i++) {
-				universities.add(new University(names[i], overallAverages[i], cutoff[i], tuition[i], classSize[i], longitude[i], latitude[i], nationalRank[i]));
+				universities.add(new University(names[i], overallAverages[i], cutoff[i], tuition[i], classSize[i],
+						longitude[i], latitude[i], nationalRank[i]));
 			}
 
 			input.close();
 
-			universities.get(0).setName(universities.get(0).getName().substring(1));            //fixes error with a character before C on carleton
+			universities.get(0).setName(universities.get(0).getName().substring(1)); // fixes error with a character
+																						// before C on carleton
 			for (University uni : universities) {
 				System.out.println(path + "/resources/descriptions/" + uni.getName() + " Description.txt");
 				try {
 
 					String value = "";
-					input = new Scanner(new File(path + "/resources/descriptions/" + uni.getName() + " Description.txt"));
-					System.out.println("The path is: " + path + "/resources/descriptions/" + uni.getName() + " Description.txt" + "|");
+					input = new Scanner(
+							new File(path + "/resources/descriptions/" + uni.getName() + " Description.txt"));
+					System.out.println("The path is: " + path + "/resources/descriptions/" + uni.getName()
+							+ " Description.txt" + "|");
 					while (input.hasNext()) {
 
 						value = value + " " + input.next();
@@ -118,36 +120,33 @@ public class UniversitiesInformation {
 				uni.setIcon(new ImageIcon(path + "/resources/uniPictures/" + uni.getName() + ".jpg"));
 
 			}
-				System.out.println(universities.size());
+			System.out.println(universities.size());
 
-      
 			for (University university : universities) {
 				try {
 					input = new Scanner(new File(path + "/resources/keyWords/" + university.getName() + ".txt"));
 
-
 					String keyWords = "";
 					System.out.println(university.getName());
 					while (input.hasNext()) {
-						keywords =  input.next();
-            
+						keywords = input.next();
+
 					}
 					university.setKeywords(keywords);
 					System.out.println(keyWords);
 					input.close();
-          
+
 				} catch (FileNotFoundException e) {
-					//System.out.println("File not Found :( (searching)");
+					// System.out.println("File not Found :( (searching)");
 					System.out.println((int) university.getName().charAt(0));
 				}
-        
-			}
-      
 
-			} catch(FileNotFoundException e){
-				System.out.println("File not Found :( (all other fields)");
 			}
+
+		} catch (FileNotFoundException e) {
+			System.out.println("File not Found :( (all other fields)");
 		}
+	}
 
 	public ArrayList<University> getUniversities() {
 		return universities;
@@ -156,6 +155,5 @@ public class UniversitiesInformation {
 	public ArrayList<UniversityDistance[]> getUniversityDistances() {
 		return distances;
 	}
-
 
 }

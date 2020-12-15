@@ -1,7 +1,7 @@
 package guiClasses;
 
-import main.UniversitiesInformation;
 import objects.TextFieldLimit;
+import objects.UniversitiesInformation;
 import objects.UniversityDistance;
 
 import javax.swing.*;

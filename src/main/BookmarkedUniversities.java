@@ -1,5 +1,7 @@
 package main;
 
+import objects.University;
+
 public class BookmarkedUniversities {
 
 	public static void editBookmarks(University uni, int edit) {
