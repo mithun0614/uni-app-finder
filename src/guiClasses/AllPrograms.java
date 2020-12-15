@@ -1,3 +1,4 @@
+  
 package guiClasses;
 
 import main.UniversitiesInformation;
@@ -48,7 +49,7 @@ public class AllPrograms extends JFrame implements ActionListener{
             combobox1.addItem(uni.getName());
         }
 
-        picture.setIcon(new ImageIcon("resources/uniPictures/Carleton University.jpg"));
+        picture.setIcon(new ImageIcon("uni-app-finder/resources/uniPictures/Carleton University.jpg"));
         picture.setBounds(350,300,700,500);
         add(picture);
 
