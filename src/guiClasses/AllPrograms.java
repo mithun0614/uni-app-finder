@@ -1,8 +1,8 @@
   
 package guiClasses;
 
-import main.UniversitiesInformation;
-import main.University;
+import objects.UniversitiesInformation;
+import objects.University;
 
 import javax.swing.*;
 import java.awt.*;

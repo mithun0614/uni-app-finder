@@ -2,12 +2,14 @@ package main;
 
 import java.util.ArrayList;
 
+import objects.University;
+
 public class User extends Login {
-	private double average;
-	private int tuition;
-	private int preferredClassSize;
-	private double latitude;
-	private double longitude;
+	public double average;
+	public int tuition;
+	public int preferredClassSize;
+	public double latitude;
+	public double longitude;
 
 	public static ArrayList<University> bookmarked = new ArrayList<>();
 

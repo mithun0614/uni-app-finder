@@ -1,7 +1,7 @@
 package guiClasses;
 
-import main.UniversitiesInformation;
 import objects.TextFieldLimit;
+import objects.UniversitiesInformation;
 import objects.UniversityDistance;
 
 import javax.swing.*;
@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -33,6 +34,7 @@ public class MapScreen implements ActionListener {
     final private double AVERAGE_RADIUS_OF_EARTH_KM = 6371;
     final private double LATITUDE_UP = 43.89254, LATITUDE_DOWN = 43.74501;
     final private double LONGITUDE_LEFT = -79.52205, LONGITUDE_RIGHT = -79.20952;
+    final private int DISPLAY_MAP_SIZE = 50;
     private double lon = -1, lat = -1;
     private int x = -1, y = -1;
     private boolean reveal = false;
@@ -42,15 +44,16 @@ public class MapScreen implements ActionListener {
     private JPanel distancePanel = new JPanel();
     private JLabel map = new JLabel();
     private JLabel gif = new JLabel();
+    private JLabel mapPreview = new JLabel();
+    private JLabel mapPreviewCircle = new JLabel();
     private JLabel result[] = new JLabel[14];
     private JTextArea text = new JTextArea();
     private JButton goToDistance = new JButton();
     private JButton goToMap = new JButton();
+    private ImageIcon mapIcon = new ImageIcon(new ImageIcon("./res/map.png").getImage().getScaledInstance(600, 360, 0));
     private Color bg = Color.decode("#072540");
     private Color highlight = Color.decode("#9C4668");
     private Color strongHighlight = Color.decode("#FF8AE2");
-    private Border mapBorder = BorderFactory.createLineBorder(strongHighlight, 5); //border covers the JLabel ):
-    private Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
 
     private SwingWorker worker = null;
 
@@ -86,7 +89,6 @@ public class MapScreen implements ActionListener {
         header.setFont(new Font("Tahoma", Font.BOLD, 32));
         header.setBounds(80 , 20, 350, 75);
         header.setForeground(highlight);
-        header.setBorder(border);
         mapPanel.add(header);
 
         //To have a \n in a JLabel, you can use html's \n (<br>) to achieve the same effect
@@ -94,21 +96,18 @@ public class MapScreen implements ActionListener {
         headerText.setFont(new Font("Tahoma", Font.PLAIN, 18));
         headerText.setBounds(500, 20, 500, 75);
         headerText.setForeground(highlight);
-        headerText.setBorder(border);
         mapPanel.add(headerText);
 
         JLabel otherText = new JLabel("<html>OR send your postal code and the <br>distance will also be calculated*</html>");
         otherText.setFont(new Font("Tahoma", Font.PLAIN, 18));
         otherText.setBounds(80, 480, 300, 75);
         otherText.setForeground(highlight);
-        otherText.setBorder(border);
         mapPanel.add(otherText);
 
         JLabel info = new JLabel("<html>*Postal code takes<br>priority over the map");
         info.setFont(new Font("Tahoma", Font.PLAIN, 12));
         info.setBounds(600, 500, 150, 75);
         info.setForeground(highlight);
-        info.setBorder(border);
         mapPanel.add(info);
 
         //button to direct user to distance JPanel
@@ -141,7 +140,7 @@ public class MapScreen implements ActionListener {
         map = new JLabel();
         map.setIcon(new ImageIcon(new ImageIcon("./res/map.png").getImage().getScaledInstance(600, 360, 0)));
         map.setBounds(80, 100, 600, 360);
-        map.setBorder(mapBorder);
+        map.setBorder(BorderFactory.createLineBorder(strongHighlight, 5)); //border covers the JLabel ):);
         map.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {}
@@ -181,16 +180,29 @@ public class MapScreen implements ActionListener {
         header.setFont(new Font("Tahoma", Font.BOLD, 32));
         header.setBounds(80 , 20, 350, 75);
         header.setForeground(highlight);
-        header.setBorder(border);
         distancePanel.add(header);
 
         JLabel info = new JLabel("<html>You can verify the distance(s) manually on <br>https://www.nhc.noaa.gov/gccalc.shtml</html>");
         info.setFont(new Font("Tahoma", Font.PLAIN, 12));
         info.setBounds(25, 500, 300, 75);
         info.setForeground(highlight);
-        info.setBorder(border);
         distancePanel.add(info);
 
+        JLabel mapPreviewInfo = new JLabel("You last clicked here:");
+        mapPreviewInfo.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        mapPreviewInfo.setBounds(500, 50, 300,  50);
+        mapPreviewInfo.setForeground(highlight);
+        distancePanel.add(mapPreviewInfo);
+
+        //cursor circle to indicate where the map has been clicked on the mapPreview
+        mapPreviewCircle.setIcon(new ImageIcon(new ImageIcon("./res/circle.png").getImage().getScaledInstance(50, 50, 0)));
+        mapPreviewCircle.setBounds(700+25, 20+25, 50, 50);
+        mapPreviewCircle.setVisible(false);
+        distancePanel.add(mapPreviewCircle);
+
+        //map preview of where the user clicked
+        mapPreview.setBounds(700, 20, DISPLAY_MAP_SIZE*2, DISPLAY_MAP_SIZE*2);
+        distancePanel.add(mapPreview);
 
         //button to direct users to the Map JPanel
         goToMap.setText("BACK");
@@ -209,14 +221,14 @@ public class MapScreen implements ActionListener {
             result[i] = new JLabel();
             result[i].setFont(new Font("Tahoma", Font.PLAIN, 18));
             result[i].setForeground(highlight);
-            result[i].setBounds(25+425*(i/7), 150+50*(i%7), 425, 50);
-            result[i].setBorder(border);
+            result[i].setBounds(75+425*(i/7), 150+50*(i%7), 425, 50);
             distancePanel.add(result[i]);
         }
     }
-
-    //refreshes the lables that display the distance of universites
-    public void refresh() {
+    //refreshes the labels that display the distance of universities
+    //also updates the mapPreview of where the user clicked (not accurate for areas clicked near the border)
+    //^^ too much math to properly implement that
+    public void refresh(boolean click) {
         UniversityDistance distance[] = new UniversityDistance[14];
         for (int i=0;i<14;i++) {
             double uniLat = universities.getUniversities().get(i).getLatitude();
@@ -230,6 +242,25 @@ public class MapScreen implements ActionListener {
             result[i].setText(distance[i].toString());
         }
         universities.getUniversityDistances().add(distance);
+
+        if(click) {
+            //you need a bufferedImage to get a snippet of an image
+            BufferedImage mapCopy = new BufferedImage(mapIcon.getIconWidth(),mapIcon.getIconHeight(), BufferedImage.TYPE_INT_RGB);
+
+            //creates a new bufferedImage from the actual map with proper dimensions
+            //if the user clicks on the edge, instead of having a DISPLAY_MAP_SIZE padding on one side
+            //it'll over-compensate on the other size (intended-ish)
+            int newX = Math.min(Math.max(0, x-map.getX()-DISPLAY_MAP_SIZE), mapIcon.getIconWidth()-2*DISPLAY_MAP_SIZE);
+            int newY = Math.min(Math.max(0, y-map.getY()-DISPLAY_MAP_SIZE), mapIcon.getIconHeight()-2*DISPLAY_MAP_SIZE);
+            BufferedImage mapDisplay = mapCopy.getSubimage(newX, newY, 2*DISPLAY_MAP_SIZE, 2*DISPLAY_MAP_SIZE);
+
+            //draws the updated changes onto the mapCopy
+            Graphics g = mapCopy.createGraphics();
+            mapIcon.paintIcon(null, g, 0, 0);
+            g.dispose();
+            //adding the updated BufferedImage as an icon to mapPreview
+            mapPreview.setIcon(new ImageIcon(mapDisplay));
+        }
     }
 
     //changes the visibility of the two panels
@@ -260,6 +291,7 @@ public class MapScreen implements ActionListener {
     private void setupWorker() {
         worker = new SwingWorker() {
             //This is the "2nd" task that is being done simultaneously
+            private boolean click = false;
             @Override
             protected Void doInBackground() {
                 if(!text.getText().equals("A1B2C3") && text.getText().length()==6) {
@@ -270,6 +302,7 @@ public class MapScreen implements ActionListener {
                         e.printStackTrace();
                     }
                 } else if (x!=-1 && y!=-1) {
+                    click = true;
                     lat = LATITUDE_UP-(double)(y-map.getY())/map.getHeight()*(LATITUDE_UP-LATITUDE_DOWN);
                     lon = LONGITUDE_LEFT-(double)(x-map.getX())/map.getWidth()*(LONGITUDE_LEFT-LONGITUDE_RIGHT);
                 }
@@ -281,8 +314,11 @@ public class MapScreen implements ActionListener {
             @Override
             protected void done() {
                 gif.setVisible(false);
+                if(click) {
+                    mapPreviewCircle.setVisible(true);
+                }
                 switchPanel();
-                refresh();
+                refresh(click);
                 super.done();
             }
         };
