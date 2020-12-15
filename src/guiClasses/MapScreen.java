@@ -37,7 +37,7 @@ public class MapScreen implements ActionListener {
     private int x = -1, y = -1;
     private boolean reveal = false;
     
-    private JFrame frame = new JFrame();
+//    private JFrame frame = new JFrame();
     private JPanel mapPanel = new JPanel(); //size of panel 920x610
     private JPanel distancePanel = new JPanel();
     private JLabel map = new JLabel();
@@ -61,17 +61,22 @@ public class MapScreen implements ActionListener {
         this.universities = universities;
         setupMap();
         setupDistance();
-        setupFrame();
-        frame.repaint();
+    }
+    public JPanel getMapPanel() {
+        return mapPanel;
+    }
+
+    public JPanel getDistancePanel() {
+        return distancePanel;
     }
     
     //sets up the JFrame
-    void setupFrame() {
-        frame.setBounds(0, 0, 920, 610);
-        frame.setVisible(true);
-        frame.setBackground(Color.WHITE);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
+//    void setupFrame() {
+//        frame.setBounds(0, 0, 920, 610);
+//        frame.setVisible(true);
+//        frame.setBackground(Color.WHITE);
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//    }
     
     //sets up the Map JPanel
     void setupMap() {
@@ -79,8 +84,8 @@ public class MapScreen implements ActionListener {
         mapPanel.setLayout(null);
         mapPanel.setBackground(bg);
         mapPanel.setVisible(true);
-        mapPanel.setBounds(0, 0, 920, 610);
-        frame.add(mapPanel);
+//        mapPanel.setBounds(0, 0, 920, 610);
+//        frame.add(mapPanel);
 
         JLabel header = new JLabel("Budget Google Map");
         header.setFont(new Font("Tahoma", Font.BOLD, 32));
@@ -175,7 +180,7 @@ public class MapScreen implements ActionListener {
         distancePanel.setBackground(bg);
         distancePanel.setVisible(false);
         distancePanel.setBounds(0, 0, 920, 610);
-        frame.add(distancePanel);
+//        frame.add(distancePanel);
 
         JLabel header = new JLabel("University Proximity");
         header.setFont(new Font("Tahoma", Font.BOLD, 32));
