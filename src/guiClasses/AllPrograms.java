@@ -1,9 +1,11 @@
+  
 package guiClasses;
 
 import main.UniversitiesInformation;
 import main.University;
 
 import javax.swing.*;
+import javax.swing.text.Style;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,7 +36,7 @@ public class AllPrograms extends JFrame implements ActionListener{
     private boolean resetPage = false;
     private String[] names = new String[14];
     private ArrayList<University> customList = new ArrayList<>(0);
-    private int maxIndex = 13;
+    private int maxIndex = 14;
     public AllPrograms() {
 
         uniArrayCopy = uniClass.getUniversities();
@@ -54,7 +56,7 @@ public class AllPrograms extends JFrame implements ActionListener{
         }
 
         picture.setIcon(uniArrayCopy.get(0).getIcon());
-        picture.setBounds(350,300,700,500);
+        picture.setBounds(350,300,600 ,400);
         add(picture);
 
         combobox1.setBounds(350, 50, 200, 40);
@@ -114,17 +116,23 @@ public class AllPrograms extends JFrame implements ActionListener{
 
             if (combobox2.getSelectedIndex() == 0) {            // if its A-Z
                 uniArrayCopy = uniClass.getUniversities();
-                currentPage = 0;
+                alphaSort();
                 reversed = false;
+                System.out.println("first one");
             }
             else if (combobox2.getSelectedIndex() == 1) {                //if its Z-A
                 uniArrayCopy = uniClass.getUniversities();
+                alphaSort();
+                for (University uni : uniArrayCopy) {
+                    System.out.println(uni.getName());
+                }
                 reverse();
-                currentPage = 0;
                 reversed = true;
+                System.out.println("second one");
+                for (University uni : uniArrayCopy) {
+                    System.out.println(uni.getName());
+                }
             }
-
-
             else if (combobox2.getSelectedIndex() == 2 || combobox2.getSelectedIndex() == 3) {                //Low to High, Average
                 uniArrayCopy = uniClass.getUniversities();
                 insertionSort();
@@ -134,13 +142,13 @@ public class AllPrograms extends JFrame implements ActionListener{
                     reverse();
                     reversed = true;
                 }
-                currentPage = 0;
             }
-            maxIndex = 13;
-
+            currentPage = 0;
             resetPage = true;
             remove(uniPanel);
-            uniPanel = createUniPanel(uniArrayCopy.get(0));
+            System.out.println(currentPage);
+            System.out.println(uniArrayCopy.get(currentPage).getName());
+            uniPanel = createUniPanel(uniArrayCopy.get(currentPage));
             uniPanel.setBounds(800,0,400,300);
             uniPanel.repaint();
 
@@ -154,10 +162,8 @@ public class AllPrograms extends JFrame implements ActionListener{
 
         if (event.getSource() == combobox1) {
             reversed = false;
+            uniArrayCopy = uniClass.getUniversities();
             int comboboxIndex = combobox1.getSelectedIndex();
-            if (reversed) {
-                comboboxIndex = maxIndex - comboboxIndex;
-            }
             remove(uniPanel);
             uniPanel = createUniPanel(uniArrayCopy.get(comboboxIndex));
             uniPanel.setBounds(800,0,500,500);
@@ -224,14 +230,25 @@ public class AllPrograms extends JFrame implements ActionListener{
             for (int x = 0; x < tempNames.size(); x++) {
                 tempNames.set(x, tempNames.get(x).replace("University", ""));
                 tempNames.set(x, tempNames.get(x).replace("of", ""));
-                tempNames.set(x, tempNames.get(x).replace(" ", ""));
+                while (tempNames.get(x).contains(" ")) {
+                    tempNames.set(x, tempNames.get(x).replace(" ", ""));
+                }
                 tempNames.set(x, tempNames.get(x).toLowerCase());
             }
+
             currentPage = 0;
 
             String text = keyword.getText();
+            text = text.toLowerCase();
+            text = text.replace("university", "");
+            text = text.replace("of", "");
+            while (text.contains(" ")) {
+                text = text.replace(" ", "");
+                }
+
             for (int i = 0; i < tempNames.size(); i++) {
-                System.out.println(text);
+                System.out.println(text.equalsIgnoreCase(tempNames.get(i)));
+                System.out.println("name match");
                 if (text.equalsIgnoreCase(tempNames.get(i))){
                     customList.add(uniClass.getUniversities().get(i));
                 }
@@ -242,19 +259,28 @@ public class AllPrograms extends JFrame implements ActionListener{
                 keywords = unis.getKeywords();
                 text = text.toLowerCase();
 
+                System.out.println(keywords.contains(text));
+                if (keywords.contains(text)){
 
-                if (keywords.contains(text))
-                    for (University currentUni : customList) {
-                    if (!unis.getName().equals(currentUni.getName()))
-                        customList.add(unis);
+                    if (customList.size() != 0) {
+                    for (int i =0; i < customList.size(); i++) {
+                        System.out.println(customList.size());
+                        if ((!unis.getName().equals(customList.get(i).getName())))
+                            customList.add(unis);
+
+                        }
+                    }
                 }
             }
             System.out.println("Size: " + customList.size());
             if (customList.size() == 0) {
                 JLabel searchFailed = new JLabel("No Matches");
-                searchFailed.setBounds(600,150,50,30);
+                searchFailed.setBounds(600,150,100,30);
+                searchFailed.setVisible(true);
                 add(searchFailed);
+                System.out.println("search failed");
 
+                repaint();
             }
             else {
                 currentPage = 0;
@@ -277,7 +303,7 @@ public class AllPrograms extends JFrame implements ActionListener{
     }
 
     public void reverse() {
-        ArrayList<University> temp = new ArrayList<University>(14);
+        ArrayList<University> temp = new ArrayList<>(14);
 
         for (int i = uniArrayCopy.size(); i > 0; i--) {
             temp.add(uniArrayCopy.get(i-1));
@@ -292,13 +318,13 @@ public class AllPrograms extends JFrame implements ActionListener{
         panel.setSize(300, 500);
         JLabel nameLabel = new JLabel(uni.getName());
         JLabel infoLabel = new JLabel("<html>" + uni.getDescription() + "<html>");
-        JLabel nationalRankLabel = new JLabel(String.valueOf(uni.getNationalRank()));
+        JLabel nationalRankLabel = new JLabel("Rank: " + String.valueOf(uni.getNationalRank()));
 
 
         nameLabel.setBounds(0, 0, 500, 80);
         nameLabel.setFont(new Font(title.getFont().getName(), Font.PLAIN, 30));
         nationalRankLabel.setBounds(0, 30, 500, 80);
-        nationalRankLabel.setFont(new Font(title.getFont().getName(), Font.PLAIN, 30));
+        nationalRankLabel.setFont(new Font(title.getFont().getName(), Font.PLAIN, 14));
         infoLabel.setBounds(0, 50, 300, 350);
         infoLabel.setFont(new Font(title.getFont().getName(), Font.PLAIN, 12));
         panel.setOpaque(false);
@@ -339,6 +365,19 @@ public class AllPrograms extends JFrame implements ActionListener{
     public void setIcons() {
         for (int i = 0; i < 14; i++) {
             names[i] =uniArrayCopy.get(i).getName();
+        }
+    }
+    public void alphaSort() {
+
+        String temp;
+        for (int i = 0; i < uniArrayCopy.size(); i++) {
+            for (int j = i + 1; j < uniArrayCopy.size(); j++) {
+                if (uniArrayCopy.get(i).getName().compareTo(uniArrayCopy.get(j).getName()) > 0) {
+                    temp = uniArrayCopy.get(i).getName();
+                    uniArrayCopy.set(i, uniArrayCopy.get(j));
+                    uniArrayCopy.get(j).setName(temp);
+                }
+            }
         }
     }
 }

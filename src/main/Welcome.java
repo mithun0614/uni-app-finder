@@ -2,6 +2,8 @@ package main;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 
 import javax.swing.JButton;
@@ -21,7 +23,7 @@ public class Welcome {
 	public static JTextField usernameField;
 	public static JPasswordField passwordField;
 
-	/**
+	/*
 	 * @wbp.parser.entryPoint
 	 * ^^ Allows me to use window builder
 	 */
@@ -79,9 +81,13 @@ public class Welcome {
 		JButton signInButton = new JButton("Sign In");
 		signInButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				welcomePanel.setVisible(false);
-				Dashboard.CreateDashboard();
-				Dashboard.dashboardPanel.setVisible(true);
+				if (VerifyLogin.verifyLogin(usernameField.getText(), String.valueOf(passwordField.getPassword()))) {
+					welcomePanel.setVisible(false);
+					Dashboard.CreateDashboard();
+					Dashboard.dashboardPanel.setVisible(true);
+				} else {
+					JOptionPane.showMessageDialog(welcomePanel, "Invalid Login");
+				}
 			}
 		});
 		signInButton.setBounds(725, 300, 300, 30);
@@ -91,9 +97,8 @@ public class Welcome {
 		JButton createAccountButton = new JButton("Create Account");
 		createAccountButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				welcomePanel.setVisible(false);
-				Dashboard.CreateDashboard();
-				Dashboard.dashboardPanel.setVisible(true);
+				new CreateAccount();
+				
 			}
 		});
 		createAccountButton.setBounds(725, 350, 300, 30);
