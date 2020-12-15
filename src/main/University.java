@@ -87,19 +87,35 @@ public class University {
 		this.longitude = longitude;
 	}
 
-	public int getNationalRank() { return nationalRank; }
+	public int getNationalRank() {
+		return nationalRank;
+	}
 
-	public void setNationalRank(int nationalRank) { this.nationalRank = nationalRank; }
+	public void setNationalRank(int nationalRank) {
+		this.nationalRank = nationalRank;
+	}
 
-	public String getDescription() { return description; }
+	public String getDescription() {
+		return description;
+	}
 
-	public void setDescription(String description) { this.description = description; }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-	public Icon getIcon() { return icon; }
+	public Icon getIcon() {
+		return icon;
+	}
 
-	public void setIcon(Icon icon) { this.icon = icon; }
+	public void setIcon(Icon icon) {
+		this.icon = icon;
+	}
 
-	public ArrayList<String> getKeywords() { return keywords; }
+	public ArrayList<String> getKeywords() {
+		return keywords;
+	}
 
-	public void setKeywords(ArrayList<String> keywords) { this.keywords = keywords; }
+	public void setKeywords(ArrayList<String> keywords) {
+		this.keywords = keywords;
+	}
 }
