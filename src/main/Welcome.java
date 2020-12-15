@@ -97,6 +97,7 @@ public class Welcome {
 		JButton createAccountButton = new JButton("Create Account");
 		createAccountButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Welcome.GUI.setVisible(false);
 				new CreateAccount();
 				
 			}
