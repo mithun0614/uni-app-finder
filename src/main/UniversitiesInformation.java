@@ -134,7 +134,7 @@ public class UniversitiesInformation {
 					}
 					uni.setKeywords(keyWords);
 					for (String s : keyWords) {
-						System.out.println(s);
+						System.out.println("Keyword" + s);
 					}
 					input.close();
 
@@ -162,7 +162,4 @@ public class UniversitiesInformation {
 		return keyWords;
 	}
 
-	public void setKeyWords(ArrayList<String> keyWords) {
-		this.keyWords = keyWords;
-	}
 }

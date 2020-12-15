@@ -37,6 +37,8 @@ public class AllPrograms extends JFrame implements ActionListener{
     public AllPrograms() {
 
         uniArrayCopy = uniClass.getUniversities();
+        System.out.println(uniArrayCopy.get(9).getKeywords());
+
         setSize(1152, 864);
         setLayout(null);
         uniPanel = createUniPanel(uniArrayCopy.get(0).getName(), uniArrayCopy.get(0).getDescription());
@@ -210,15 +212,21 @@ public class AllPrograms extends JFrame implements ActionListener{
         if (event.getSource() == searchButton) {
             String text = keyword.getText();
             System.out.println(uniArrayCopy.size());
-            for (University unis : uniArrayCopy) {
+            for (University unis : uniClass.getUniversities()) {
                 ArrayList<String> keywords;
                 keywords = unis.getKeywords();
-                for (int i = 0; i < keywords.size(); i ++) {
-                    String word = keywords.get(i);
-                    System.out.println(word);
+
+                System.out.println("UNIVERSITY:"+ unis.getName() + unis.getKeywords().size());
+
+                for (String w : keywords) {
+                    System.out.println(unis.getName() + w);
+                }
+                for (int i = 0; i < 3; i ++) {
+                    String word = unis.getKeywords().get(i);
+                    System.out.println(word + " ------" + text);
                     if (word.equalsIgnoreCase(text)) {
                         customList.add(unis);
-                        System.out.println("FUCKING BROKE");
+                        System.out.println("broke");
                         i = 14;
                     }
                 }
