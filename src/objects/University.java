@@ -36,69 +36,37 @@ public class University {
 	}
 
 	// getters and setters
-	public String getName() {
-		return name;
-	}
+	public String getName() {return name;}
 
-	public void setName(String name) {
-		this.name = name;
-	}
+	public void setName(String name) {this.name = name;}
 
-	public double getAverage() {
-		return average;
-	}
+	public double getAverage() {return average;}
 
-	public void setAverage(double average) {
-		this.average = average;
-	}
+	public void setAverage(double average) {this.average = average;}
 
-	public double getCutoff() {
-		return cutoff;
-	}
+	public double getCutoff() {return cutoff;}
 
-	public void setCutoff(double cutoff) {
-		this.cutoff = cutoff;
-	}
+	public void setCutoff(double cutoff) {this.cutoff = cutoff;}
 
-	public int getTuition() {
-		return tuition;
-	}
+	public int getTuition() {return tuition;}
 
-	public void setTuition(int tuition) {
-		this.tuition = tuition;
-	}
+	public void setTuition(int tuition) {this.tuition = tuition;}
 
-	public int getClassSize() {
-		return classSize;
-	}
+	public int getClassSize() {return classSize;}
 
-	public void setClassSize(int classSize) {
-		this.classSize = classSize;
-	}
+	public void setClassSize(int classSize) {this.classSize = classSize;}
 
-	public double getLatitude() {
-		return latitude;
-	}
+	public double getLatitude() {return latitude;}
 
-	public void setLatitude(double latitude) {
-		this.latitude = latitude;
-	}
+	public void setLatitude(double latitude) {this.latitude = latitude;}
 
-	public double getLongitude() {
-		return longitude;
-	}
+	public double getLongitude() {return longitude;}
 
-	public void setLongitude(double longitude) {
-		this.longitude = longitude;
-	}
+	public void setLongitude(double longitude) {this.longitude = longitude;}
 
-	public int getNationalRank() {
-		return nationalRank;
-	}
+	public int getNationalRank() { return nationalRank; }
 
-	public void setNationalRank(int nationalRank) {
-		this.nationalRank = nationalRank;
-	}
+	public void setNationalRank(int nationalRank) { this.nationalRank = nationalRank; }
 
 	public int getUniSize() {
 		return uniSize;
@@ -128,23 +96,13 @@ public class University {
 		return description;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+	public void setDescription(String description) { this.description = description; }
 
-	public Icon getIcon() {
-		return icon;
-	}
+	public Icon getIcon() { return icon; }
 
-	public void setIcon(Icon icon) {
-		this.icon = icon;
-	}
+	public void setIcon(Icon icon) { this.icon = icon; }
 
-	public String getKeywords() {
-		return keywords;
-	}
+	public String getKeywords() { return keywords; }
 
-	public void setKeywords(String keywords) {
-		this.keywords = keywords;
-	}
+	public void setKeywords(String keywords) { this.keywords = keywords; }
 }

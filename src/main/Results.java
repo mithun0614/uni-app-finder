@@ -63,8 +63,8 @@ public class Results extends JPanel {
 		MatchmakingAlgorithm.Matchmaker();
 
 		int[] num = new int[2];
-		num[0] = MatchmakingAlgorithm.greatest;
-		num[1] = MatchmakingAlgorithm.secondGreatest;
+		num[0] = MatchmakingAlgorithm.greatestIndex;
+		num[1] = MatchmakingAlgorithm.secondGreatestIndex;
 
 		String[] uni = new String[2];
 		uni[0] = UniversitiesInformation.universities.get(num[0]).getName();
@@ -75,7 +75,7 @@ public class Results extends JPanel {
 
 			nameLabel[x] = new JLabel("#" + (x + 1) + " Institution Name: " + uni[x]);
 			nameLabel[x].setFont(new Font("Tahoma", Font.PLAIN, 14));
-			nameLabel[x].setBounds(30 + 450 * x, 150, 150, 25);
+			nameLabel[x].setBounds(30 + 450 * x, 150, 300, 25);
 			resultsPanel.add(nameLabel[x]);
 
 			admissionLabel[x] = new JLabel("Cutoff Average:");

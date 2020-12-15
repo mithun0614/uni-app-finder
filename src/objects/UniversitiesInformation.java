@@ -1,5 +1,6 @@
 package objects;
 
+import objects.University;
 import objects.UniversityDistance;
 
 import javax.swing.*;
@@ -43,63 +44,40 @@ public class UniversitiesInformation {
 		try {
 			input = new Scanner(new File(path + "/resources/dataTables/All Data.csv"));
 			input.useDelimiter(",");
-			while (input.hasNext()) {
-
-/*				if (index % 9 == 0) {
-					String value = input.next();
-					names[nameIndex] = value;
-					nameIndex++;
-				}
-				if (index % 9 == 1) {
-					double value = input.nextDouble();
-					overallAverages[overallAvgIndex] = value;
-					overallAvgIndex++;
-				}
-				if (index % 9 == 2) {
-					double value = input.nextDouble();
-					cutoff[cutoffIndex] = value;
-					cutoffIndex++;
-				}
-				if (index % 9 == 3) {
-					int value = input.nextInt();
-					tuition[tuitionIndex] = value;
-					tuitionIndex++;
-				}
-				if (index % 9 == 4) {
-					int value = input.nextInt();
-					classSize[classSizeIndex] = value;
-					classSizeIndex++;
-				}
-				if (index % 9 == 5) {
-					double value = input.nextDouble();
-					longitude[longitudeIndex] = value;
-					longitudeIndex++;
-				}
-				if (index % 9 == 6) {
-					double value = input.nextDouble();
-					latitude[latitudeIndex] = value;
-					latitudeIndex++;
-				}
-				if (index % 9 == 7) {
-					int value = input.nextInt();
-					nationalRank[nationalRankIndex] = value;
-					nationalRankIndex++;
-				}
-
-				index++;
-			}
 			universities.clear();
-			for (int i = 0; i < names.length; i++) {
-				universities.add(new University(names[i], overallAverages[i], cutoff[i], tuition[i], classSize[i],
-						longitude[i], latitude[i], nationalRank[i]));
-			}*/
 
-				
-				
+			index = 0;
+
+			while (input.hasNext()) {
+				universities.add(index, new University(input.next().replaceAll("\n", "").replaceAll("\r", ""),
+						input.nextDouble(), input.nextDouble(), input.nextInt(), input.nextInt(), input.nextDouble(),
+						input.nextDouble(), input.nextInt(), input.nextInt(), input.nextDouble(), input.nextInt()));
+				index++;
+
+			}
+
+			/*
+			 * if (index % 9 == 0) { String value = input.next(); names[nameIndex] = value;
+			 * nameIndex++; } if (index % 9 == 1) { double value = input.nextDouble();
+			 * overallAverages[overallAvgIndex] = value; overallAvgIndex++; } if (index % 9
+			 * == 2) { double value = input.nextDouble(); cutoff[cutoffIndex] = value;
+			 * cutoffIndex++; } if (index % 9 == 3) { int value = input.nextInt();
+			 * tuition[tuitionIndex] = value; tuitionIndex++; } if (index % 9 == 4) { int
+			 * value = input.nextInt(); classSize[classSizeIndex] = value; classSizeIndex++;
+			 * } if (index % 9 == 5) { double value = input.nextDouble();
+			 * longitude[longitudeIndex] = value; longitudeIndex++; } if (index % 9 == 6) {
+			 * double value = input.nextDouble(); latitude[latitudeIndex] = value;
+			 * latitudeIndex++; } if (index % 9 == 7) { int value = input.nextInt();
+			 * nationalRank[nationalRankIndex] = value; nationalRankIndex++; } index++; }
+			 * universities.clear(); for (int i = 0; i < names.length; i++) {
+			 * universities.add(new University(names[i], overallAverages[i], cutoff[i],
+			 * tuition[i], classSize[i], longitude[i], latitude[i], nationalRank[i])); }
+			 */
+
 			input.close();
 
 			universities.get(0).setName(universities.get(0).getName().substring(1)); // fixes error with a character
-																						// before C on carleton
+			// before C on carleton
 			for (University uni : universities) {
 				System.out.println(path + "/resources/descriptions/" + uni.getName() + " Description.txt");
 				try {
@@ -134,7 +112,6 @@ public class UniversitiesInformation {
 					System.out.println(university.getName());
 					while (input.hasNext()) {
 						keywords = input.next();
-
 					}
 					university.setKeywords(keywords);
 					System.out.println(keyWords);
@@ -147,7 +124,9 @@ public class UniversitiesInformation {
 
 			}
 
-		} catch (FileNotFoundException e) {
+		} catch (
+
+		FileNotFoundException e) {
 			System.out.println("File not Found :( (all other fields)");
 		}
 	}
