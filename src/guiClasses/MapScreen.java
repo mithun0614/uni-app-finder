@@ -20,396 +20,423 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Models the Map Screen that allows users to determine their pin-pointed distance to the 14 universities.
- * Users have the option of clicking on a Map to determine their coordinates
- * or type in their postal code into the JTextArea to determine their coordinates.
- * Then the respective distances to all the universities is calculated and displayed.
+ * Models the Map Screen that allows users to determine their pin-pointed
+ * distance to the 14 universities. Users have the option of clicking on a Map
+ * to determine their coordinates or type in their postal code into the
+ * JTextArea to determine their coordinates. Then the respective distances to
+ * all the universities is calculated and displayed.
  */
 public class MapScreen implements ActionListener {
-    //this is for testing purposes, remember to delete afterwards
-    public static void main(String[] args) {
-        UniversitiesInformation universities = new UniversitiesInformation();
-        new MapScreen(universities);
-    }
-    
-    final private double AVERAGE_RADIUS_OF_EARTH_KM = 6371;
-    final private double LATITUDE_UP = 43.89254, LATITUDE_DOWN = 43.74501;
-    final private double LONGITUDE_LEFT = -79.52205, LONGITUDE_RIGHT = -79.20952;
-    final private int DISPLAY_MAP_SIZE = 50, DOT_SIZE = 5;
-    private double lon = -1, lat = -1;
-    private int x = -1, y = -1;
-    private boolean reveal = false;
-    private Color colors[] = {
-            Color.decode("#CC3636"), Color.decode("#CC3366"), Color.decode("#CC33CC"),
-            Color.decode("#8636CC"), Color.decode("#3636CC"), Color.decode("#3688CC"), Color.decode("#36CCBA"),
-            Color.decode("#36CC87"), Color.decode("#36CC40"), Color.decode("#92CC36"), Color.decode("#CCC136"),
-            Color.decode("#CC9236"), Color.decode("#CC7636"), Color.decode("#CC5D36"),
-    };
+	// this is for testing purposes, remember to delete afterwards
+	public static void main(String[] args) {
+		UniversitiesInformation universities = new UniversitiesInformation();
+		new MapScreen(universities);
+	}
+
+	final private double AVERAGE_RADIUS_OF_EARTH_KM = 6371;
+	final private double LATITUDE_UP = 43.89254, LATITUDE_DOWN = 43.74501;
+	final private double LONGITUDE_LEFT = -79.52205, LONGITUDE_RIGHT = -79.20952;
+	final private int DISPLAY_MAP_SIZE = 50, DOT_SIZE = 5;
+	private double lon = -1, lat = -1;
+	private int x = -1, y = -1;
+	private boolean reveal = false;
+	private Color colors[] = { Color.decode("#CC3636"), Color.decode("#CC3366"), Color.decode("#CC33CC"),
+			Color.decode("#8636CC"), Color.decode("#3636CC"), Color.decode("#3688CC"), Color.decode("#36CCBA"),
+			Color.decode("#36CC87"), Color.decode("#36CC40"), Color.decode("#92CC36"), Color.decode("#CCC136"),
+			Color.decode("#CC9236"), Color.decode("#CC7636"), Color.decode("#CC5D36"), };
 //    public static double[] extraDistance = new double[14];
-    
+
 //    private JFrame frame = new JFrame();
-    private JPanel mapPanel = new JPanel(); //size of panel 920x610
-    private JPanel distancePanel = new JPanel();
-    private JLabel map = new JLabel();
-    private JLabel gif = new JLabel();
-    private JLabel mapPreview = new JLabel();
-    private JLabel googleMap = new JLabel();
-    private JLabel mapPreviewCircle = new JLabel();
-    private JLabel result[] = new JLabel[14];
-    private JTextArea text = new JTextArea();
-    private JButton goToDistance = new JButton();
-    private JButton goToMap = new JButton();
-    private ImageIcon ontarioMap = new ImageIcon(new ImageIcon("./res/ontario-map.png").getImage().getScaledInstance(875/2, 611/2, 0));
-    private ImageIcon mapIcon = new ImageIcon(new ImageIcon("./res/map.png").getImage().getScaledInstance(600, 360, 0));
+	private JPanel mapPanel = new JPanel(); // size of panel 920x610
+	private JPanel distancePanel = new JPanel();
+	private JLabel map = new JLabel();
+	private JLabel gif = new JLabel();
+	private JLabel mapPreview = new JLabel();
+	private JLabel googleMap = new JLabel();
+	private JLabel mapPreviewCircle = new JLabel();
+	private JLabel result[] = new JLabel[14];
+	private JTextArea text = new JTextArea();
+	private JButton goToDistance = new JButton();
+	private JButton goToMap = new JButton();
+	private ImageIcon ontarioMap = new ImageIcon(
+			new ImageIcon("./res/ontario-map.png").getImage().getScaledInstance(875 / 2, 611 / 2, 0));
+	private ImageIcon mapIcon = new ImageIcon(new ImageIcon("./res/map.png").getImage().getScaledInstance(600, 360, 0));
 
-    private SwingWorker worker = null;
+	private SwingWorker worker = null;
 
-    private UniversitiesInformation universities;
+	private UniversitiesInformation universities;
 
-    //constructor to initialize the panels
-    public MapScreen(UniversitiesInformation universities) { 
-        this.universities = universities;
-        setupMap();
-        setupDistance();
-    }
-    public JPanel getMapPanel() {
-        return mapPanel;
-    }
+	// constructor to initialize the panels
+	public MapScreen(UniversitiesInformation universities) {
+		this.universities = universities;
+		setupMap();
+		setupDistance();
+	}
 
-    public JPanel getDistancePanel() {
-        return distancePanel;
-    }
-    
-    //sets up the Map JPanel
-    void setupMap() {
-        //map panel
-        mapPanel.setLayout(null);
-        mapPanel.setBackground(Colour.bg);
-        mapPanel.setVisible(true);
+	public JPanel getMapPanel() {
+		return mapPanel;
+	}
+
+	public JPanel getDistancePanel() {
+		return distancePanel;
+	}
+
+	// sets up the Map JPanel
+	void setupMap() {
+		// map panel
+		mapPanel.setLayout(null);
+		mapPanel.setBackground(Colour.bg);
+		mapPanel.setVisible(true);
 //        mapPanel.setBounds(0, 0, 920, 610);
 //        frame.add(mapPanel);
 
-        JLabel header = new JLabel("Budget Google Map");
-        header.setFont(new Font("Tahoma", Font.BOLD, 32));
-        header.setBounds(80 , 20, 350, 75);
-        header.setForeground(Colour.highlight);
-        mapPanel.add(header);
+		JLabel header = new JLabel("Budget Google Map");
+		header.setFont(new Font("Tahoma", Font.BOLD, 32));
+		header.setBounds(80, 20, 350, 75);
+		header.setForeground(Colour.highlight);
+		mapPanel.add(header);
 
-        //To have a \n in a JLabel, you can use html's \n (<br>) to achieve the same effect
-        JLabel headerText = new JLabel("<html>Click on your approximate location<br>and distance to universities will be calculated*</html>");
-        headerText.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        headerText.setBounds(500, 20, 500, 75);
-        headerText.setForeground(Colour.highlight);
-        mapPanel.add(headerText);
+		// To have a \n in a JLabel, you can use html's \n (<br>) to achieve the same
+		// effect
+		JLabel headerText = new JLabel(
+				"<html>Click on your approximate location<br>and distance to universities will be calculated*</html>");
+		headerText.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		headerText.setBounds(500, 20, 500, 75);
+		headerText.setForeground(Colour.highlight);
+		mapPanel.add(headerText);
 
-        JLabel otherText = new JLabel("<html>OR send your postal code and the <br>distance will also be calculated*</html>");
-        otherText.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        otherText.setBounds(80, 480, 300, 75);
-        otherText.setForeground(Colour.highlight);
-        mapPanel.add(otherText);
+		JLabel otherText = new JLabel(
+				"<html>OR send your postal code and the <br>distance will also be calculated*</html>");
+		otherText.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		otherText.setBounds(80, 480, 300, 75);
+		otherText.setForeground(Colour.highlight);
+		mapPanel.add(otherText);
 
-        JLabel info = new JLabel("<html>*Postal code takes<br>priority over the map");
-        info.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        info.setBounds(600, 500, 150, 75);
-        info.setForeground(Colour.highlight);
-        mapPanel.add(info);
+		JLabel info = new JLabel("<html>*Postal code takes<br>priority over the map");
+		info.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		info.setBounds(600, 500, 150, 75);
+		info.setForeground(Colour.highlight);
+		mapPanel.add(info);
 
-        //button to direct user to distance JPanel
-        goToDistance.setText("GO");
-        goToDistance.setFont(new Font("Tahoma", Font.PLAIN, 32));
-        goToDistance.setBounds(800, 500, 50, 50);
-        goToDistance.setForeground(Colour.highlight);
-        goToDistance.setBackground(Colour.strongHighlight);
-        goToDistance.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        goToDistance.setBorderPainted(false);
-        goToDistance.setFocusPainted(false);
-        goToDistance.addActionListener(this);
-        mapPanel.add(goToDistance);
+		// button to direct user to distance JPanel
+		goToDistance.setText("GO");
+		goToDistance.setFont(new Font("Tahoma", Font.PLAIN, 32));
+		goToDistance.setBounds(800, 500, 50, 50);
+		goToDistance.setForeground(Colour.highlight);
+		goToDistance.setBackground(Colour.strongHighlight);
+		goToDistance.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+		goToDistance.setBorderPainted(false);
+		goToDistance.setFocusPainted(false);
+		goToDistance.addActionListener(this);
+		mapPanel.add(goToDistance);
 
-        //text field
-        text.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        text.setBounds(400, 500, 100, 25);
-        text.setForeground(Colour.highlight);
-        text.setBackground(Colour.strongHighlight);
-        text.setDocument(new TextFieldLimit());
-        text.setText("A1B2C3"); //so people know its postal code
-        mapPanel.add(text);
+		// text field
+		text.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		text.setBounds(400, 500, 100, 25);
+		text.setForeground(Colour.highlight);
+		text.setBackground(Colour.strongHighlight);
+		text.setDocument(new TextFieldLimit());
+		text.setText("A1B2C3"); // so people know its postal code
+		mapPanel.add(text);
 
-        //cursor circle to indicate where the map has been clicked
-        JLabel circle = new JLabel();
-        circle.setIcon(new ImageIcon(new ImageIcon("./res/circle.png").getImage().getScaledInstance(50, 50, 0)));
-        mapPanel.add(circle);
+		// cursor circle to indicate where the map has been clicked
+		JLabel circle = new JLabel();
+		circle.setIcon(new ImageIcon(new ImageIcon("./res/circle.png").getImage().getScaledInstance(50, 50, 0)));
+		mapPanel.add(circle);
 
-        //screenshot of Google Map
-        map = new JLabel();
-        map.setIcon(new ImageIcon(new ImageIcon("./res/map.png").getImage().getScaledInstance(600, 360, 0)));
-        map.setBounds(80, 100, 600, 360);
-        map.setBorder(BorderFactory.createLineBorder(Colour.strongHighlight, 5)); //border covers the JLabel ):);
-        map.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {}
-            @Override
-            public void mousePressed(MouseEvent e) {
-                System.out.printf("Mouse click = (%d, %d)\n", e.getX(), e.getY());
-                x = map.getX()+e.getX();
-                y = map.getY()+e.getY();
-                circle.setBounds(x-25, y-25, 50, 50);
-            }
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-            @Override
-            public void mouseEntered(MouseEvent e) {}
-            @Override
-            public void mouseExited(MouseEvent e) {}
-        });
-        mapPanel.add(map);
+		// screenshot of Google Map
+		map = new JLabel();
+		map.setIcon(new ImageIcon(new ImageIcon("./res/map.png").getImage().getScaledInstance(600, 360, 0)));
+		map.setBounds(80, 100, 600, 360);
+		map.setBorder(BorderFactory.createLineBorder(Colour.strongHighlight, 5)); // border covers the JLabel ):);
+		map.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
 
-        //loading gif
-        gif.setIcon(new ImageIcon(new ImageIcon("./res/load.gif").getImage().getScaledInstance(100, 100, 0)));
-        gif.setBounds(750, 225, 100, 100);
-        gif.setVisible(false);
-        mapPanel.add(gif);
-    }
-    
-    //sets up the distances of the university JPanel
-    public void setupDistance() {
-        //distance panel
-        distancePanel.setLayout(null);
-        distancePanel.setBackground(Colour.bg);
-        distancePanel.setVisible(false);
-        distancePanel.setBounds(0, 0, 920, 610);
+			@Override
+			public void mousePressed(MouseEvent e) {
+				System.out.printf("Mouse click = (%d, %d)\n", e.getX(), e.getY());
+				x = map.getX() + e.getX();
+				y = map.getY() + e.getY();
+				circle.setBounds(x - 25, y - 25, 50, 50);
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+		});
+		mapPanel.add(map);
+
+		// loading gif
+		gif.setIcon(new ImageIcon(new ImageIcon("./res/load.gif").getImage().getScaledInstance(100, 100, 0)));
+		gif.setBounds(750, 225, 100, 100);
+		gif.setVisible(false);
+		mapPanel.add(gif);
+	}
+
+	// sets up the distances of the university JPanel
+	public void setupDistance() {
+		// distance panel
+		distancePanel.setLayout(null);
+		distancePanel.setBackground(Colour.bg);
+		distancePanel.setVisible(false);
+		distancePanel.setBounds(0, 0, 920, 610);
 //        frame.add(distancePanel);
 
-        JLabel header = new JLabel("University Proximity");
-        header.setFont(new Font("Tahoma", Font.BOLD, 32));
-        header.setBounds(80 , 20, 350, 75);
-        header.setForeground(Colour.highlight);
-        distancePanel.add(header);
+		JLabel header = new JLabel("University Proximity");
+		header.setFont(new Font("Tahoma", Font.BOLD, 32));
+		header.setBounds(80, 20, 350, 75);
+		header.setForeground(Colour.highlight);
+		distancePanel.add(header);
 
-        JLabel info = new JLabel("<html>You can verify the distance(s) manually on <br>https://www.nhc.noaa.gov/gccalc.shtml</html>");
-        info.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        info.setBounds(25, 550, 300, 75);
-        info.setForeground(Colour.highlight);
-        distancePanel.add(info);
+		JLabel info = new JLabel(
+				"<html>You can verify the distance(s) manually on <br>https://www.nhc.noaa.gov/gccalc.shtml</html>");
+		info.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		info.setBounds(25, 550, 300, 75);
+		info.setForeground(Colour.highlight);
+		distancePanel.add(info);
 
-        JLabel mapPreviewInfo = new JLabel("You last clicked here:");
-        mapPreviewInfo.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        mapPreviewInfo.setBounds(500, 50, 300,  50);
-        mapPreviewInfo.setForeground(Colour.highlight);
-        distancePanel.add(mapPreviewInfo);
+		JLabel mapPreviewInfo = new JLabel("You last clicked here:");
+		mapPreviewInfo.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		mapPreviewInfo.setBounds(500, 50, 300, 50);
+		mapPreviewInfo.setForeground(Colour.highlight);
+		distancePanel.add(mapPreviewInfo);
 
-        JLabel userInfo = new JLabel("<html>Black dot is you<br>(Assuming your postal code is in-bounds or valid)</html>");
-        userInfo.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        userInfo.setBounds(450, 525, 300, 100);
-        userInfo.setForeground(Colour.highlight);
-        distancePanel.add(userInfo);
+		JLabel userInfo = new JLabel(
+				"<html>Black dot is you<br>(Assuming your postal code is in-bounds or valid)</html>");
+		userInfo.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		userInfo.setBounds(450, 525, 300, 100);
+		userInfo.setForeground(Colour.highlight);
+		distancePanel.add(userInfo);
 
-        //cursor circle to indicate where the map has been clicked on the mapPreview
-        mapPreviewCircle.setIcon(new ImageIcon(new ImageIcon("./res/circle.png").getImage().getScaledInstance(50, 50, 0)));
-        mapPreviewCircle.setBounds(700+25, 20+25, 50, 50);
-        mapPreviewCircle.setVisible(false);
-        distancePanel.add(mapPreviewCircle);
+		// cursor circle to indicate where the map has been clicked on the mapPreview
+		mapPreviewCircle
+				.setIcon(new ImageIcon(new ImageIcon("./res/circle.png").getImage().getScaledInstance(50, 50, 0)));
+		mapPreviewCircle.setBounds(700 + 25, 20 + 25, 50, 50);
+		mapPreviewCircle.setVisible(false);
+		distancePanel.add(mapPreviewCircle);
 
-        //map preview of where the user clicked
-        mapPreview.setBounds(700, 20, DISPLAY_MAP_SIZE*2, DISPLAY_MAP_SIZE*2);
-        distancePanel.add(mapPreview);
+		// map preview of where the user clicked
+		mapPreview.setBounds(700, 20, DISPLAY_MAP_SIZE * 2, DISPLAY_MAP_SIZE * 2);
+		distancePanel.add(mapPreview);
 
-        //google map preview of unis
-        googleMap.setBounds(400, 150, ontarioMap.getIconWidth(), ontarioMap.getIconHeight());
-        googleMap.setIcon(ontarioMap);
-        distancePanel.add(googleMap);
+		// google map preview of unis
+		googleMap.setBounds(400, 150, ontarioMap.getIconWidth(), ontarioMap.getIconHeight());
+		googleMap.setIcon(ontarioMap);
+		distancePanel.add(googleMap);
 
-        //button to direct users to the Map JPanel
-        goToMap.setText("BACK");
-        goToMap.setFont(new Font("Tahoma", Font.PLAIN, 32));
-        goToMap.setBounds(775, 500, 100, 50);
-        goToMap.setForeground(Colour.highlight);
-        goToMap.setBackground(Colour.strongHighlight);
-        goToMap.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        goToMap.setBorderPainted(false);
-        goToMap.setFocusPainted(false);
-        goToMap.addActionListener(this);
-        distancePanel.add(goToMap);
+		// button to direct users to the Map JPanel
+		goToMap.setText("BACK");
+		goToMap.setFont(new Font("Tahoma", Font.PLAIN, 32));
+		goToMap.setBounds(775, 500, 100, 50);
+		goToMap.setForeground(Colour.highlight);
+		goToMap.setBackground(Colour.strongHighlight);
+		goToMap.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+		goToMap.setBorderPainted(false);
+		goToMap.setFocusPainted(false);
+		goToMap.addActionListener(this);
+		distancePanel.add(goToMap);
 
-        //displaying the JLabels that will show the distance of the universities
-        for (int i=0;i<14;i++) {
-            result[i] = new JLabel();
-            result[i].setFont(new Font("Tahoma", Font.PLAIN, 18));
-            result[i].setForeground(Colour.highlight);
-            result[i].setBounds(75, 80+35*(i%14), 425, 25);
-            distancePanel.add(result[i]);
-        }
-    }
-    //refreshes the labels that display the distance of universities
-    //also updates the mapPreview of where the user clicked (not accurate for areas clicked near the border)
-    //^^ too much math to properly implement that
-    public void refresh(boolean click) {
-        UniversityDistance distance[] = new UniversityDistance[14];
-        for (int i=0;i<14;i++) {
-            double uniLat = universities.getUniversities().get(i).getLatitude();
-            double uniLon = universities.getUniversities().get(i).getLongitude();
+		// displaying the JLabels that will show the distance of the universities
+		for (int i = 0; i < 14; i++) {
+			result[i] = new JLabel();
+			result[i].setFont(new Font("Tahoma", Font.PLAIN, 18));
+			result[i].setForeground(Colour.highlight);
+			result[i].setBounds(75, 80 + 35 * (i % 14), 425, 25);
+			distancePanel.add(result[i]);
+		}
+	}
+
+	// refreshes the labels that display the distance of universities
+	// also updates the mapPreview of where the user clicked (not accurate for areas
+	// clicked near the border)
+	// ^^ too much math to properly implement that
+	public void refresh(boolean click) {
+		UniversityDistance distance[] = new UniversityDistance[14];
+		for (int i = 0; i < 14; i++) {
+			double uniLat = universities.getUniversities().get(i).getLatitude();
+			double uniLon = universities.getUniversities().get(i).getLongitude();
 //            extraDistance[i] = calculateDistance(lat, lon, uniLat, uniLon);
-            distance[i] = new UniversityDistance(universities.getUniversities().get(i).getName(),
-                    calculateDistance(lat, lon, uniLat, uniLon));
-            distancePanel.add(distance[i].getButton());
-            distancePanel.add(distance[i].getDot());
-        }
-        UniversityDistance copy[] = new UniversityDistance[14]; //need to add a copy that isn't sorted to universities
-        for (int i=0;i<14;i++) {
-            copy[i] = distance[i];
-        }
-        universities.getUniversityDistances().add(copy); //adding the copy, while I still have the sorted array
-        Arrays.sort(distance); //since the UniversityDistance has implements Comparable, this works
-        for (int i=0;i<14;i++) {
-            distance[i].setColor(colors[i]);
-            distance[i].setID(String.format("%02d", i+1));
-            distance[i].getDot().setIcon(new ImageIcon(new ImageIcon("./resources/misc/dots-"+distance[i].getID()+".png").getImage().getScaledInstance(105/DOT_SIZE, 105/DOT_SIZE, 5)));
-            distance[i].getDot().setBounds(150, 80+35*(i%14), 105/DOT_SIZE, 105/DOT_SIZE);
-        }
-        for (int i=0;i<14;i++) {
-            result[i].setText(distance[i].toString());
-            distance[i].getButton().setBounds(result[i].getX()-65, result[i].getY(), 50, 35);
-            distance[i].getButton().setText("SEE");
-            distance[i].getButton().setForeground(Color.WHITE);
-            distance[i].getButton().setBackground(distance[i].getColor());
-            distance[i].getButton().setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-            distance[i].getButton().setBorderPainted(false);
-            distance[i].getButton().setFocusPainted(false);
-            distance[i].getButton().addActionListener(this);
-        }
-        universities.getUniversityDistances().add(distance);
+			distance[i] = new UniversityDistance(universities.getUniversities().get(i).getName(),
+					calculateDistance(lat, lon, uniLat, uniLon));
+			distancePanel.add(distance[i].getButton());
+			distancePanel.add(distance[i].getDot());
+		}
+		UniversityDistance copy[] = new UniversityDistance[14]; // need to add a copy that isn't sorted to universities
+		for (int i = 0; i < 14; i++) {
+			copy[i] = distance[i];
+		}
+		universities.getUniversityDistances().add(copy); // adding the copy, while I still have the sorted array
+		Arrays.sort(distance); // since the UniversityDistance has implements Comparable, this works
+		for (int i = 0; i < 14; i++) {
+			distance[i].setColor(colors[i]);
+			distance[i].setID(String.format("%02d", i + 1));
+			distance[i].getDot()
+					.setIcon(new ImageIcon(new ImageIcon("./resources/misc/dots-" + distance[i].getID() + ".png")
+							.getImage().getScaledInstance(105 / DOT_SIZE, 105 / DOT_SIZE, 5)));
+			distance[i].getDot().setBounds(150, 80 + 35 * (i % 14), 105 / DOT_SIZE, 105 / DOT_SIZE);
+		}
+		for (int i = 0; i < 14; i++) {
+			result[i].setText(distance[i].toString());
+			distance[i].getButton().setBounds(result[i].getX() - 65, result[i].getY(), 50, 35);
+			distance[i].getButton().setText("SEE");
+			distance[i].getButton().setForeground(Color.WHITE);
+			distance[i].getButton().setBackground(distance[i].getColor());
+			distance[i].getButton().setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+			distance[i].getButton().setBorderPainted(false);
+			distance[i].getButton().setFocusPainted(false);
+			distance[i].getButton().addActionListener(this);
+		}
+		universities.getUniversityDistances().add(distance);
 
-        if(click) {
-            //you need a bufferedImage to get a snippet of an image
-            BufferedImage mapCopy = new BufferedImage(mapIcon.getIconWidth(),mapIcon.getIconHeight(), BufferedImage.TYPE_INT_RGB);
+		if (click) {
+			// you need a bufferedImage to get a snippet of an image
+			BufferedImage mapCopy = new BufferedImage(mapIcon.getIconWidth(), mapIcon.getIconHeight(),
+					BufferedImage.TYPE_INT_RGB);
 
-            //creates a new bufferedImage from the actual map with proper dimensions
-            //if the user clicks on the edge, instead of having a DISPLAY_MAP_SIZE padding on one side
-            //it'll over-compensate on the other size (intended-ish)
-            int newX = Math.min(Math.max(0, x-map.getX()-DISPLAY_MAP_SIZE), mapIcon.getIconWidth()-2*DISPLAY_MAP_SIZE);
-            int newY = Math.min(Math.max(0, y-map.getY()-DISPLAY_MAP_SIZE), mapIcon.getIconHeight()-2*DISPLAY_MAP_SIZE);
-            BufferedImage mapDisplay = mapCopy.getSubimage(newX, newY, 2*DISPLAY_MAP_SIZE, 2*DISPLAY_MAP_SIZE);
+			// creates a new bufferedImage from the actual map with proper dimensions
+			// if the user clicks on the edge, instead of having a DISPLAY_MAP_SIZE padding
+			// on one side
+			// it'll over-compensate on the other size (intended-ish)
+			int newX = Math.min(Math.max(0, x - map.getX() - DISPLAY_MAP_SIZE),
+					mapIcon.getIconWidth() - 2 * DISPLAY_MAP_SIZE);
+			int newY = Math.min(Math.max(0, y - map.getY() - DISPLAY_MAP_SIZE),
+					mapIcon.getIconHeight() - 2 * DISPLAY_MAP_SIZE);
+			BufferedImage mapDisplay = mapCopy.getSubimage(newX, newY, 2 * DISPLAY_MAP_SIZE, 2 * DISPLAY_MAP_SIZE);
 
-            //draws the updated changes onto the mapCopy
-            Graphics g = mapCopy.createGraphics();
-            mapIcon.paintIcon(null, g, 0, 0);
-            g.dispose();
-            //adding the updated BufferedImage as an icon to mapPreview
-            mapPreview.setIcon(new ImageIcon(mapDisplay));
-        }
-    }
+			// draws the updated changes onto the mapCopy
+			Graphics g = mapCopy.createGraphics();
+			mapIcon.paintIcon(null, g, 0, 0);
+			g.dispose();
+			// adding the updated BufferedImage as an icon to mapPreview
+			mapPreview.setIcon(new ImageIcon(mapDisplay));
+		}
+	}
 
-    //changes the visibility of the two panels
-    private void switchPanel() {
-        mapPanel.setVisible(reveal);
-        distancePanel.setVisible(!reveal);
-        reveal = !reveal;
-    }
+	// changes the visibility of the two panels
+	private void switchPanel() {
+		mapPanel.setVisible(reveal);
+		distancePanel.setVisible(!reveal);
+		reveal = !reveal;
+	}
 
-    //logic for JButtons
-    @Override
-    public void actionPerformed(ActionEvent event) {
-        //if the button was on the Map JPanel
-        if(event.getSource()==goToDistance) {
-            if((!text.getText().equals("A1B2C3") && text.getText().length()==6) || (x!=-1 && y!=-1)) {
-                gif.setVisible(true);
-                setupWorker();
-                worker.execute();
-            }
-        }
-        //if the button was on the Distance JPanel
-        else if(event.getSource()==goToMap) {
-            switchPanel();
-        }
-    }
-    
-    //this allows "multi-threading" since you can't normally display a GIF when a button is performed (can't do two tasks at once)
-    private void setupWorker() {
-        worker = new SwingWorker() {
-            //This is the "2nd" task that is being done simultaneously
-            private boolean click = false;
-            @Override
-            protected Void doInBackground() {
-                if(!text.getText().equals("A1B2C3") && text.getText().length()==6) {
-                    callGeocoder();
-                    try {
-                        TimeUnit.SECONDS.sleep(2);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                } else if (x!=-1 && y!=-1) {
-                    click = true;
-                    lat = LATITUDE_UP-(double)(y-map.getY())/map.getHeight()*(LATITUDE_UP-LATITUDE_DOWN);
-                    lon = LONGITUDE_LEFT-(double)(x-map.getX())/map.getWidth()*(LONGITUDE_LEFT-LONGITUDE_RIGHT);
-                }
-                System.out.printf("(lat, lon) = (%f, %f)\n", lat, lon);
-                return null;
-            }
+	// logic for JButtons
+	@Override
+	public void actionPerformed(ActionEvent event) {
+		// if the button was on the Map JPanel
+		if (event.getSource() == goToDistance) {
+			if ((!text.getText().equals("A1B2C3") && text.getText().length() == 6) || (x != -1 && y != -1)) {
+				gif.setVisible(true);
+				setupWorker();
+				worker.execute();
+			}
+		}
+		// if the button was on the Distance JPanel
+		else if (event.getSource() == goToMap) {
+			switchPanel();
+		}
+	}
 
-            //this is what occurs when the background task is completed
-            @Override
-            protected void done() {
-                gif.setVisible(false);
-                if(click) {
-                    mapPreviewCircle.setVisible(true);
-                }
-                switchPanel();
-                refresh(click);
-                super.done();
-            }
-        };
-    }
-    
-    //calls a website to find the latitude and longitude points given a postal code
-    private void callGeocoder() {
-        URL url = null; //the url being called
-        HttpURLConnection httpCon = null; //establishes a connection to the website
-        BufferedReader br = null; //reads the information from the established connection
-        String arr[] = {}; //used to parse the information from the website
+	// this allows "multi-threading" since you can't normally display a GIF when a
+	// button is performed (can't do two tasks at once)
+	private void setupWorker() {
+		worker = new SwingWorker() {
+			// This is the "2nd" task that is being done simultaneously
+			private boolean click = false;
 
-        try {
-            //this is how the website wants the input to be formated
-            url = new URL("https://geocoder.ca/?locate="+text.getText()+"&json=1");
-            //sending http response
-            httpCon = (HttpURLConnection) url.openConnection();
-            //reading http response
-            br = new BufferedReader(new InputStreamReader(httpCon.getInputStream()));
-            //basic parsing by splitting the entries by commas
-            arr = br.readLine().split("[,]");
-        } catch(Exception e) {
-            System.out.println("Could not connect to geocoder.ca");
-        }
+			@Override
+			protected Void doInBackground() {
+				if (!text.getText().equals("A1B2C3") && text.getText().length() == 6) {
+					callGeocoder();
+					try {
+						TimeUnit.SECONDS.sleep(2);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				} else if (x != -1 && y != -1) {
+					click = true;
+					lat = LATITUDE_UP - (double) (y - map.getY()) / map.getHeight() * (LATITUDE_UP - LATITUDE_DOWN);
+					lon = LONGITUDE_LEFT
+							- (double) (x - map.getX()) / map.getWidth() * (LONGITUDE_LEFT - LONGITUDE_RIGHT);
+				}
+				System.out.printf("(lat, lon) = (%f, %f)\n", lat, lon);
+				return null;
+			}
 
-        //fine-tuning parsing
-        for (int i=0;i<arr.length;i++) {
-            //parsing JSON into something I can read
-            arr[i] = arr[i].replaceAll("[^a-z0-9:.-]", ""); //ReGeX op
-            //tldr; the "[^a-z0-9:.-]" replaces everything that isn't a to z, 0 to 9, :, ., - with "" aka nothing
+			// this is what occurs when the background task is completed
+			@Override
+			protected void done() {
+				gif.setVisible(false);
+				if (click) {
+					mapPreviewCircle.setVisible(true);
+				}
+				switchPanel();
+				refresh(click);
+				super.done();
+			}
+		};
+	}
 
-            if(arr[i].startsWith("longt")) {
-                lon = Double.parseDouble(arr[i].split(":")[1]);
-            }
-            else if(arr[i].startsWith("latt")) {
-                lat = Double.parseDouble(arr[i].split(":")[1]);
-            }
-        }
-    }
+	// calls a website to find the latitude and longitude points given a postal code
+	private void callGeocoder() {
+		URL url = null; // the url being called
+		HttpURLConnection httpCon = null; // establishes a connection to the website
+		BufferedReader br = null; // reads the information from the established connection
+		String arr[] = {}; // used to parse the information from the website
 
-    // Haversine formula orz, it pretty much determines the distance given two latitude/longtitude points using fancy math
-    private double calculateDistance(double startLat, double startLng, double endLat, double endLng) {
-        double scale = 100; //used for rounding purposes
-        double RadstartLat = Math.toRadians(startLat);
-        double RadendLat = Math.toRadians(endLat);
-        double latDistance = Math.toRadians(endLat-startLat);
-        double lngDistance = Math.toRadians(endLng-startLng);
-        
-        double a = haversin(latDistance) + haversin(lngDistance) * Math.cos(RadstartLat) * Math.cos(RadendLat);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return Math.round(AVERAGE_RADIUS_OF_EARTH_KM * c * scale) / scale;
-    }
-    
-    //helper function to simplify the math of the Haversince formula
-    private double haversin(double val) {
-        return Math.pow(Math.sin(val/2), 2);
-    }
+		try {
+			// this is how the website wants the input to be formated
+			url = new URL("https://geocoder.ca/?locate=" + text.getText() + "&json=1");
+			// sending http response
+			httpCon = (HttpURLConnection) url.openConnection();
+			// reading http response
+			br = new BufferedReader(new InputStreamReader(httpCon.getInputStream()));
+			// basic parsing by splitting the entries by commas
+			arr = br.readLine().split("[,]");
+		} catch (Exception e) {
+			System.out.println("Could not connect to geocoder.ca");
+		}
+
+		// fine-tuning parsing
+		for (int i = 0; i < arr.length; i++) {
+			// parsing JSON into something I can read
+			arr[i] = arr[i].replaceAll("[^a-z0-9:.-]", ""); // ReGeX op
+			// tldr; the "[^a-z0-9:.-]" replaces everything that isn't a to z, 0 to 9, :, .,
+			// - with "" aka nothing
+
+			if (arr[i].startsWith("longt")) {
+				lon = Double.parseDouble(arr[i].split(":")[1]);
+			} else if (arr[i].startsWith("latt")) {
+				lat = Double.parseDouble(arr[i].split(":")[1]);
+			}
+		}
+	}
+
+	// Haversine formula orz, it pretty much determines the distance given two
+	// latitude/longtitude points using fancy math
+	private double calculateDistance(double startLat, double startLng, double endLat, double endLng) {
+		double scale = 100; // used for rounding purposes
+		double RadstartLat = Math.toRadians(startLat);
+		double RadendLat = Math.toRadians(endLat);
+		double latDistance = Math.toRadians(endLat - startLat);
+		double lngDistance = Math.toRadians(endLng - startLng);
+
+		double a = haversin(latDistance) + haversin(lngDistance) * Math.cos(RadstartLat) * Math.cos(RadendLat);
+		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+		return Math.round(AVERAGE_RADIUS_OF_EARTH_KM * c * scale) / scale;
+	}
+
+	// helper function to simplify the math of the Haversince formula
+	private double haversin(double val) {
+		return Math.pow(Math.sin(val / 2), 2);
+	}
 }
