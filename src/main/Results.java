@@ -85,7 +85,7 @@ public class Results extends JPanel {
 
 			uni[x] = UniversitiesInformation.universities.get(num[x]).getName();
 			cutoff[x] = UniversitiesInformation.universities.get(num[x]).getCutoff();
-			distance[x] = MapScreen.extraDistance[num[x]];
+//			distance[x] = MapScreen.extraDistance[num[x]];
 			tuition[x] = UniversitiesInformation.universities.get(num[x]).getTuition();
 			residence[x] = UniversitiesInformation.universities.get(num[x]).getResidenceCost();
 			uniSize[x] = UniversitiesInformation.universities.get(num[x]).getUniSize();

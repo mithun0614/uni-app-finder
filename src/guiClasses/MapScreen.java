@@ -35,11 +35,17 @@ public class MapScreen implements ActionListener {
     final private double AVERAGE_RADIUS_OF_EARTH_KM = 6371;
     final private double LATITUDE_UP = 43.89254, LATITUDE_DOWN = 43.74501;
     final private double LONGITUDE_LEFT = -79.52205, LONGITUDE_RIGHT = -79.20952;
-    final private int DISPLAY_MAP_SIZE = 50;
+    final private int DISPLAY_MAP_SIZE = 50, DOT_SIZE = 5;
     private double lon = -1, lat = -1;
     private int x = -1, y = -1;
     private boolean reveal = false;
-    public static double[] extraDistance = new double[14];
+    private Color colors[] = {
+            Color.decode("#CC3636"), Color.decode("#CC3366"), Color.decode("#CC33CC"),
+            Color.decode("#8636CC"), Color.decode("#3636CC"), Color.decode("#3688CC"), Color.decode("#36CCBA"),
+            Color.decode("#36CC87"), Color.decode("#36CC40"), Color.decode("#92CC36"), Color.decode("#CCC136"),
+            Color.decode("#CC9236"), Color.decode("#CC7636"), Color.decode("#CC5D36"),
+    };
+//    public static double[] extraDistance = new double[14];
     
 //    private JFrame frame = new JFrame();
     private JPanel mapPanel = new JPanel(); //size of panel 920x610
@@ -47,11 +53,13 @@ public class MapScreen implements ActionListener {
     private JLabel map = new JLabel();
     private JLabel gif = new JLabel();
     private JLabel mapPreview = new JLabel();
+    private JLabel googleMap = new JLabel();
     private JLabel mapPreviewCircle = new JLabel();
     private JLabel result[] = new JLabel[14];
     private JTextArea text = new JTextArea();
     private JButton goToDistance = new JButton();
     private JButton goToMap = new JButton();
+    private ImageIcon ontarioMap = new ImageIcon(new ImageIcon("./res/ontario-map.png").getImage().getScaledInstance(875/2, 611/2, 0));
     private ImageIcon mapIcon = new ImageIcon(new ImageIcon("./res/map.png").getImage().getScaledInstance(600, 360, 0));
 
     private SwingWorker worker = null;
@@ -71,14 +79,6 @@ public class MapScreen implements ActionListener {
     public JPanel getDistancePanel() {
         return distancePanel;
     }
-    
-    //sets up the JFrame
-//    void setupFrame() {
-//        frame.setBounds(0, 0, 920, 610);
-//        frame.setVisible(true);
-//        frame.setBackground(Color.WHITE);
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//    }
     
     //sets up the Map JPanel
     void setupMap() {
@@ -188,7 +188,7 @@ public class MapScreen implements ActionListener {
 
         JLabel info = new JLabel("<html>You can verify the distance(s) manually on <br>https://www.nhc.noaa.gov/gccalc.shtml</html>");
         info.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        info.setBounds(25, 500, 300, 75);
+        info.setBounds(25, 550, 300, 75);
         info.setForeground(Colour.highlight);
         distancePanel.add(info);
 
@@ -197,6 +197,12 @@ public class MapScreen implements ActionListener {
         mapPreviewInfo.setBounds(500, 50, 300,  50);
         mapPreviewInfo.setForeground(Colour.highlight);
         distancePanel.add(mapPreviewInfo);
+
+        JLabel userInfo = new JLabel("<html>Black dot is you<br>(Assuming your postal code is in-bounds or valid)</html>");
+        userInfo.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        userInfo.setBounds(450, 525, 300, 100);
+        userInfo.setForeground(Colour.highlight);
+        distancePanel.add(userInfo);
 
         //cursor circle to indicate where the map has been clicked on the mapPreview
         mapPreviewCircle.setIcon(new ImageIcon(new ImageIcon("./res/circle.png").getImage().getScaledInstance(50, 50, 0)));
@@ -207,6 +213,11 @@ public class MapScreen implements ActionListener {
         //map preview of where the user clicked
         mapPreview.setBounds(700, 20, DISPLAY_MAP_SIZE*2, DISPLAY_MAP_SIZE*2);
         distancePanel.add(mapPreview);
+
+        //google map preview of unis
+        googleMap.setBounds(400, 150, ontarioMap.getIconWidth(), ontarioMap.getIconHeight());
+        googleMap.setIcon(ontarioMap);
+        distancePanel.add(googleMap);
 
         //button to direct users to the Map JPanel
         goToMap.setText("BACK");
@@ -225,7 +236,7 @@ public class MapScreen implements ActionListener {
             result[i] = new JLabel();
             result[i].setFont(new Font("Tahoma", Font.PLAIN, 18));
             result[i].setForeground(Colour.highlight);
-            result[i].setBounds(75+425*(i/7), 150+50*(i%7), 425, 50);
+            result[i].setBounds(75, 80+35*(i%14), 425, 25);
             distancePanel.add(result[i]);
         }
     }
@@ -237,14 +248,30 @@ public class MapScreen implements ActionListener {
         for (int i=0;i<14;i++) {
             double uniLat = universities.getUniversities().get(i).getLatitude();
             double uniLon = universities.getUniversities().get(i).getLongitude();
-            extraDistance[i] = calculateDistance(lat, lon, uniLat, uniLon);
+//            extraDistance[i] = calculateDistance(lat, lon, uniLat, uniLon);
             distance[i] = new UniversityDistance(universities.getUniversities().get(i).getName(),
                     calculateDistance(lat, lon, uniLat, uniLon));
+            distancePanel.add(distance[i].getButton());
+            distancePanel.add(distance[i].getDot());
         }
 
         Arrays.sort(distance); //since the UniversityDistance has implements Comparable, it works
         for (int i=0;i<14;i++) {
+            distance[i].setColor(colors[i]);
+            distance[i].setID(String.format("%02d", i+1));
+            distance[i].getDot().setIcon(new ImageIcon(new ImageIcon("./resources/misc/dots-"+distance[i].getID()+".png").getImage().getScaledInstance(105/DOT_SIZE, 105/DOT_SIZE, 5)));
+            distance[i].getDot().setBounds(150, 80+35*(i%14), 105/DOT_SIZE, 105/DOT_SIZE);
+        }
+        for (int i=0;i<14;i++) {
             result[i].setText(distance[i].toString());
+            distance[i].getButton().setBounds(result[i].getX()-65, result[i].getY(), 50, 35);
+            distance[i].getButton().setText("SEE");
+            distance[i].getButton().setForeground(Color.WHITE);
+            distance[i].getButton().setBackground(distance[i].getColor());
+            distance[i].getButton().setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+            distance[i].getButton().setBorderPainted(false);
+            distance[i].getButton().setFocusPainted(false);
+            distance[i].getButton().addActionListener(this);
         }
         universities.getUniversityDistances().add(distance);
 
