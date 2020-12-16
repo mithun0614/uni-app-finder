@@ -12,6 +12,9 @@ import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import objects.UniversitiesInformation;
+import tools.Colour;
+
 public class UniMatchmaker extends JPanel {
 
 	public static JPanel accountPanel;
@@ -25,24 +28,28 @@ public class UniMatchmaker extends JPanel {
 		// Create panel
 		accountPanel = new JPanel();
 		Dashboard.displayPanel.add(accountPanel);
+		accountPanel.setBackground(Colour.bg);
 		accountPanel.setLayout(null);
 		accountPanel.setVisible(true);
 
 		// Create title
 		JLabel titleLabel = new JLabel("University Matchmaker");
 		titleLabel.setFont(new Font("Tahoma", Font.PLAIN, 28));
+		titleLabel.setForeground(Colour.strongHighlight);
 		titleLabel.setBounds(300, 10, 400, 65);
 		accountPanel.add(titleLabel);
 
 		// Create description
 		JLabel descriptionLabel = new JLabel("External Factors:");
 		descriptionLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		descriptionLabel.setForeground(Colour.strongHighlight);
 		descriptionLabel.setBounds(330, 75, 280, 40);
 		accountPanel.add(descriptionLabel);
 
 		// Create courses and grades heading
 		JLabel courseGradeLabel = new JLabel("Courses and Grades");
 		courseGradeLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		courseGradeLabel.setForeground(Colour.strongHighlight);
 		courseGradeLabel.setBounds(40, 75, 280, 40);
 		accountPanel.add(courseGradeLabel);
 
@@ -84,17 +91,21 @@ public class UniMatchmaker extends JPanel {
 					(counter + 1) + ". " + UniMatchmakerInfoEdit.courseTextField[counter].getText() + " - "
 							+ UniMatchmakerInfoEdit.gradeTextField[counter].getText() + "%");
 			courseLabel[counter].setFont(new Font("Tahoma", Font.PLAIN, 16));
+			courseLabel[counter].setForeground(Colour.strongHighlight);
 			courseLabel[counter].setBounds(30, 150 + 75 * counter, 250, 40);
 			accountPanel.add(courseLabel[counter]);
 
 			headings[counter].setFont(new Font("Tahoma", Font.PLAIN, 18));
+			headings[counter].setForeground(Colour.strongHighlight);
 
 			factorValue[counter] = new JLabel(
 					"Selected: " + UniMatchmakerInfoEdit.dropDownLists[counter].getSelectedItem());
 			factorValue[counter].setFont(new Font("Tahoma", Font.PLAIN, 16));
+			factorValue[counter].setForeground(Colour.strongHighlight);
 
 			importance[counter] = new JLabel("Importance: " + UniMatchmakerInfoEdit.sliders[counter].getValue());
 			importance[counter].setFont(new Font("Tahoma", Font.PLAIN, 16));
+			importance[counter].setForeground(Colour.strongHighlight);
 
 			if (counter <= 2) {
 				headings[counter].setBounds(330, 150 + 150 * counter, 200, 25);
