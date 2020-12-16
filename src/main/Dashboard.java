@@ -125,10 +125,12 @@ public class Dashboard extends JPanel {
 		UniMatchmaker.CreateAccount();
 
 	}
+
 	public static void hidePanel() {
 		introPanel.setVisible(false);
 //		dashboardPanel.setVisible(false);
 		mapScreen.getMapPanel().setVisible(false);
+		mapScreen.getDistancePanel().setVisible(false);
 		UniMatchmaker.accountPanel.setVisible(true);
 	}
 

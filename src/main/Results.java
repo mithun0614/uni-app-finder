@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,6 +20,10 @@ public class Results extends JPanel {
 	private static JLabel[] admissionLabel = new JLabel[2];
 	private static JLabel[] tuitionLabel = new JLabel[2];
 	private static JLabel[] distanceLabel = new JLabel[2];
+	private static JLabel[] residenceLabel = new JLabel[2];
+	private static JLabel[] uniSizeLabel = new JLabel[2];
+	private static JLabel[] classSizeLabel = new JLabel[2];
+	private static JLabel[] pictureLabel = new JLabel[2];
 
 	public static void CreateResults() {
 
@@ -68,43 +73,62 @@ public class Results extends JPanel {
 		num[1] = MatchmakingAlgorithm.secondGreatestIndex;
 
 		String[] uni = new String[2];
-		uni[0] = UniversitiesInformation.universities.get(num[0]).getName();
-		uni[1] = UniversitiesInformation.universities.get(num[1]).getName();
-
 		double[] cutoff = new double[2];
-		cutoff[0] = UniversitiesInformation.universities.get(num[0]).getCutoff();
-		cutoff[1] = UniversitiesInformation.universities.get(num[1]).getCutoff();
-
 		double[] distance = new double[2];
-		distance[0] = MapScreen.extraDistance[num[0]];
-		distance[1] = MapScreen.extraDistance[num[1]];
-
 		double[] tuition = new double[2];
-		tuition[0] = UniversitiesInformation.universities.get(num[0]).getTuition();
-		tuition[1] = UniversitiesInformation.universities.get(num[1]).getTuition();
+		double[] residence = new double[2];
+		int[] uniSize = new int[2];
+		int[] classSize = new int[2];
 
 		// Add university info label
 		for (int x = 0; x < nameLabel.length; x++) {
 
-			nameLabel[x] = new JLabel("#" + (x + 1) + " Institution Name: " + uni[x]);
+			uni[x] = UniversitiesInformation.universities.get(num[x]).getName();
+			cutoff[x] = UniversitiesInformation.universities.get(num[x]).getCutoff();
+			distance[x] = MapScreen.extraDistance[num[x]];
+			tuition[x] = UniversitiesInformation.universities.get(num[x]).getTuition();
+			residence[x] = UniversitiesInformation.universities.get(num[x]).getResidenceCost();
+			uniSize[x] = UniversitiesInformation.universities.get(num[x]).getUniSize();
+			classSize[x] = UniversitiesInformation.universities.get(num[x]).getClassSize();
+
+			nameLabel[x] = new JLabel("Institution #" + (x + 1) + " Name: " + uni[x]);
 			nameLabel[x].setFont(new Font("Tahoma", Font.PLAIN, 14));
 			nameLabel[x].setBounds(30 + 450 * x, 150, 300, 25);
 			resultsPanel.add(nameLabel[x]);
+
+			distanceLabel[x] = new JLabel("Distance: " + distance[x] + " km");
+			distanceLabel[x].setFont(new Font("Tahoma", Font.PLAIN, 14));
+			distanceLabel[x].setBounds(30 + 450 * x, 185, 300, 25);
+			resultsPanel.add(distanceLabel[x]);
 
 			admissionLabel[x] = new JLabel("Cutoff Average: " + cutoff[x] + "%");
 			admissionLabel[x].setFont(new Font("Tahoma", Font.PLAIN, 14));
 			admissionLabel[x].setBounds(30 + 450 * x, 220, 300, 25);
 			resultsPanel.add(admissionLabel[x]);
 
-			distanceLabel[x] = new JLabel("Distance: " + distance[x] + " km");
-			distanceLabel[x].setFont(new Font("Tahoma", Font.PLAIN, 14));
-			distanceLabel[x].setBounds(30 + 450 * x, 290, 300, 25);
-			resultsPanel.add(distanceLabel[x]);
-
 			tuitionLabel[x] = new JLabel("Tuition (Annually): $" + tuition[x]);
 			tuitionLabel[x].setFont(new Font("Tahoma", Font.PLAIN, 14));
-			tuitionLabel[x].setBounds(30 + 450 * x, 360, 300, 25);
+			tuitionLabel[x].setBounds(30 + 450 * x, 255, 300, 25);
 			resultsPanel.add(tuitionLabel[x]);
+
+			residenceLabel[x] = new JLabel("Residence Cost: $" + residence[x]);
+			residenceLabel[x].setFont(new Font("Tahoma", Font.PLAIN, 14));
+			residenceLabel[x].setBounds(30 + 450 * x, 290, 300, 25);
+			resultsPanel.add(residenceLabel[x]);
+
+			uniSizeLabel[x] = new JLabel("University Population: " + uniSize[x]);
+			uniSizeLabel[x].setFont(new Font("Tahoma", Font.PLAIN, 14));
+			uniSizeLabel[x].setBounds(30 + 450 * x, 325, 300, 25);
+			resultsPanel.add(uniSizeLabel[x]);
+
+			classSizeLabel[x] = new JLabel("Average Class Size: " + classSize[x]);
+			classSizeLabel[x].setFont(new Font("Tahoma", Font.PLAIN, 14));
+			classSizeLabel[x].setBounds(30 + 450 * x, 360, 300, 25);
+			resultsPanel.add(classSizeLabel[x]);
+
+			pictureLabel[x] = new JLabel(new ImageIcon("resources/uniPictures2/" + uni[x] + ".jpg"));
+			pictureLabel[x].setBounds(30 + 450 * x, 400, 300, 200);
+			resultsPanel.add(pictureLabel[x]);
 
 		}
 
