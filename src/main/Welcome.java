@@ -18,6 +18,9 @@ public class Welcome {
 	public static JTextField usernameField;
 	public static JPasswordField passwordField;
 
+	private static final int SCREEN_WIDTH = 648;
+	private static final int SCREEN_HEIGHT = 1152;
+
 	/*
 	 * @wbp.parser.entryPoint
 	 * ^^ Allows me to use window builder
@@ -33,42 +36,29 @@ public class Welcome {
 
 		// Create Welcome JPanel
 		welcomePanel = new JPanel();
+		welcomePanel.setBounds(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 		welcomePanel.setLayout(null);
-		welcomePanel.setBackground(Colour.bg);
 		GUI.getContentPane().add(welcomePanel);
-
-		ImageIcon programLogo = new ImageIcon("./resources/misc/program-logo.png");
-
-		JLabel logo = new JLabel();
-		logo.setIcon(new ImageIcon(programLogo.getImage().getScaledInstance(programLogo.getIconWidth()/3, programLogo.getIconHeight()/3, 0)));
-		logo.setBounds(50, 175, 600, 300);
-		welcomePanel.add(logo);
-
-		// Create title label
-		JLabel titleLabel = new JLabel("Welcome to");
-		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		titleLabel.setFont(new Font("Georgia", Font.PLAIN, 36));
-		titleLabel.setForeground(Colour.highlight);
-		titleLabel.setBounds(75, 50, 500, 100);
-		welcomePanel.add(titleLabel);
 
 		// Create username label
 		JLabel usernameLabel = new JLabel("Username:");
-		usernameLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		usernameLabel.setForeground(Colour.highlight);
-		usernameLabel.setBounds(725, 100, 80, 25);
+		usernameLabel.setLayout(null);
+		usernameLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
+		usernameLabel.setForeground(Colour.strongHighlight);
+		usernameLabel.setBounds(800, 100, 150, 25);
 		welcomePanel.add(usernameLabel);
 
 		// Create username textbox
 		usernameField = new JTextField();
+		usernameField.setLayout(null);
 		usernameField.setBounds(725, 150, 300, 25);
 		welcomePanel.add(usernameField);
 
 		// Create password label
 		JLabel passwordLabel = new JLabel("Password:");
-		passwordLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		passwordLabel.setForeground(Colour.highlight);
-		passwordLabel.setBounds(725, 200, 80, 25);
+		passwordLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
+		passwordLabel.setForeground(Colour.strongHighlight);
+		passwordLabel.setBounds(800, 200, 150, 25);
 		welcomePanel.add(passwordLabel);
 
 		// Create password textbox
@@ -78,6 +68,7 @@ public class Welcome {
 
 		// Create sign in button
 		JButton signInButton = new JButton("Sign In");
+		signInButton.setFont(new Font("Tahoma", Font.BOLD, 16));
 		signInButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (VerifyLogin.verifyLogin(usernameField.getText(), String.valueOf(passwordField.getPassword()))) {
@@ -93,23 +84,12 @@ public class Welcome {
 		signInButton.setBackground(Colour.lightBg);
 		signInButton.setBorderPainted(false);
 		signInButton.setFocusPainted(false);
-		/*
-		goToMap.setText("BACK");
-        goToMap.setFont(new Font("Tahoma", Font.PLAIN, 32));
-        goToMap.setBounds(775, 500, 100, 50);
-        goToMap.setForeground(highlight);
-        goToMap.setBackground(strongHighlight);
-        goToMap.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        goToMap.setBorderPainted(false);
-        goToMap.setFocusPainted(false);
-        goToMap.addActionListener(this);
-        distancePanel.add(goToMap);
-		 */
 		signInButton.setBounds(725, 300, 300, 30);
 		welcomePanel.add(signInButton);
 
 		// Create create account button
 		JButton createAccountButton = new JButton("Create Account");
+		createAccountButton.setFont(new Font("Tahoma", Font.BOLD, 16));
 		createAccountButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new CreateAccount();
@@ -125,8 +105,12 @@ public class Welcome {
 
 		// Create help button
 		JButton helpButton = new JButton("Help");
-		helpButton.setFont(new Font("Georgia", Font.PLAIN, 16));
+		helpButton.setFont(new Font("Georgia", Font.BOLD, 16));
 		helpButton.setBounds(725, 450, 140, 30);
+		helpButton.setForeground(Colour.strongHighlight);
+		helpButton.setBackground(Colour.lightBg);
+		helpButton.setBorderPainted(false);
+		helpButton.setFocusPainted(false);
 		welcomePanel.add(helpButton);
 
 		// Create quit button
@@ -136,9 +120,21 @@ public class Welcome {
 				System.exit(0);
 			}
 		});
-		quitButton.setFont(new Font("Georgia", Font.PLAIN, 16));
+		quitButton.setFont(new Font("Georgia", Font.BOLD, 16));
 		quitButton.setBounds(885, 450, 140, 30);
+		quitButton.setForeground(Colour.strongHighlight);
+		quitButton.setBackground(Colour.lightBg);
+		quitButton.setBorderPainted(false);
+		quitButton.setFocusPainted(false);
 		welcomePanel.add(quitButton);
 
+
+		ImageIcon welcomeScreen = new ImageIcon("./resources/misc/welcome-screen.png"); //illustrator made image twice as big
+
+		JLabel logo = new JLabel();
+		logo.setIcon(new ImageIcon(welcomeScreen.getImage().getScaledInstance(welcomeScreen.getIconWidth()/2, welcomeScreen.getIconHeight()/2, 0)));
+		logo.setBounds(0, 0, welcomeScreen.getIconWidth()/2, welcomeScreen.getIconHeight()/2);
+		welcomePanel.add(logo);
+		GUI.repaint();
 	}
 }
