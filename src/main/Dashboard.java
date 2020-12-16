@@ -1,5 +1,8 @@
 package main;
 
+import guiClasses.MapScreen;
+import objects.UniversitiesInformation;
+
 import java.awt.CardLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -15,6 +18,10 @@ public class Dashboard extends JPanel {
 	public static JPanel dashboardPanel;
 	public static JPanel taskbarPanel;
 	public static JPanel displayPanel;
+	public static JPanel introPanel;
+
+	private static UniversitiesInformation universities = new UniversitiesInformation();
+	private static MapScreen mapScreen = new MapScreen(universities);
 
 	public static void CreateDashboard() {
 
@@ -36,9 +43,15 @@ public class Dashboard extends JPanel {
 		displayPanel.setLayout(new CardLayout(0, 0));
 
 		// Create introduction panel
-		JPanel introPanel = new JPanel();
+		introPanel = new JPanel();
 		displayPanel.add(introPanel);
 		introPanel.setLayout(null);
+
+		mapScreen.getMapPanel().setBounds(210, 0, 920, 610);
+		displayPanel.add(mapScreen.getMapPanel());
+
+		mapScreen.getDistancePanel().setBounds(210, 0, 920, 610);
+		displayPanel.add(mapScreen.getDistancePanel());
 
 		// Create logo label
 		JLabel logoLabel = new JLabel("Logo");
@@ -54,7 +67,7 @@ public class Dashboard extends JPanel {
 		JButton accountButton = new JButton("My Account");
 		accountButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				introPanel.setVisible(false);
+				hidePanel();
 				UniMatchmaker.accountPanel.setVisible(true);
 			}
 		});
@@ -65,6 +78,16 @@ public class Dashboard extends JPanel {
 		quizButton.setBounds(25, 240, 160, 25);
 		taskbarPanel.add(quizButton);
 
+		JButton mapButton = new JButton("View Map");
+		mapButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				hidePanel();
+				mapScreen.getMapPanel().setVisible(true);
+			}
+		});
+		mapButton.setBounds(25, 300, 160, 25);
+		taskbarPanel.add(mapButton);
+
 		JButton helpButton2 = new JButton("Help");
 		helpButton2.setBounds(45, 500, 120, 25);
 		taskbarPanel.add(helpButton2);
@@ -72,7 +95,7 @@ public class Dashboard extends JPanel {
 		JButton signOutButton = new JButton("Sign Out");
 		signOutButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dashboardPanel.setVisible(false);
+				hidePanel();
 				Welcome.welcomePanel.setVisible(true);
 			}
 		});
@@ -101,6 +124,12 @@ public class Dashboard extends JPanel {
 		UniMatchmakerInfoEdit.EditAccount();
 		UniMatchmaker.CreateAccount();
 
+	}
+	public static void hidePanel() {
+		introPanel.setVisible(false);
+//		dashboardPanel.setVisible(false);
+		mapScreen.getMapPanel().setVisible(false);
+		UniMatchmaker.accountPanel.setVisible(true);
 	}
 
 
