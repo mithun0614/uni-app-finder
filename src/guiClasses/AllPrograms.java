@@ -38,8 +38,6 @@ public class AllPrograms extends JPanel implements ActionListener {
 	private ArrayList<University> customList = new ArrayList<>(14);
 
 	public AllPrograms() {
-		setSize(1152, 864);
-		setLayout(null);
 
 		setIcons();
 
@@ -48,7 +46,7 @@ public class AllPrograms extends JPanel implements ActionListener {
 		overallPanel.setVisible(true);
 
 		uniPanel = createUniPanel(uniArrayCopy.get(0).getName(), uniArrayCopy.get(0).getDescription());
-		uniPanel.setBounds(800, 0, 400, 300);
+		uniPanel.setBounds(500, 0, 400, 300);
 		overallPanel.add(uniPanel);
 		uniPanel.setVisible(true);
 
@@ -57,10 +55,10 @@ public class AllPrograms extends JPanel implements ActionListener {
 		}
 
 		picture.setIcon(new ImageIcon("uni-app-finder/resources/uniPictures/Carleton University.jpg"));
-		picture.setBounds(350, 300, 700, 500);
+		picture.setBounds(50, 300, 700, 500);
 		overallPanel.add(picture);
 
-		combobox1.setBounds(350, 50, 200, 40);
+		combobox1.setBounds(50, 50, 200, 40);
 		combobox1.addActionListener(this);
 		combobox1.setVisible(true);
 		overallPanel.add(combobox1);
@@ -68,39 +66,39 @@ public class AllPrograms extends JPanel implements ActionListener {
 		for (String sorting : sorting) {
 			combobox2.addItem(sorting);
 		}
-		combobox2.setBounds(350, 120, 200, 50);
+		combobox2.setBounds(50, 120, 200, 50);
 		combobox2.addActionListener(this);
 		combobox2.setVisible(true);
 		overallPanel.add(combobox2);
 
-		sortBy.setBounds(350, 90, 100, 30);
+		sortBy.setBounds(50, 90, 100, 30);
 		sortBy.setVisible(true);
 		overallPanel.add(sortBy);
 
-		title.setBounds(350, 0, 200, 50);
+		title.setBounds(50, 0, 200, 50);
 		title.setFont(new Font(title.getFont().getName(), Font.PLAIN, 30));
 		overallPanel.add(title);
 
 		nextBtn.setText("Next");
-		nextBtn.setBounds(350, 200, 100, 50);
+		nextBtn.setBounds(50, 200, 100, 50);
 		nextBtn.addActionListener(this);
 		nextBtn.setVisible(true);
 		overallPanel.add(nextBtn);
 
 		backBtn.setText("Back");
-		backBtn.setBounds(450, 200, 100, 50);
+		backBtn.setBounds(150, 200, 100, 50);
 		backBtn.addActionListener(this);
 		backBtn.setVisible(true);
 		overallPanel.add(backBtn);
 
-		keyword.setBounds(600, 60, 150, 40);
+		keyword.setBounds(300, 60, 150, 40);
 		keyword.addActionListener(this);
 		overallPanel.add(keyword);
 
-		searchLabel.setBounds(600, 30, 50, 30);
+		searchLabel.setBounds(300, 30, 50, 30);
 		overallPanel.add(searchLabel);
 
-		searchButton.setBounds(600, 100, 100, 35);
+		searchButton.setBounds(300, 100, 100, 35);
 		searchButton.addActionListener(this);
 		overallPanel.add(searchButton);
 
