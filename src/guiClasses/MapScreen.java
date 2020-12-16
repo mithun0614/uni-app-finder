@@ -254,8 +254,12 @@ public class MapScreen implements ActionListener {
             distancePanel.add(distance[i].getButton());
             distancePanel.add(distance[i].getDot());
         }
-
-        Arrays.sort(distance); //since the UniversityDistance has implements Comparable, it works
+        UniversityDistance copy[] = new UniversityDistance[14]; //need to add a copy that isn't sorted to universities
+        for (int i=0;i<14;i++) {
+            copy[i] = distance[i];
+        }
+        universities.getUniversityDistances().add(copy); //adding the copy, while I still have the sorted array
+        Arrays.sort(distance); //since the UniversityDistance has implements Comparable, this works
         for (int i=0;i<14;i++) {
             distance[i].setColor(colors[i]);
             distance[i].setID(String.format("%02d", i+1));
