@@ -130,7 +130,7 @@ public class UniMatchmakerInfoEdit extends JPanel {
 		dropDownLists[3].addItem("<30 km (Commutable)");
 		dropDownLists[3].addItem("30 km - 150 km (1 - 2 hrs)");
 		dropDownLists[3].addItem("150 km - 300 km (2 - 4 hrs)");
-		dropDownLists[3].addItem(">400 km (4 hrs +)");
+		dropDownLists[3].addItem(">300 km (4 hrs +)");
 		dropDownLists[3].addItem("Does not matter");
 
 		dropDownLists[4].addItem("<$10,000");

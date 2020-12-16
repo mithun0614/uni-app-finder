@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import guiClasses.MapScreen;
 import objects.UniversitiesInformation;
 
 public class Results extends JPanel {
@@ -70,6 +71,18 @@ public class Results extends JPanel {
 		uni[0] = UniversitiesInformation.universities.get(num[0]).getName();
 		uni[1] = UniversitiesInformation.universities.get(num[1]).getName();
 
+		double[] cutoff = new double[2];
+		cutoff[0] = UniversitiesInformation.universities.get(num[0]).getCutoff();
+		cutoff[1] = UniversitiesInformation.universities.get(num[1]).getCutoff();
+
+		double[] distance = new double[2];
+		distance[0] = MapScreen.extraDistance[num[0]];
+		distance[1] = MapScreen.extraDistance[num[1]];
+
+		double[] tuition = new double[2];
+		tuition[0] = UniversitiesInformation.universities.get(num[0]).getTuition();
+		tuition[1] = UniversitiesInformation.universities.get(num[1]).getTuition();
+
 		// Add university info label
 		for (int x = 0; x < nameLabel.length; x++) {
 
@@ -78,19 +91,19 @@ public class Results extends JPanel {
 			nameLabel[x].setBounds(30 + 450 * x, 150, 300, 25);
 			resultsPanel.add(nameLabel[x]);
 
-			admissionLabel[x] = new JLabel("Cutoff Average:");
+			admissionLabel[x] = new JLabel("Cutoff Average: " + cutoff[x] + "%");
 			admissionLabel[x].setFont(new Font("Tahoma", Font.PLAIN, 14));
-			admissionLabel[x].setBounds(30 + 450 * x, 220, 150, 25);
+			admissionLabel[x].setBounds(30 + 450 * x, 220, 300, 25);
 			resultsPanel.add(admissionLabel[x]);
 
-			distanceLabel[x] = new JLabel("Distance:");
+			distanceLabel[x] = new JLabel("Distance: " + distance[x] + " km");
 			distanceLabel[x].setFont(new Font("Tahoma", Font.PLAIN, 14));
-			distanceLabel[x].setBounds(30 + 450 * x, 290, 150, 25);
+			distanceLabel[x].setBounds(30 + 450 * x, 290, 300, 25);
 			resultsPanel.add(distanceLabel[x]);
 
-			tuitionLabel[x] = new JLabel("Tuition (Annually):");
+			tuitionLabel[x] = new JLabel("Tuition (Annually): $" + tuition[x]);
 			tuitionLabel[x].setFont(new Font("Tahoma", Font.PLAIN, 14));
-			tuitionLabel[x].setBounds(30 + 450 * x, 360, 150, 25);
+			tuitionLabel[x].setBounds(30 + 450 * x, 360, 300, 25);
 			resultsPanel.add(tuitionLabel[x]);
 
 		}
