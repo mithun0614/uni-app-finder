@@ -83,6 +83,8 @@ public class Welcome {
 			public void actionPerformed(ActionEvent e) {
 				if (VerifyLogin.verifyLogin(usernameField.getText(), String.valueOf(passwordField.getPassword()))) {
 					welcomePanel.setVisible(false);
+					CreateAccount.username = usernameField.getText();
+					CreateAccount.password = String.valueOf(passwordField.getPassword());
 					Dashboard.CreateDashboard();
 					Dashboard.dashboardPanel.setVisible(true);
 				} else {

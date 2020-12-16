@@ -30,6 +30,8 @@ public class CreateAccount extends JFrame implements ActionListener {
 	private JButton createAccountBtn;
 	static JFrame frame = new JFrame();
 	private JButton returnBtn;
+	public static String username;
+	public static String password;
 
 	/**
 	 * Launch the application.
@@ -100,8 +102,8 @@ public class CreateAccount extends JFrame implements ActionListener {
 		
 		if (event.getSource() == createAccountBtn) {
 			
-			String username = userNameField.getText();
-			String password = String.valueOf(passwordField.getPassword());
+			username = userNameField.getText();
+			password = String.valueOf(passwordField.getPassword());
 			
 			if (!VerifyLogin.existingUsername(username)) {
 				JOptionPane.showMessageDialog(contentPane, "Username already exists.");

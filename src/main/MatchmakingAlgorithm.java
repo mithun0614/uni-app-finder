@@ -1,5 +1,7 @@
 package main;
 
+import objects.UniversitiesInformation;
+
 public class MatchmakingAlgorithm {
 
 	public static int[] score = new int[14];
