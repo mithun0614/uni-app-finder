@@ -79,6 +79,8 @@ public class Welcome {
 		signInButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (VerifyLogin.verifyLogin(usernameField.getText(), String.valueOf(passwordField.getPassword()))) {
+					CreateAccount.username = usernameField.getText();
+					CreateAccount.password = String.valueOf(passwordField.getPassword());
 					welcomePanel.setVisible(false);
 					Dashboard.CreateDashboard();
 					Dashboard.dashboardPanel.setVisible(true);
