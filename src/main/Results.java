@@ -67,6 +67,7 @@ public class Results extends JPanel {
 		// Create back button
 		JButton backButton = new JButton("Back");
 		backButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		backButton.setBackground(Colour.strike);
 		backButton.setBounds(30, 30, 100, 30);
 		backButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

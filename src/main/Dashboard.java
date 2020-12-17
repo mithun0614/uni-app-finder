@@ -7,9 +7,12 @@ import tools.Colour;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -64,10 +67,41 @@ public class Dashboard extends JPanel {
 		displayPanel.add(mapScreen.getDistancePanel());
 
 		// Create logo label
-		JButton logoButton = new JButton(new ImageIcon("resources/misc/program-logo-fill(s).png"));
-		logoButton.setHorizontalAlignment(SwingConstants.CENTER);
-		logoButton.setBounds(0, 20, 210, 100);
-		taskbarPanel.add(logoButton);
+		JLabel logoLabel = new JLabel(new ImageIcon("resources/misc/program-logo-fill(s).png"));
+		logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		logoLabel.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent e) {
+				hidePanel();
+				introPanel.setVisible(true);
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+		logoLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		logoLabel.setBounds(0, 20, 210, 100);
+		taskbarPanel.add(logoLabel);
 
 		// Create taskbar buttons
 		JButton uniInfoButton = new JButton("University Information");

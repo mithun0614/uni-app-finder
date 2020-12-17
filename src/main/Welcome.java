@@ -50,25 +50,25 @@ public class Welcome {
 		usernameLabel.setLayout(null);
 		usernameLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
 		usernameLabel.setForeground(Colour.strongHighlight);
-		usernameLabel.setBounds(800, 100, 150, 25);
+		usernameLabel.setBounds(775, 100, 150, 25);
 		welcomePanel.add(usernameLabel);
 
 		// Create username textbox
 		usernameField = new JTextField();
 		usernameField.setLayout(null);
-		usernameField.setBounds(775, 150, 300, 25);
+		usernameField.setBounds(775, 140, 300, 25);
 		welcomePanel.add(usernameField);
 
 		// Create password label
 		JLabel passwordLabel = new JLabel("Password:");
 		passwordLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
 		passwordLabel.setForeground(Colour.strongHighlight);
-		passwordLabel.setBounds(800, 200, 150, 25);
+		passwordLabel.setBounds(775, 200, 150, 25);
 		welcomePanel.add(passwordLabel);
 
 		// Create password textbox
 		passwordField = new JPasswordField();
-		passwordField.setBounds(775, 250, 300, 25);
+		passwordField.setBounds(775, 240, 300, 25);
 		welcomePanel.add(passwordField);
 
 		// Create sign in button

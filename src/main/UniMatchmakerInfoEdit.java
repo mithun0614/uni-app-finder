@@ -73,10 +73,11 @@ public class UniMatchmakerInfoEdit extends JPanel {
 		coursesPanel.add(courseGradeLabel);
 
 		// Create edit buttons
-		JButton editButton = new JButton("Save");
-		editButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		editButton.setBounds(800, 30, 75, 30);
-		editButton.addActionListener(new ActionListener() {
+		JButton saveButton = new JButton("Save");
+		saveButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		saveButton.setBackground(Colour.strike);
+		saveButton.setBounds(800, 30, 75, 30);
+		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				save = true;
 				Dashboard.hidePanel();
@@ -84,7 +85,7 @@ public class UniMatchmakerInfoEdit extends JPanel {
 				UniMatchmaker.accountPanel.setVisible(true);
 			}
 		});
-		accountEditPanel.add(editButton);
+		accountEditPanel.add(saveButton);
 
 		// Create instructions label
 		JLabel instructions = new JLabel(
