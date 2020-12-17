@@ -70,9 +70,9 @@ public class MapScreen implements ActionListener {
 	// constructor to initialize the panels
 	public MapScreen(UniversitiesInformation universities) {
 		this.universities = universities;
+        setupMisc();
 		setupMap();
 		setupDistance();
-        setupMisc();
 	}
 
 	public JPanel getMapPanel() {
@@ -84,25 +84,21 @@ public class MapScreen implements ActionListener {
 	}
 
 	void setupMisc() {
-	    System.out.println(new File("").getAbsolutePath() + "/resources/misc/location.txt");
         try {
             Scanner in = new Scanner(new File(new File("").getAbsolutePath() + "/resources/misc/location.txt"));
             for (int i=0;i<14;i++) {
-                distance[i].setX(googleMap.getX()+in.nextInt());
-                distance[i].setY(googleMap.getY()+in.nextInt());
-                System.out.println(distance[i].getX()+" "+distance[i].getY());
+                double uniLat = universities.getUniversities().get(i).getLatitude();
+                double uniLon = universities.getUniversities().get(i).getLongitude();
+                distance[i] = new UniversityDistance(universities.getUniversities().get(i).getName(),
+                    calculateDistance(lat, lon, uniLat, uniLon));
+                distance[i].setX(400+googleMap.getX()+in.nextInt());
+                distance[i].setY(150+googleMap.getY()+in.nextInt());
+                distance[i].getDot().setVisible(false);
+                distancePanel.add(distance[i].getButton());
+                distancePanel.add(distance[i].getDot());
             }
         } catch (Exception e) {
             System.out.println("Had issue loading mapCoords for each uni");
-        }
-        for (int i = 0; i < 14; i++) {
-            double uniLat = universities.getUniversities().get(i).getLatitude();
-            double uniLon = universities.getUniversities().get(i).getLongitude();
-            distance[i] = new UniversityDistance(universities.getUniversities().get(i).getName(),
-                    calculateDistance(lat, lon, uniLat, uniLon));
-//            distance[i].getDot().setVisible(false);
-            distancePanel.add(distance[i].getButton());
-            distancePanel.add(distance[i].getDot());
         }
     }
 	// sets up the Map JPanel
@@ -225,7 +221,7 @@ public class MapScreen implements ActionListener {
 		JLabel info = new JLabel(
 				"<html>You can verify the distance(s) manually on <br>https://www.nhc.noaa.gov/gccalc.shtml</html>");
 		info.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		info.setBounds(25, 550, 300, 75);
+		info.setBounds(75, 550, 300, 75);
 		info.setForeground(Colour.highlight);
 		distancePanel.add(info);
 
@@ -238,9 +234,28 @@ public class MapScreen implements ActionListener {
 		JLabel userInfo = new JLabel(
 				"<html>Black dot is you<br>(Assuming your postal code is in-bounds or valid)</html>");
 		userInfo.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		userInfo.setBounds(450, 525, 300, 100);
+		userInfo.setBounds(650, 550, 300, 75);
 		userInfo.setForeground(Colour.highlight);
 		distancePanel.add(userInfo);
+
+		JButton all = new JButton("ALL");
+        all.setBounds(10, 570, 50, 35);
+        all.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (int i=0;i<14;i++) {
+                    final int j = i;
+                    switchVisibility(j);
+                }
+            }
+        });
+        all.setForeground(Color.WHITE);
+        all.setBackground(Color.BLACK);
+        all.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        all.setBorderPainted(false);
+        all.setFocusPainted(false);
+        distancePanel.add(all);
+
 
 		// cursor circle to indicate where the map has been clicked on the mapPreview
 		mapPreviewCircle
@@ -256,7 +271,7 @@ public class MapScreen implements ActionListener {
 		// google map preview of unis
 		googleMap.setBounds(400, 150, ontarioMap.getIconWidth(), ontarioMap.getIconHeight());
 		googleMap.setIcon(ontarioMap);
-//		distancePanel.add(googleMap);
+		distancePanel.add(googleMap);
 
 		// button to direct users to the Map JPanel
 		goToMap.setText("BACK");
@@ -280,10 +295,21 @@ public class MapScreen implements ActionListener {
 		}
 	}
 
-	void fun(int i) {
+	private void switchVisibility(int i) {
         distance[i].getDot().setVisible(distance[i].getVisbility());
         distance[i].setVisibility(!distance[i].getVisbility());
-        System.out.println(i+" "+distance[i].getVisbility());
+    }
+
+    private void resetDistance() {
+	    for (int i=0;i<14;i++) {
+	        for (int j=i+1;j<14;j++) {
+	            if(distance[j].getName().equals(universities.getUniversities().get(i).getName())) {
+	                UniversityDistance swatch = distance[j];
+	                distance[j] = distance[i];
+	                distance[i] = swatch;
+                }
+            }
+        }
     }
 
 	// refreshes the labels that display the distance of universities
@@ -291,19 +317,20 @@ public class MapScreen implements ActionListener {
 	// clicked near the border)
 	// ^^ too much math to properly implement that
 	public void refresh(boolean click) {
-//        UniversityDistance something[] = new UniversityDistance[14];
+        UniversityDistance something[] = new UniversityDistance[14];
+        resetDistance();
 		for (int i = 0; i < 14; i++) {
 			double uniLat = universities.getUniversities().get(i).getLatitude();
 			double uniLon = universities.getUniversities().get(i).getLongitude();
-//            something[i] = new UniversityDistance(universities.getUniversities().get(i).getName(),
-//                    calculateDistance(lat, lon, uniLat, uniLon));
+            something[i] = new UniversityDistance(universities.getUniversities().get(i).getName(),
+                    calculateDistance(lat, lon, uniLat, uniLon));
 			distance[i].setDistance(calculateDistance(lat, lon, uniLat, uniLon));
 		}
-//		UniversityDistance copy[] = new UniversityDistance[14]; // need to add a copy that isn't sorted to universities
-//		for (int i = 0; i < 14; i++) {
-//			copy[i] = something[i];
-//		}
-//		universities.getUniversityDistances().add(copy); // adding the copy, while I still have the sorted array
+		UniversityDistance copy[] = new UniversityDistance[14]; // need to add a copy that isn't sorted to universities
+		for (int i = 0; i < 14; i++) {
+			copy[i] = something[i];
+		}
+		universities.getUniversityDistances().add(copy); // adding the copy, while I still have the sorted array
 		Arrays.sort(distance); // since the UniversityDistance has implements Comparable, this works
 		for (int i = 0; i < 14; i++) {
 			distance[i].setColor(colors[i]);
@@ -316,9 +343,10 @@ public class MapScreen implements ActionListener {
 		for (int i = 0; i < 14; i++) {
 			result[i].setText(distance[i].toString());
 			distance[i].getButton().setBounds(result[i].getX() - 65, result[i].getY(), 50, 35);
+			System.out.println(result[i].getX()-65+" "+result[i].getY());
 			distance[i].getButton().setText("SEE");
 			final int tmp = i;
-			distance[i].getButton().addActionListener(e -> fun(tmp));
+			distance[i].getButton().addActionListener(e -> switchVisibility(tmp));
 			distance[i].getButton().setForeground(Color.WHITE);
 			distance[i].getButton().setBackground(distance[i].getColor());
 			distance[i].getButton().setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -465,7 +493,7 @@ public class MapScreen implements ActionListener {
 		return Math.round(AVERAGE_RADIUS_OF_EARTH_KM * c * scale) / scale;
 	}
 
-	// helper function to simplify the math of the Haversince formula
+	// helper switchVisibilityction to simplify the math of the Haversince formula
 	private double haversin(double val) {
 		return Math.pow(Math.sin(val / 2), 2);
 	}
