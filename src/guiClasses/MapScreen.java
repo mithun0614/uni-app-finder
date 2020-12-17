@@ -65,12 +65,14 @@ public class MapScreen implements ActionListener {
 	private SwingWorker worker = null;
 
 	private UniversitiesInformation universities;
+	private UniversityDistance distance[] = new UniversityDistance[14];
 
 	// constructor to initialize the panels
 	public MapScreen(UniversitiesInformation universities) {
 		this.universities = universities;
 		setupMap();
 		setupDistance();
+        setupMisc();
 	}
 
 	public JPanel getMapPanel() {
@@ -81,6 +83,28 @@ public class MapScreen implements ActionListener {
 		return distancePanel;
 	}
 
+	void setupMisc() {
+	    System.out.println(new File("").getAbsolutePath() + "/resources/misc/location.txt");
+        try {
+            Scanner in = new Scanner(new File(new File("").getAbsolutePath() + "/resources/misc/location.txt"));
+            for (int i=0;i<14;i++) {
+                distance[i].setX(googleMap.getX()+in.nextInt());
+                distance[i].setY(googleMap.getY()+in.nextInt());
+                System.out.println(distance[i].getX()+" "+distance[i].getY());
+            }
+        } catch (Exception e) {
+            System.out.println("Had issue loading mapCoords for each uni");
+        }
+        for (int i = 0; i < 14; i++) {
+            double uniLat = universities.getUniversities().get(i).getLatitude();
+            double uniLon = universities.getUniversities().get(i).getLongitude();
+            distance[i] = new UniversityDistance(universities.getUniversities().get(i).getName(),
+                    calculateDistance(lat, lon, uniLat, uniLon));
+//            distance[i].getDot().setVisible(false);
+            distancePanel.add(distance[i].getButton());
+            distancePanel.add(distance[i].getDot());
+        }
+    }
 	// sets up the Map JPanel
 	void setupMap() {
 		// map panel
@@ -232,7 +256,7 @@ public class MapScreen implements ActionListener {
 		// google map preview of unis
 		googleMap.setBounds(400, 150, ontarioMap.getIconWidth(), ontarioMap.getIconHeight());
 		googleMap.setIcon(ontarioMap);
-		distancePanel.add(googleMap);
+//		distancePanel.add(googleMap);
 
 		// button to direct users to the Map JPanel
 		goToMap.setText("BACK");
@@ -256,26 +280,30 @@ public class MapScreen implements ActionListener {
 		}
 	}
 
+	void fun(int i) {
+        distance[i].getDot().setVisible(distance[i].getVisbility());
+        distance[i].setVisibility(!distance[i].getVisbility());
+        System.out.println(i+" "+distance[i].getVisbility());
+    }
+
 	// refreshes the labels that display the distance of universities
 	// also updates the mapPreview of where the user clicked (not accurate for areas
 	// clicked near the border)
 	// ^^ too much math to properly implement that
 	public void refresh(boolean click) {
-		UniversityDistance distance[] = new UniversityDistance[14];
+//        UniversityDistance something[] = new UniversityDistance[14];
 		for (int i = 0; i < 14; i++) {
 			double uniLat = universities.getUniversities().get(i).getLatitude();
 			double uniLon = universities.getUniversities().get(i).getLongitude();
-//            extraDistance[i] = calculateDistance(lat, lon, uniLat, uniLon);
-			distance[i] = new UniversityDistance(universities.getUniversities().get(i).getName(),
-					calculateDistance(lat, lon, uniLat, uniLon));
-			distancePanel.add(distance[i].getButton());
-			distancePanel.add(distance[i].getDot());
+//            something[i] = new UniversityDistance(universities.getUniversities().get(i).getName(),
+//                    calculateDistance(lat, lon, uniLat, uniLon));
+			distance[i].setDistance(calculateDistance(lat, lon, uniLat, uniLon));
 		}
-		UniversityDistance copy[] = new UniversityDistance[14]; // need to add a copy that isn't sorted to universities
-		for (int i = 0; i < 14; i++) {
-			copy[i] = distance[i];
-		}
-		universities.getUniversityDistances().add(copy); // adding the copy, while I still have the sorted array
+//		UniversityDistance copy[] = new UniversityDistance[14]; // need to add a copy that isn't sorted to universities
+//		for (int i = 0; i < 14; i++) {
+//			copy[i] = something[i];
+//		}
+//		universities.getUniversityDistances().add(copy); // adding the copy, while I still have the sorted array
 		Arrays.sort(distance); // since the UniversityDistance has implements Comparable, this works
 		for (int i = 0; i < 14; i++) {
 			distance[i].setColor(colors[i]);
@@ -283,12 +311,14 @@ public class MapScreen implements ActionListener {
 			distance[i].getDot()
 					.setIcon(new ImageIcon(new ImageIcon("./resources/misc/dots-" + distance[i].getID() + ".png")
 							.getImage().getScaledInstance(105 / DOT_SIZE, 105 / DOT_SIZE, 5)));
-			distance[i].getDot().setBounds(150, 80 + 35 * (i % 14), 105 / DOT_SIZE, 105 / DOT_SIZE);
+			distance[i].getDot().setBounds(distance[i].getX(), distance[i].getY()-150, 105 / DOT_SIZE, 105 / DOT_SIZE);
 		}
 		for (int i = 0; i < 14; i++) {
 			result[i].setText(distance[i].toString());
 			distance[i].getButton().setBounds(result[i].getX() - 65, result[i].getY(), 50, 35);
 			distance[i].getButton().setText("SEE");
+			final int tmp = i;
+			distance[i].getButton().addActionListener(e -> fun(tmp));
 			distance[i].getButton().setForeground(Color.WHITE);
 			distance[i].getButton().setBackground(distance[i].getColor());
 			distance[i].getButton().setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
