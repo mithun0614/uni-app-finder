@@ -1,17 +1,18 @@
-  
 package guiClasses;
 
-import main.UniversitiesInformation;
-import main.University;
+import objects.UniversitiesInformation;
+import objects.University;
+import tools.Colour;
 
 import javax.swing.*;
-import javax.swing.text.Style;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class AllPrograms extends JFrame implements ActionListener{
+import static java.awt.Color.*;
+
+public class AllPrograms extends JPanel implements ActionListener{
 
     private JLabel title = new JLabel("All Programs");
     private JButton nextBtn = new JButton();
@@ -35,17 +36,27 @@ public class AllPrograms extends JFrame implements ActionListener{
     private JLabel searchFailed = new JLabel();
     private boolean searchFailedTF;
     private JButton resetButton = new JButton();
+    public static JPanel overallPanel = new JPanel();
 
     //constructor to setup the GUI screen
     public AllPrograms() {
+        overallPanel = new JPanel();
+        overallPanel.setBounds(0,0,920,610);
+        overallPanel.setLayout(null);
+        overallPanel.setVisible(true);
+        overallPanel.setBackground(Colour.bg);
         //Setting up the GUI panel
-        uniArrayCopy = uniClass.getUniversities();
-        setSize(1152, 864);
+        UniversitiesInformation.setUniversities();
+        uniArrayCopy = new ArrayList<>(uniClass.getUniversities());
         setLayout(null);
+        System.out.println(uniClass.getUniversities().size());
         uniPanel = createUniPanel(uniArrayCopy.get(0));
-        uniPanel.setBounds(800, 0, 400, 300);
-        add(uniPanel);
+        uniPanel.setBounds(590, 0, 400, 500);
+        uniPanel.setBackground(Colour.bg);
+        overallPanel.add(uniPanel);
         uniPanel.setVisible(true);
+
+
 
         //setting up combobox1, with the names of all the unis
         for (University uni : uniArrayCopy) {
@@ -53,64 +64,66 @@ public class AllPrograms extends JFrame implements ActionListener{
         }
         //setting up the picture
         picture.setIcon(uniArrayCopy.get(0).getIcon());
-        picture.setBounds(350,300,700 ,500);
-        add(picture);
+        picture.setBounds(20,200,700 ,500);
+        overallPanel.add(picture);
 
         //setting up the combobox
-        combobox1.setBounds(350, 50, 200, 40);
+        combobox1.setBounds(20, 80, 200, 40);
         combobox1.addActionListener(this);
         combobox1.setVisible(true);
-        add(combobox1);
+        overallPanel.add(combobox1);
 
         //setting up the sorting combobox(adding the options)
         for (String sorting : sorting) {
             combobox2.addItem(sorting);
         }
-        combobox2.setBounds(350, 120, 200, 50);
+        combobox2.setBounds(300, 80, 200, 40);
         combobox2.addActionListener(this);
         combobox2.setVisible(true);
-        add(combobox2);
+        overallPanel.add(combobox2);
 
-        sortBy.setBounds(350,90,100,30);
+        sortBy.setBounds(300,50,100,30);
         sortBy.setVisible(true);
-        add(sortBy);
+        sortBy.setForeground(Colour.strongHighlight);
+        overallPanel.add(sortBy);
 
-        title.setBounds(350, 0, 200, 50);
-        title.setFont(new Font(title.getFont().getName(), Font.PLAIN, 30));
-        add(title);
+        title.setBounds(20, 10, 500, 50);
+        title.setFont(new Font(title.getFont().getName(), Font.PLAIN, 40));
+        title.setForeground(Colour.strongHighlight);
+        overallPanel.add(title);
 
         //setting up the buttons for forward and back
         nextBtn.setText("Next");
-        nextBtn.setBounds(350, 200, 100, 50);
+        nextBtn.setBounds(300, 200, 100, 50);
         nextBtn.addActionListener(this);
         nextBtn.setVisible(true);
-        add(nextBtn);
+        overallPanel.add(nextBtn);
 
         backBtn.setText("Back");
-        backBtn.setBounds(450, 200, 100, 50);
+        backBtn.setBounds(400, 200, 100, 50);
         backBtn.addActionListener(this);
         backBtn.setVisible(true);
-        add(backBtn);
+        overallPanel.add(backBtn);
 
 
         resetButton.setText("Reset");
-        resetButton.setBounds(660 , 30, 80, 30);
+        resetButton.setBounds(450 , 30, 80, 30);
         resetButton.addActionListener(this);
         resetButton.setVisible(true);
-        add(resetButton);
+        overallPanel.add(resetButton);
 
-        keyword.setBounds(600, 60, 150,40);
+        keyword.setBounds(20,180,200,30);
         keyword.addActionListener(this);
-        add(keyword);
+        overallPanel.add(keyword);
 
-        searchLabel.setBounds(600,30,50,30);
-        add(searchLabel);
+        searchLabel.setBounds(20,150,50,30);
+        searchLabel.setForeground(Colour.strongHighlight);
+        overallPanel.add(searchLabel);
 
-        searchButton.setBounds(600,100,100,35);
+        searchButton.setBounds(20,210,100,35);
         searchButton.addActionListener(this);
-        add(searchButton);
+        overallPanel.add(searchButton);
 
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
     }
 
@@ -135,19 +148,19 @@ public class AllPrograms extends JFrame implements ActionListener{
             }
 
             else if (combobox2.getSelectedIndex() == 3) {               //high to low, average
-                    insertionSort();
-                    reverse();
-                    reversed = true;
-                }
+                insertionSort();
+                reverse();
+                reversed = true;
+            }
             currentPage = 0;
-            remove(uniPanel);
+            overallPanel.remove(uniPanel);
 
             //creates a new unipanel(top right corner), and changes the picture
             uniPanel = createUniPanel(uniArrayCopy.get(currentPage));
-            uniPanel.setBounds(800,0,400,300);
+            uniPanel.setBounds(800,0,400,500);
             add(uniPanel);
 
-            repaint();
+            overallPanel.repaint();
         }
 
         //COMBOBOX1 is the combobox where you can individually select a university to look at
@@ -156,14 +169,14 @@ public class AllPrograms extends JFrame implements ActionListener{
             uniArrayCopy = new ArrayList<>(uniClass.getUniversities());
             alphaSort();
             int comboboxIndex = combobox1.getSelectedIndex();
-            remove(uniPanel);
+            overallPanel.remove(uniPanel);
             uniPanel = createUniPanel(uniArrayCopy.get(comboboxIndex));
-            uniPanel.setBounds(800,0,500,500);
+            uniPanel.setBounds(590, 0, 400, 500);
             scrollBar.setValue(comboboxIndex);
             currentPage = comboboxIndex;
             add(uniPanel);
 
-            repaint();
+            overallPanel.repaint();
         }
 
         //"next" button
@@ -175,45 +188,48 @@ public class AllPrograms extends JFrame implements ActionListener{
             if (currentPage == -1) {
                 currentPage = maxIndex;
             }
-            remove(uniPanel);
+            overallPanel.remove(uniPanel);
 
             uniPanel = createUniPanel(uniArrayCopy.get(currentPage));
-            uniPanel.setBounds(800, 0, 400, 300);
-            add(uniPanel);
+            uniPanel.setBounds(590, 0, 400, 500);
+            overallPanel.add(uniPanel);
+
             combobox1.setSelectedItem(uniArrayCopy.get(currentPage));
-            repaint();
+            overallPanel.repaint();
         }
         //"back" button
         if (event.getSource() == backBtn) {
 
-                currentPage -= 1;
+            currentPage -= 1;
             if (currentPage == -1) {
                 currentPage = maxIndex-1;
             }
             if (currentPage== maxIndex) {
                 currentPage = 0;
             }
-            remove(uniPanel);
+            overallPanel.remove(uniPanel);
 
             uniPanel = createUniPanel(uniArrayCopy.get(currentPage));
-            uniPanel.setBounds(800, 0, 400, 300);
-            add(uniPanel);
+            uniPanel.setBounds(590, 0, 400, 500);
+            overallPanel.add(uniPanel);
             combobox1.setSelectedItem(uniClass.getUniversities().get(currentPage));
-            repaint();
+            overallPanel.repaint();
         }
         if (event.getSource() == resetButton) {
             maxIndex = 14;
             uniArrayCopy = new ArrayList<>(uniClass.getUniversities());
             keyword.setText("");
             currentPage = 0;
-            remove(uniPanel);
+            overallPanel.remove(uniPanel);
 
             //creates a new unipanel(top right corner), and changes the picture
             uniPanel = createUniPanel(uniArrayCopy.get(currentPage));
-            uniPanel.setBounds(800,0,400,300);
-            add(uniPanel);
+            uniPanel.setBounds(590, 0, 400, 500);
+            overallPanel.add(uniPanel);
 
-            repaint();
+
+            combobox2.setSelectedIndex(0);
+            overallPanel.repaint();
         }
 
         //button to start search
@@ -275,19 +291,19 @@ public class AllPrograms extends JFrame implements ActionListener{
             //updates the uriarraycopy with the matching universities
             else {
                 if (searchFailedTF)
-                    remove(searchFailed);
+                    overallPanel.remove(searchFailed);
                 searchFailedTF = false;
                 currentPage = 0;
                 uniArrayCopy = new ArrayList<>(customList);
                 maxIndex = customList.size();
-                remove(uniPanel);
+                overallPanel.remove(uniPanel);
                 uniPanel = createUniPanel(uniArrayCopy.get(currentPage));
-                uniPanel.setBounds(800, 0, 400, 300);
+                uniPanel.setBounds(800, 0, 400, 500);
                 combobox2.setSelectedIndex(0);
                 add(uniPanel);
 
             }
-            repaint();
+            overallPanel.repaint();
 
         }
     }
@@ -310,20 +326,27 @@ public class AllPrograms extends JFrame implements ActionListener{
         JLabel nameLabel = new JLabel(uni.getName());
         JLabel infoLabel = new JLabel("<html>" + uni.getDescription() + "<html>");
         JLabel nationalRankLabel = new JLabel("Rank: " + uni.getNationalRank());
+        JLabel logo = new JLabel();
 
+        logo.setIcon(uni.getLogo());
+        logo.setBounds(0,70,300,200);
 
         nameLabel.setBounds(0, 0, 500, 80);
         nameLabel.setFont(new Font(title.getFont().getName(), Font.PLAIN, 30));
+        nameLabel.setForeground(Colour.strongHighlight);
         nationalRankLabel.setBounds(0, 30, 500, 80);
         nationalRankLabel.setFont(new Font(title.getFont().getName(), Font.PLAIN, 14));
-        infoLabel.setBounds(0, 50, 300, 350);
+        nationalRankLabel.setForeground(Colour.strongHighlight);
+        infoLabel.setBounds(0, 120, 300, 500);
         infoLabel.setFont(new Font(title.getFont().getName(), Font.PLAIN, 12));
-        panel.setOpaque(false);
+        infoLabel.setForeground(Colour.strongHighlight);
+        panel.add(logo);
         panel.add(nameLabel);
         panel.add(nationalRankLabel);
         panel.add(infoLabel);
         picture.setIcon(uniArrayCopy.get(currentPage).getIcon());
         picture.setVisible(true);
+        panel.setBackground(Colour.bg);
         repaint();
         return panel;
 

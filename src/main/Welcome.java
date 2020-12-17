@@ -1,20 +1,21 @@
 package main;
 
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
-import java.awt.Font;
-
-import javax.swing.JButton;
-import javax.swing.SwingConstants;
-import java.awt.Color;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
-import java.awt.CardLayout;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
+import tools.Colour;
 
 public class Welcome {
 
@@ -23,9 +24,11 @@ public class Welcome {
 	public static JTextField usernameField;
 	public static JPasswordField passwordField;
 
+	private static final int SCREEN_WIDTH = 648;
+	private static final int SCREEN_HEIGHT = 1152;
+
 	/*
-	 * @wbp.parser.entryPoint
-	 * ^^ Allows me to use window builder
+	 * @wbp.parser.entryPoint ^^ Allows me to use window builder
 	 */
 	public static void CreateWelcome() {
 
@@ -38,38 +41,29 @@ public class Welcome {
 
 		// Create Welcome JPanel
 		welcomePanel = new JPanel();
+		welcomePanel.setBounds(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 		welcomePanel.setLayout(null);
 		GUI.getContentPane().add(welcomePanel);
 
-		// Create title label
-		JLabel titleLabel = new JLabel("Welcome to <App Name>");
-		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		titleLabel.setFont(new Font("Georgia", Font.PLAIN, 36));
-		titleLabel.setBounds(50, 175, 500, 100);
-		welcomePanel.add(titleLabel);
-
-		// Create description label
-		JLabel descriptionLabel = new JLabel("<Description Of App>");
-		descriptionLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		descriptionLabel.setFont(new Font("Georgia", Font.PLAIN, 24));
-		descriptionLabel.setBounds(50, 275, 500, 100);
-		welcomePanel.add(descriptionLabel);
-
 		// Create username label
 		JLabel usernameLabel = new JLabel("Username:");
-		usernameLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		usernameLabel.setBounds(725, 100, 80, 25);
+		usernameLabel.setLayout(null);
+		usernameLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
+		usernameLabel.setForeground(Colour.strongHighlight);
+		usernameLabel.setBounds(800, 100, 150, 25);
 		welcomePanel.add(usernameLabel);
 
 		// Create username textbox
 		usernameField = new JTextField();
+		usernameField.setLayout(null);
 		usernameField.setBounds(725, 150, 300, 25);
 		welcomePanel.add(usernameField);
 
 		// Create password label
 		JLabel passwordLabel = new JLabel("Password:");
-		passwordLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		passwordLabel.setBounds(725, 200, 80, 25);
+		passwordLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
+		passwordLabel.setForeground(Colour.strongHighlight);
+		passwordLabel.setBounds(800, 200, 150, 25);
 		welcomePanel.add(passwordLabel);
 
 		// Create password textbox
@@ -79,6 +73,7 @@ public class Welcome {
 
 		// Create sign in button
 		JButton signInButton = new JButton("Sign In");
+		signInButton.setFont(new Font("Tahoma", Font.BOLD, 16));
 		signInButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (VerifyLogin.verifyLogin(usernameField.getText(), String.valueOf(passwordField.getPassword()))) {
@@ -90,24 +85,37 @@ public class Welcome {
 				}
 			}
 		});
+		signInButton.setForeground(Colour.strongHighlight);
+		signInButton.setBackground(Colour.lightBg);
+		signInButton.setBorderPainted(false);
+		signInButton.setFocusPainted(false);
 		signInButton.setBounds(725, 300, 300, 30);
 		welcomePanel.add(signInButton);
 
 		// Create create account button
 		JButton createAccountButton = new JButton("Create Account");
+		createAccountButton.setFont(new Font("Tahoma", Font.BOLD, 16));
 		createAccountButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new CreateAccount();
-				
+
 			}
 		});
+		createAccountButton.setForeground(Colour.highlight);
+		createAccountButton.setBackground(Colour.strike);
+		createAccountButton.setBorderPainted(false);
+		createAccountButton.setFocusPainted(false);
 		createAccountButton.setBounds(725, 350, 300, 30);
 		welcomePanel.add(createAccountButton);
 
 		// Create help button
 		JButton helpButton = new JButton("Help");
-		helpButton.setFont(new Font("Georgia", Font.PLAIN, 16));
+		helpButton.setFont(new Font("Georgia", Font.BOLD, 16));
 		helpButton.setBounds(725, 450, 140, 30);
+		helpButton.setForeground(Colour.strongHighlight);
+		helpButton.setBackground(Colour.lightBg);
+		helpButton.setBorderPainted(false);
+		helpButton.setFocusPainted(false);
 		welcomePanel.add(helpButton);
 
 		// Create quit button
@@ -117,9 +125,22 @@ public class Welcome {
 				System.exit(0);
 			}
 		});
-		quitButton.setFont(new Font("Georgia", Font.PLAIN, 16));
+		quitButton.setFont(new Font("Georgia", Font.BOLD, 16));
 		quitButton.setBounds(885, 450, 140, 30);
+		quitButton.setForeground(Colour.strongHighlight);
+		quitButton.setBackground(Colour.lightBg);
+		quitButton.setBorderPainted(false);
+		quitButton.setFocusPainted(false);
 		welcomePanel.add(quitButton);
 
+		ImageIcon welcomeScreen = new ImageIcon("./resources/misc/welcome-screen.png"); // illustrator made image twice
+																						// as big
+
+		JLabel logo = new JLabel();
+		logo.setIcon(new ImageIcon(welcomeScreen.getImage().getScaledInstance(welcomeScreen.getIconWidth() / 2,
+				welcomeScreen.getIconHeight() / 2, 0)));
+		logo.setBounds(0, 0, welcomeScreen.getIconWidth() / 2, welcomeScreen.getIconHeight() / 2);
+		welcomePanel.add(logo);
+		GUI.repaint();
 	}
 }
