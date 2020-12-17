@@ -253,31 +253,16 @@ public class MapScreen implements ActionListener {
 		distancePanel.add(userInfo);
 
 		JButton all = new JButton("ALL");
-
 		all.setBounds(10, 570, 50, 35);
 		all.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				for (int i = 0; i < 14; i++) {
 					final int j = i;
+					System.out.println("BUTTON FOR "+i);
+					System.out.println(distance[i].getVisbility());
 					switchVisibility(j);
-				}
-			}
-		});
-		all.setForeground(Color.WHITE);
-		all.setBackground(Color.BLACK);
-		all.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-		all.setBorderPainted(false);
-		all.setFocusPainted(false);
-		distancePanel.add(all);
-
-		all.setBounds(10, 570, 50, 35);
-		all.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				for (int i = 0; i < 14; i++) {
-					final int j = i;
-					switchVisibility(j);
+					System.out.println(distance[i].getVisbility());
 				}
 			}
 		});
@@ -384,8 +369,6 @@ public class MapScreen implements ActionListener {
 			}
 			distance[i].getButton().setBounds(result[i].getX() - 65, result[i].getY(), 50, 35);
 
-			System.out.println(result[i].getX() - 65 + " " + result[i].getY());
-
 			distance[i].getButton().setText("SEE");
 			final int tmp = i;
 			distance[i].getButton().addActionListener(e -> switchVisibility(tmp));
@@ -426,7 +409,6 @@ public class MapScreen implements ActionListener {
 		double BL = -84.88621;
 		double BR = -74.07128;
 		if (TL <= lat && lat <= TR && BL <= lon && lon <= BR) {
-			System.out.printf("(lat, lon) of uni = %f %f\n", lat, lon);
 			double dotLat = googleMap.getX() + googleMap.getWidth() * (lat - TL) / (TR - TL);
 			double dotLon = googleMap.getY() + googleMap.getHeight() * (lon - BR) / (BL - BR);
 			dot.setBounds((int) dotLat, (int) dotLon, 105 / DOT_SIZE, 105 / DOT_SIZE);
