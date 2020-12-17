@@ -111,7 +111,7 @@ public class Dashboard extends JPanel {
 				AllPrograms.overallPanel.setVisible(true);
 			}
 		});
-		uniInfoButton.setBounds(25, 135, 160, 25);
+		uniInfoButton.setBounds(25, 150, 160, 25);
 		taskbarPanel.add(uniInfoButton);
 
 		JButton accountButton = new JButton("My Account");
@@ -121,11 +121,11 @@ public class Dashboard extends JPanel {
 				UniMatchmaker.accountPanel.setVisible(true);
 			}
 		});
-		accountButton.setBounds(25, 200, 160, 25);
+		accountButton.setBounds(25, 210, 160, 25);
 		taskbarPanel.add(accountButton);
 
 		JButton quizButton = new JButton("Take Quiz");
-		quizButton.setBounds(25, 260, 160, 25);
+		quizButton.setBounds(25, 270, 160, 25);
 		taskbarPanel.add(quizButton);
 
 		JButton mapButton = new JButton("View Map");
@@ -135,7 +135,7 @@ public class Dashboard extends JPanel {
 				mapScreen.getMapPanel().setVisible(true);
 			}
 		});
-		mapButton.setBounds(25, 320, 160, 25);
+		mapButton.setBounds(25, 330, 160, 25);
 		taskbarPanel.add(mapButton);
 
 		JButton helpButton2 = new JButton("Help");
