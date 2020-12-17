@@ -50,25 +50,27 @@ public class Welcome {
 		usernameLabel.setLayout(null);
 		usernameLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
 		usernameLabel.setForeground(Colour.strongHighlight);
-		usernameLabel.setBounds(800, 100, 150, 25);
+		usernameLabel.setBounds(775, 100, 150, 25);
 		welcomePanel.add(usernameLabel);
 
 		// Create username textbox
 		usernameField = new JTextField();
 		usernameField.setLayout(null);
-		usernameField.setBounds(725, 150, 300, 25);
+
+		usernameField.setBounds(775, 140, 300, 25);
 		welcomePanel.add(usernameField);
 
 		// Create password label
 		JLabel passwordLabel = new JLabel("Password:");
 		passwordLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
 		passwordLabel.setForeground(Colour.strongHighlight);
-		passwordLabel.setBounds(800, 200, 150, 25);
+
+		passwordLabel.setBounds(775, 200, 150, 25);
 		welcomePanel.add(passwordLabel);
 
 		// Create password textbox
 		passwordField = new JPasswordField();
-		passwordField.setBounds(725, 250, 300, 25);
+		passwordField.setBounds(775, 240, 300, 25);
 		welcomePanel.add(passwordField);
 
 		// Create sign in button
@@ -90,6 +92,7 @@ public class Welcome {
 		signInButton.setBorderPainted(false);
 		signInButton.setFocusPainted(false);
 		signInButton.setBounds(725, 300, 300, 30);
+
 		welcomePanel.add(signInButton);
 
 		// Create create account button
@@ -105,13 +108,15 @@ public class Welcome {
 		createAccountButton.setBackground(Colour.strike);
 		createAccountButton.setBorderPainted(false);
 		createAccountButton.setFocusPainted(false);
-		createAccountButton.setBounds(725, 350, 300, 30);
+
+		createAccountButton.setBounds(775, 350, 300, 30);
 		welcomePanel.add(createAccountButton);
 
 		// Create help button
 		JButton helpButton = new JButton("Help");
 		helpButton.setFont(new Font("Georgia", Font.BOLD, 16));
-		helpButton.setBounds(725, 450, 140, 30);
+
+		helpButton.setBounds(775, 450, 140, 30);
 		helpButton.setForeground(Colour.strongHighlight);
 		helpButton.setBackground(Colour.lightBg);
 		helpButton.setBorderPainted(false);
@@ -126,7 +131,8 @@ public class Welcome {
 			}
 		});
 		quitButton.setFont(new Font("Georgia", Font.BOLD, 16));
-		quitButton.setBounds(885, 450, 140, 30);
+
+		quitButton.setBounds(935, 450, 140, 30);
 		quitButton.setForeground(Colour.strongHighlight);
 		quitButton.setBackground(Colour.lightBg);
 		quitButton.setBorderPainted(false);

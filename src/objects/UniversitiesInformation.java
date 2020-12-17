@@ -76,8 +76,6 @@ public class UniversitiesInformation {
 
 			input.close();
 
-			universities.get(0).setName(universities.get(0).getName().substring(1)); // fixes error with a character
-																						// before C on carleton
 			for (University uni : universities) {
 				System.out.println(path + "/resources/descriptions/" + uni.getName() + " Description.txt");
 				try {
