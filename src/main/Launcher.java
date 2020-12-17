@@ -12,8 +12,6 @@ public class Launcher {
 		
 		UniversitiesInformation.setUniversities();
 
-		UniversitiesInformation.setUniversities();
-
 	}
 
 }

@@ -83,6 +83,8 @@ public class Welcome {
 			public void actionPerformed(ActionEvent e) {
 				if (VerifyLogin.verifyLogin(usernameField.getText(), String.valueOf(passwordField.getPassword()))) {
 					welcomePanel.setVisible(false);
+					CreateAccount.username = usernameField.getText();
+					CreateAccount.password = String.valueOf(passwordField.getPassword());
 					Dashboard.CreateDashboard();
 					Dashboard.dashboardPanel.setVisible(true);
 				} else {
@@ -97,6 +99,7 @@ public class Welcome {
 		JButton createAccountButton = new JButton("Create Account");
 		createAccountButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Welcome.GUI.setVisible(false);
 				new CreateAccount();
 				
 			}
