@@ -3,4 +3,8 @@ out/
 *.iml
 *.idea
 *.classpath
+<<<<<<< HEAD
 *.project
+=======
+*.project
+>>>>>>> refs/remotes/origin/master

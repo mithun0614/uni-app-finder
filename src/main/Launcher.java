@@ -10,8 +10,6 @@ public class Launcher {
 		Welcome.CreateWelcome();
 		Welcome.GUI.setVisible(true);
 
-		UniversitiesInformation.setUniversities();
-
 	}
 
 }

@@ -13,18 +13,28 @@ class surveyScreen  {
 	private static JComboBox q2answers;
 	private static JComboBox q3answers;
 	private static JComboBox q4answers;
+<<<<<<< HEAD
 	private static JComboBox q5answers;
 
 	//Popup message, notifies user that they cannot continue
 	private static JLabel halt;
 
 
+=======
+	private static JComboBox q5answers; 
+	
+	//Popup message, notifies user that they cannot continue
+	private static JLabel halt;
+	
+	
+>>>>>>> refs/remotes/origin/master
 	//integer variables to calculate results of which engineering the user should go into
 	private static int civilEngineer = 0;
 	private static int softwareEngineer = 0;
 	private static int aerospaceEngineer = 0;
 	private static int mechanicalEngineer = 0;
 	private static int electricalEngineer = 0;
+<<<<<<< HEAD
 
 
 	//creates Panel
@@ -34,35 +44,64 @@ class surveyScreen  {
 	//creates the screen
 	public static void surveyScreen() {
 
+=======
+	
+	
+	//creates Panel
+	static JPanel survey;
+
+	
+	//creates the screen
+	public static void surveyScreen() {
+		
+>>>>>>> refs/remotes/origin/master
 		//create the panel and frame
 		survey = new JPanel();
 		survey.setLayout(null);
 		f = new JFrame ("Survey");
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+<<<<<<< HEAD
 
+=======
+		
+>>>>>>> refs/remotes/origin/master
 		// popup message if the user chooses an invalid option
 		JLabel invalid = new JLabel("INVALID option");
 		invalid.setForeground(Color.red); //set color to red
 		invalid.setBounds(520, 400, 260, 50); //places message on screen
 		survey.add(invalid); //add message to panel
 		invalid.setVisible(false); //set the visibility to false. The message should not appear unless the user chooses an invalid option in their answers
+<<<<<<< HEAD
 
 		//label for if the user tries to proceed without completing the survey
 		halt = new JLabel("You have not completed the survey.");
+=======
+		
+		//label for if the user tries to proceed without completing the survey
+		halt = new JLabel("You have not completed the survey."); 
+>>>>>>> refs/remotes/origin/master
 		halt.setForeground(Color.red); //set text to red
 		halt.setBounds(470, 425, 460, 50); //place label
 		survey.add(halt); // put label onto panel
 		halt.setVisible(false); // label does not appear until necessary
 
 		survey.setBackground(new Color(24, 61, 93)); //set the color of the background
+<<<<<<< HEAD
 
+=======
+		
+>>>>>>> refs/remotes/origin/master
 		//Button exits from screen
 		progressButtons[0] = new JButton("Exit");
 		progressButtons[0].setBounds(440, 480, 100, 50); //place button
 		progressButtons[0].setBackground(new Color(7, 37, 64)); //set button color
 		progressButtons[0].setForeground(new Color(255, 138, 226)); //set button's text color
 		survey.add(progressButtons[0]); //place button onto panel
+<<<<<<< HEAD
 		progressButtons[0].addActionListener(new ActionListener() {
+=======
+		progressButtons[0].addActionListener(new ActionListener() { 
+>>>>>>> refs/remotes/origin/master
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == progressButtons[0]) {
 					f.dispose();
@@ -98,7 +137,11 @@ class surveyScreen  {
 				}
 			}
 		});
+<<<<<<< HEAD
 
+=======
+		
+>>>>>>> refs/remotes/origin/master
 		//combo box for question 2
 		String[] q1answerList = {"Select one", "Tinkerer", "Outdoorsy", "Logical", "Adventurous", "Crafty"};
 		q1answers = new JComboBox(q1answerList);
@@ -130,7 +173,11 @@ class surveyScreen  {
 				}
 			}
 		});
+<<<<<<< HEAD
 
+=======
+		
+>>>>>>> refs/remotes/origin/master
 		//combo box for question 3
 		String[] q2answerList = { "Select one", "Computer Science", "Astrology", "Social Science", "Phys. Science", "Physics" };
 		q2answers = new JComboBox(q2answerList);
@@ -162,7 +209,11 @@ class surveyScreen  {
 				}
 			}
 		});
+<<<<<<< HEAD
 
+=======
+		
+>>>>>>> refs/remotes/origin/master
 		//combo box for question 4
 		String[] q3answerList = { "Select one", "Programming", "Flying drones", "Tuning an engine", "Testing water samples", "Visiting construction site" };
 		q3answers = new JComboBox(q3answerList);
@@ -194,7 +245,11 @@ class surveyScreen  {
 				}
 			}
 		});
+<<<<<<< HEAD
 
+=======
+		
+>>>>>>> refs/remotes/origin/master
 		//combo box for question 5
 		String[] q4answerList = { "Select one", "National Park", "Airshow", "Big city", "Theme park", "Home" };
 		q4answers = new JComboBox(q4answerList);
@@ -226,7 +281,11 @@ class surveyScreen  {
 				}
 			}
 		});
+<<<<<<< HEAD
 
+=======
+		
+>>>>>>> refs/remotes/origin/master
 		//combo box for question 6
 		String[] q5answerList = { "Select one", "Building a fighter jet", "Making a spaceship", "Designing a future city", "Invent solar power phones", "Writing board game rules" };
 		q5answers = new JComboBox(q5answerList);
@@ -298,7 +357,11 @@ class surveyScreen  {
 		q5.setForeground(new Color(255, 138, 226));
 		q5.setBounds(600, 325, 260, 50);
 		survey.add(q5);
+<<<<<<< HEAD
 
+=======
+		
+>>>>>>> refs/remotes/origin/master
 		//Button for when the user is ready to proceed
 		progressButtons[1] = new JButton("Done");
 		progressButtons[1].setBounds(585, 480, 100, 50);
@@ -318,20 +381,35 @@ class surveyScreen  {
 						SurveyResults.SurveyResults();
 						f.dispose();
 					}
+<<<<<<< HEAD
 
 				}
 			}
 		});
 
+=======
+					
+				}
+			}
+		});
+		
+>>>>>>> refs/remotes/origin/master
 		f.add(survey);
 		f.setSize(1152, 648);
 		f.setVisible(true);
 
 	}
+<<<<<<< HEAD
 
 	public static String calculateResults() {
 		String results = null;
 
+=======
+	
+	public static String calculateResults() {
+		String results = null;
+		
+>>>>>>> refs/remotes/origin/master
 		if (aerospaceEngineer >= civilEngineer && aerospaceEngineer >= softwareEngineer && aerospaceEngineer >= mechanicalEngineer && aerospaceEngineer >= electricalEngineer)
 			results = "Aerospace Engineer";
 		else if (civilEngineer >= aerospaceEngineer && civilEngineer >= softwareEngineer && civilEngineer >= mechanicalEngineer && civilEngineer >= electricalEngineer)
@@ -342,9 +420,15 @@ class surveyScreen  {
 			results = "Mechanical Engineer";
 		else if (electricalEngineer >= aerospaceEngineer && electricalEngineer >= softwareEngineer && electricalEngineer >= civilEngineer && electricalEngineer >= mechanicalEngineer)
 			results = "Electrical Engineer";
+<<<<<<< HEAD
 
 		return results;
 
+=======
+			
+		return results;
+		
+>>>>>>> refs/remotes/origin/master
 	}
 
 }

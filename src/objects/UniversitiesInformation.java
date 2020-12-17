@@ -120,6 +120,7 @@ public class UniversitiesInformation {
 				}
 
 			}
+
 		} catch (FileNotFoundException e) {
 			System.out.println("File not Found :( (all other fields)");
 		}
