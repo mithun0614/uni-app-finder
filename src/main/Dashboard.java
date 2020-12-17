@@ -114,7 +114,7 @@ public class Dashboard extends JPanel {
 				AllPrograms.overallPanel.setVisible(true);
 
 			}});
-		uniInfoButton.setBounds(25, 115, 160, 25);
+		uniInfoButton.setBounds(25, 150, 160, 25);
 		taskbarPanel.add(uniInfoButton);
 
 		JButton accountButton = new JButton("My Account");

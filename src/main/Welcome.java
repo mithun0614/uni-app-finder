@@ -91,7 +91,7 @@ public class Welcome {
 		signInButton.setBackground(Colour.lightBg);
 		signInButton.setBorderPainted(false);
 		signInButton.setFocusPainted(false);
-		signInButton.setBounds(725, 300, 300, 30);
+		signInButton.setBounds(775, 300, 300, 30);
 
 		welcomePanel.add(signInButton);
 
