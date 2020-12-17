@@ -10,16 +10,30 @@ import java.awt.*;
 public class UniversityDistance implements Comparable<UniversityDistance> {
 	private String name;
 	private double distance;
+	private int x, y;
 	private JButton button = new JButton();
 	private JLabel dot = new JLabel();
 	private Color color;
 	private String id;
+	private boolean visibility = true;
 
 	// constructor that assigns values to the UniversityDistance object
 	public UniversityDistance(String name, double distance) {
 		this.name = name;
 		this.distance = distance;
 	}
+	public void setDistance(double distance) { this.distance = distance; }
+	public void setX(int x) { this.x = x; }
+	public void setY(int y) { this.y = y; }
+	public int getX() { return x; }
+	public int getY() { return y; }
+	public void setVisibility(boolean visibility) {
+		this.visibility = visibility;
+	}
+	public boolean getVisbility() {
+		return visibility;
+	}
+	public String getName() { return name; }
 
 	public JLabel getDot() {
 		return dot;
