@@ -1,5 +1,6 @@
 package main;
 
+import guiClasses.MapScreen;
 import objects.UniversitiesInformation;
 
 public class MatchmakingAlgorithm {
@@ -19,6 +20,7 @@ public class MatchmakingAlgorithm {
 		}
 
 		double[] uniCutoff = new double[14];
+		double[] distance = new double[14];
 		int[] ranking = new int[14];
 		int[] tuition = new int[14];
 		int[] uniSize = new int[14];
@@ -28,14 +30,14 @@ public class MatchmakingAlgorithm {
 		double personAverage = 0;
 
 		for (int counter = 0; counter < 6; counter++)
-			if (UniMatchmakerInfoEdit.gradeTextField[counter].getText().length() > 3)
+			if (UniMatchmakerInfoEdit.gradeTextField[counter].getText().length() <= 3)
 				personAverage += Integer.parseInt(UniMatchmakerInfoEdit.gradeTextField[counter].getText());
-			else
-				System.out.print("Enter Courses and Grades!");
 
 		for (int counter = 0; counter < 14; counter++) {
 
 			uniCutoff[counter] = UniversitiesInformation.universities.get(counter).getCutoff();
+			distance[counter] = UniversitiesInformation.distances.get(0)[counter].getDistance();
+
 			ranking[counter] = UniversitiesInformation.universities.get(counter).getRanking();
 			tuition[counter] = UniversitiesInformation.universities.get(counter).getTuition();
 			uniSize[counter] = UniversitiesInformation.universities.get(counter).getUniSize();
@@ -60,6 +62,32 @@ public class MatchmakingAlgorithm {
 				if (ranking[counter] <= 5)
 					score[counter] += slidersValue[factor] * 2;
 				else if (ranking[counter] <= 10)
+					score[counter] += slidersValue[factor];
+
+			factor++;
+
+			if (dropDownValue[factor] == 0)
+				if (distance[counter] <= 30)
+					score[counter] += slidersValue[factor];
+
+			if (dropDownValue[factor] == 1)
+				if (distance[counter] > 30 && distance[counter] < 150)
+					score[counter] += slidersValue[factor];
+				else if (distance[counter] >= 150 && distance[counter] < 300)
+					score[counter] += slidersValue[factor] / 2;
+
+			if (dropDownValue[factor] == 2)
+				if (distance[counter] > 30 && distance[counter] < 150)
+					score[counter] += slidersValue[factor] / 2;
+				else if (distance[counter] >= 150 && distance[counter] < 300)
+					score[counter] += slidersValue[factor];
+				else if (distance[counter] >= 300)
+					score[counter] += slidersValue[factor] / 2;
+
+			if (dropDownValue[factor] == 3)
+				if (distance[counter] >= 150 && distance[counter] < 300)
+					score[counter] += slidersValue[factor] / 2;
+				else if (distance[counter] >= 300)
 					score[counter] += slidersValue[factor];
 
 			factor++;
@@ -119,8 +147,6 @@ public class MatchmakingAlgorithm {
 				score[counter] += slidersValue[factor];
 			else if (classSize[counter] > 300 && dropDownValue[factor] == 2)
 				score[counter] += slidersValue[factor];
-
-			System.out.println(counter + " " + score[counter]);
 
 		}
 
