@@ -3,6 +3,8 @@ package main;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -51,6 +53,16 @@ public class UniMatchmakerInfoEdit extends JPanel {
 		editButton.setBounds(800, 30, 75, 30);
 		editButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					VerifyLogin.saveInformation(CreateAccount.username, CreateAccount.password, gradeTextField,
+							courseTextField, dropDownLists[0].getSelectedIndex(), dropDownLists[1].getSelectedIndex(),
+							dropDownLists[2].getSelectedIndex(), dropDownLists[3].getSelectedIndex(),
+							dropDownLists[4].getSelectedIndex(), dropDownLists[5].getSelectedIndex());
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
 				accountEditPanel.setVisible(false);
 				UniMatchmaker.CreateAccount();
 				UniMatchmaker.accountPanel.setVisible(true);
@@ -142,6 +154,33 @@ public class UniMatchmakerInfoEdit extends JPanel {
 		dropDownLists[5].addItem("100 - 300");
 		dropDownLists[5].addItem(">300");
 		dropDownLists[5].addItem("Does not matter");
+		
+		if (VerifyLogin.verifyInformation()) {
+			int index = 0;
+			ArrayList<String> Information = VerifyLogin.loadInformation();
+			for (int x = 0; x < 6; x++) {
+				gradeTextField[x].setText(Information.get(index));
+				index++;
+				
+			}
+			System.out.println(index);
+			for (int x = 0; x < 6; x++) {
+				courseTextField[x].setText(Information.get(index));
+				index++;
+			}
+			dropDownLists[0].setSelectedIndex(Integer.parseInt(Information.get(index)));
+			index++;
+			dropDownLists[1].setSelectedIndex(Integer.parseInt(Information.get(index)));
+			index++;
+			dropDownLists[2].setSelectedIndex(Integer.parseInt(Information.get(index)));
+			index++;
+			dropDownLists[3].setSelectedIndex(Integer.parseInt(Information.get(index)));
+			index++;
+			dropDownLists[4].setSelectedIndex(Integer.parseInt(Information.get(index)));
+			index++;
+			dropDownLists[5].setSelectedIndex(Integer.parseInt(Information.get(index)));
+			index++;
+		}
 
 	}
 

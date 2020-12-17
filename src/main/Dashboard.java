@@ -29,7 +29,7 @@ public class Dashboard extends JPanel {
 		dashboardPanel = new JPanel();
 		Welcome.GUI.getContentPane().add(dashboardPanel);
 		dashboardPanel.setLayout(null);
-
+		
 		// Create taskbar panel
 		taskbarPanel = new JPanel();
 		taskbarPanel.setBounds(0, 0, 210, 610);
@@ -131,5 +131,6 @@ public class Dashboard extends JPanel {
 		mapScreen.getMapPanel().setVisible(false);
 		UniMatchmaker.accountPanel.setVisible(true);
 	}
+
 
 }

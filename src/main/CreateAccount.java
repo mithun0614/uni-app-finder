@@ -30,6 +30,8 @@ public class CreateAccount extends JFrame implements ActionListener {
 	private JButton createAccountBtn;
 	static JFrame frame = new JFrame();
 	private JButton returnBtn;
+	public static String username;
+	public static String password;
 
 	/**
 	 * Launch the application.
@@ -100,10 +102,8 @@ public class CreateAccount extends JFrame implements ActionListener {
 		
 		if (event.getSource() == createAccountBtn) {
 			
-			Welcome.GUI.dispose();
-			
-			String username = userNameField.getText();
-			String password = String.valueOf(passwordField.getPassword());
+			username = userNameField.getText();
+			password = String.valueOf(passwordField.getPassword());
 			
 			if (!VerifyLogin.existingUsername(username)) {
 				JOptionPane.showMessageDialog(contentPane, "Username already exists.");
@@ -114,11 +114,12 @@ public class CreateAccount extends JFrame implements ActionListener {
 			} else {
 				try {
 					VerifyLogin.saveLogin(username, password);
+					Welcome.GUI.setVisible(true);
+					Welcome.welcomePanel.setVisible(false);
 					Dashboard.CreateDashboard();
 					Dashboard.dashboardPanel.setVisible(true);
-					frame.dispose();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+					System.out.println("error");
 				}
 			}
 		} 
