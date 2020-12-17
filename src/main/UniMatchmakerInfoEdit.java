@@ -4,13 +4,17 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 
+import guiClasses.MapScreen;
 import tools.Colour;
 
 public class UniMatchmakerInfoEdit extends JPanel {
@@ -21,14 +25,31 @@ public class UniMatchmakerInfoEdit extends JPanel {
 	private static JLabel[] headings = new JLabel[6];
 	public static JComboBox[] dropDownLists = new JComboBox[6];
 	public static JSlider[] sliders = new JSlider[6];
+	public static boolean save = false;
 
 	public static void EditAccount() {
+
+		Border border = BorderFactory.createLineBorder(Colour.strongHighlight, 3);
 
 		// Create panel
 		accountEditPanel = new JPanel();
 		accountEditPanel.setBackground(Colour.bg);
 		Dashboard.displayPanel.add(accountEditPanel);
 		accountEditPanel.setLayout(null);
+
+		JPanel coursesPanel = new JPanel();
+		coursesPanel.setBounds(10, 90, 300, 510);
+		coursesPanel.setBackground(Colour.bg);
+		coursesPanel.setLayout(null);
+		coursesPanel.setBorder(border);
+		accountEditPanel.add(coursesPanel);
+
+		JPanel externalPanel = new JPanel();
+		externalPanel.setBounds(325, 90, 590, 510);
+		externalPanel.setBackground(Colour.bg);
+		externalPanel.setLayout(null);
+		externalPanel.setBorder(border);
+		accountEditPanel.add(externalPanel);
 
 		// Create title
 		JLabel titleLabel = new JLabel("University Matchmaker");
@@ -41,15 +62,15 @@ public class UniMatchmakerInfoEdit extends JPanel {
 		JLabel descriptionLabel = new JLabel("External Factors:");
 		descriptionLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		descriptionLabel.setForeground(Colour.strongHighlight);
-		descriptionLabel.setBounds(330, 75, 280, 40);
-		accountEditPanel.add(descriptionLabel);
+		descriptionLabel.setBounds(25, 15, 280, 40);
+		externalPanel.add(descriptionLabel);
 
 		// Create courses and grades heading
 		JLabel courseGradeLabel = new JLabel("Courses and Grades");
 		courseGradeLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		courseGradeLabel.setForeground(Colour.strongHighlight);
-		courseGradeLabel.setBounds(40, 75, 280, 40);
-		accountEditPanel.add(courseGradeLabel);
+		courseGradeLabel.setBounds(40, 15, 280, 40);
+		coursesPanel.add(courseGradeLabel);
 
 		// Create edit buttons
 		JButton editButton = new JButton("Save");
@@ -57,7 +78,8 @@ public class UniMatchmakerInfoEdit extends JPanel {
 		editButton.setBounds(800, 30, 75, 30);
 		editButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				accountEditPanel.setVisible(false);
+				save = true;
+				Dashboard.hidePanel();
 				UniMatchmaker.CreateAccount();
 				UniMatchmaker.accountPanel.setVisible(true);
 			}
@@ -69,8 +91,8 @@ public class UniMatchmakerInfoEdit extends JPanel {
 				"*Use the sliders to indicate the level of importance for each external factor*");
 		instructions.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		instructions.setForeground(Colour.strongHighlight);
-		instructions.setBounds(330, 120, 500, 30);
-		accountEditPanel.add(instructions);
+		instructions.setBounds(25, 50, 500, 30);
+		externalPanel.add(instructions);
 
 		// Create external factors headings
 		headings[0] = new JLabel("Ranking:");
@@ -84,12 +106,12 @@ public class UniMatchmakerInfoEdit extends JPanel {
 		// combo boxes
 		for (int counter = 0; counter < courseTextField.length; counter++) {
 			courseTextField[counter] = new JTextField("<Course>");
-			courseTextField[counter].setBounds(30, 150 + 75 * counter, 125, 30);
-			accountEditPanel.add(courseTextField[counter]);
+			courseTextField[counter].setBounds(30, 75 + 75 * counter, 125, 30);
+			coursesPanel.add(courseTextField[counter]);
 
 			gradeTextField[counter] = new JTextField("<Grade>");
-			gradeTextField[counter].setBounds(160, 150 + 75 * counter, 70, 30);
-			accountEditPanel.add(gradeTextField[counter]);
+			gradeTextField[counter].setBounds(160, 75 + 75 * counter, 70, 30);
+			coursesPanel.add(gradeTextField[counter]);
 
 			headings[counter].setFont(new Font("Tahoma", Font.PLAIN, 18));
 			headings[counter].setForeground(Colour.strongHighlight);
@@ -107,18 +129,18 @@ public class UniMatchmakerInfoEdit extends JPanel {
 			sliders[counter].setSnapToTicks(true);
 
 			if (counter <= 2) {
-				headings[counter].setBounds(330, 170 + 140 * counter, 200, 25);
-				dropDownLists[counter].setBounds(330, 200 + 140 * counter, 200, 30);
-				sliders[counter].setBounds(330, 240 + 140 * counter, 200, 50);
+				headings[counter].setBounds(25, 90 + 140 * counter, 200, 25);
+				dropDownLists[counter].setBounds(25, 120 + 140 * counter, 200, 30);
+				sliders[counter].setBounds(25, 160 + 140 * counter, 200, 50);
 			} else {
-				headings[counter].setBounds(650, 170 + 140 * (counter - 3), 200, 25);
-				dropDownLists[counter].setBounds(650, 200 + 140 * (counter - 3), 200, 30);
-				sliders[counter].setBounds(650, 240 + 140 * (counter - 3), 200, 50);
+				headings[counter].setBounds(300, 90 + 140 * (counter - 3), 200, 25);
+				dropDownLists[counter].setBounds(300, 120 + 140 * (counter - 3), 200, 30);
+				sliders[counter].setBounds(300, 160 + 140 * (counter - 3), 200, 50);
 			}
 
-			accountEditPanel.add(headings[counter]);
-			accountEditPanel.add(dropDownLists[counter]);
-			accountEditPanel.add(sliders[counter]);
+			externalPanel.add(headings[counter]);
+			externalPanel.add(dropDownLists[counter]);
+			externalPanel.add(sliders[counter]);
 
 		}
 

@@ -65,6 +65,8 @@ public class MapScreen implements ActionListener {
 	private SwingWorker worker = null;
 
 	private UniversitiesInformation universities;
+	
+	public static boolean logic = false;
 
 	// constructor to initialize the panels
 	public MapScreen(UniversitiesInformation universities) {
@@ -336,6 +338,7 @@ public class MapScreen implements ActionListener {
 		if (event.getSource() == goToDistance) {
 			if ((!text.getText().equals("A1B2C3") && text.getText().length() == 6) || (x != -1 && y != -1)) {
 				gif.setVisible(true);
+				logic = true;
 				setupWorker();
 				worker.execute();
 			}
