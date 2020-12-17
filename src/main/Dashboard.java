@@ -1,9 +1,12 @@
 package main;
 
+import guiClasses.AllPrograms;
 import guiClasses.MapScreen;
 import objects.UniversitiesInformation;
+import tools.Colour;
 
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,7 +41,7 @@ public class Dashboard extends JPanel {
 
 		// Create display panel
 		displayPanel = new JPanel();
-		displayPanel.setBounds(210, 0, 920, 610);
+		displayPanel.setBounds(210, 0, 930, 610);
 		dashboardPanel.add(displayPanel);
 		displayPanel.setLayout(new CardLayout(0, 0));
 
@@ -46,6 +49,10 @@ public class Dashboard extends JPanel {
 		introPanel = new JPanel();
 		displayPanel.add(introPanel);
 		introPanel.setLayout(null);
+		introPanel.setBackground(Colour.bg);
+
+		new AllPrograms();
+		displayPanel.add(AllPrograms.overallPanel);
 
 		mapScreen.getMapPanel().setBounds(210, 0, 920, 610);
 		displayPanel.add(mapScreen.getMapPanel());
@@ -61,6 +68,12 @@ public class Dashboard extends JPanel {
 
 		// Create taskbar buttons
 		JButton uniInfoButton = new JButton("University Information");
+		uniInfoButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				hidePanel();
+				AllPrograms.overallPanel.setVisible(true);
+			}
+		});
 		uniInfoButton.setBounds(25, 115, 160, 25);
 		taskbarPanel.add(uniInfoButton);
 
@@ -105,24 +118,28 @@ public class Dashboard extends JPanel {
 		// Create intro screen
 		JLabel titleLabel2 = new JLabel("App Name");
 		titleLabel2.setFont(new Font("Tahoma", Font.PLAIN, 36));
+		titleLabel2.setForeground(Colour.strongHighlight);
 		titleLabel2.setHorizontalAlignment(SwingConstants.CENTER);
 		titleLabel2.setBounds(0, 30, 925, 90);
 		introPanel.add(titleLabel2);
 
 		JLabel quoteLabel = new JLabel("Quote");
 		quoteLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		quoteLabel.setForeground(Colour.strongHighlight);
 		quoteLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		quoteLabel.setBounds(0, 155, 925, 75);
 		introPanel.add(quoteLabel);
 
-		JLabel creatorLabel = new JLabel("Created By:");
+		JLabel creatorLabel = new JLabel("Created By: Brittany, Jeffrey, Jordan, Michael and Mithun");
 		creatorLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		creatorLabel.setForeground(Colour.strongHighlight);
 		creatorLabel.setBounds(20, 550, 895, 60);
 		introPanel.add(creatorLabel);
 
 		// Create all other screens
 		UniMatchmakerInfoEdit.EditAccount();
 		UniMatchmaker.CreateAccount();
+		hidePanel();
 
 	}
 
@@ -131,7 +148,9 @@ public class Dashboard extends JPanel {
 //		dashboardPanel.setVisible(false);
 		mapScreen.getMapPanel().setVisible(false);
 		mapScreen.getDistancePanel().setVisible(false);
-		UniMatchmaker.accountPanel.setVisible(true);
+		UniMatchmaker.accountPanel.setVisible(false);
+		UniMatchmakerInfoEdit.accountEditPanel.setVisible(false);
+		AllPrograms.overallPanel.setVisible(false);
 	}
 
 }
