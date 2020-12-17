@@ -54,6 +54,7 @@ public class MapScreen implements ActionListener {
 	private JLabel mapPreview = new JLabel();
 	private JLabel googleMap = new JLabel();
 	private JLabel mapPreviewCircle = new JLabel();
+	private JLabel dot = new JLabel();
 	private JLabel result[] = new JLabel[14];
 	private JTextArea text = new JTextArea();
 	private JButton goToDistance = new JButton();
@@ -61,6 +62,7 @@ public class MapScreen implements ActionListener {
 	private ImageIcon ontarioMap = new ImageIcon(
 			new ImageIcon("./res/ontario-map.png").getImage().getScaledInstance(875 / 2, 611 / 2, 0));
 	private ImageIcon mapIcon = new ImageIcon(new ImageIcon("./res/map.png").getImage().getScaledInstance(600, 360, 0));
+	private ImageIcon blackDot = new ImageIcon(new ImageIcon("./resources/misc/black-dot.png").getImage().getScaledInstance(105 / DOT_SIZE, 105 / DOT_SIZE, 0));
 
 	private SwingWorker worker = null;
 
@@ -256,13 +258,16 @@ public class MapScreen implements ActionListener {
         all.setFocusPainted(false);
         distancePanel.add(all);
 
-
 		// cursor circle to indicate where the map has been clicked on the mapPreview
 		mapPreviewCircle
 				.setIcon(new ImageIcon(new ImageIcon("./res/circle.png").getImage().getScaledInstance(50, 50, 0)));
 		mapPreviewCircle.setBounds(700 + 25, 20 + 25, 50, 50);
 		mapPreviewCircle.setVisible(false);
 		distancePanel.add(mapPreviewCircle);
+
+		//black dot to locate user in ontario map
+        dot.setIcon(blackDot);
+        distancePanel.add(dot);
 
 		// map preview of where the user clicked
 		mapPreview.setBounds(700, 20, DISPLAY_MAP_SIZE * 2, DISPLAY_MAP_SIZE * 2);
@@ -342,11 +347,14 @@ public class MapScreen implements ActionListener {
 		}
 		for (int i = 0; i < 14; i++) {
 			result[i].setText(distance[i].toString());
+			//need to remove all actionListeners or else they'll pile up on each other
+			for (ActionListener al : distance[i].getButton().getActionListeners()) {
+			    distance[i].getButton().removeActionListener(al);
+            }
 			distance[i].getButton().setBounds(result[i].getX() - 65, result[i].getY(), 50, 35);
-			System.out.println(result[i].getX()-65+" "+result[i].getY());
 			distance[i].getButton().setText("SEE");
 			final int tmp = i;
-			distance[i].getButton().addActionListener(e -> switchVisibility(tmp));
+            distance[i].getButton().addActionListener(e -> switchVisibility(tmp));
 			distance[i].getButton().setForeground(Color.WHITE);
 			distance[i].getButton().setBackground(distance[i].getColor());
 			distance[i].getButton().setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -378,6 +386,21 @@ public class MapScreen implements ActionListener {
 			// adding the updated BufferedImage as an icon to mapPreview
 			mapPreview.setIcon(new ImageIcon(mapDisplay));
 		}
+
+		double TL = 41.52450;
+		double TR = 46.88475;
+		double BL = -84.88621;
+		double BR = -74.07128;
+		if(TL<=lat && lat<=TR && BL<=lon && lon<=BR) {
+		    System.out.printf("(lat, lon) of uni = %f %f\n", lat, lon);
+		    double dotLat = googleMap.getX()+googleMap.getWidth()*(lat-TL)/(TR-TL);
+            double dotLon = googleMap.getY()+googleMap.getHeight()*(lon-BR)/(BL-BR);
+            dot.setBounds((int)dotLat, (int)dotLon, 105/DOT_SIZE, 105/DOT_SIZE);
+            System.out.printf("%f = %f\n", dotLat, dotLon);
+            dot.setVisible(true);
+        } else {
+		    dot.setVisible(false);
+        }
 	}
 
 	// changes the visibility of the two panels
