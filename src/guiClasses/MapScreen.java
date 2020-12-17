@@ -98,6 +98,7 @@ public class MapScreen implements ActionListener {
                 distance[i].getDot().setVisible(false);
                 distancePanel.add(distance[i].getButton());
                 distancePanel.add(distance[i].getDot());
+                System.out.printf("%s = (%d, %d)\n", distance[i].getName(), distance[i].getX(), distance[i].getY());
             }
         } catch (Exception e) {
             System.out.println("Had issue loading mapCoords for each uni");
@@ -128,9 +129,9 @@ public class MapScreen implements ActionListener {
 		mapPanel.add(headerText);
 
 		JLabel otherText = new JLabel(
-				"<html>OR send your postal code and the <br>distance will also be calculated*</html>");
+				"<html>OR send your postal code and the <br>distance will also be calculated*<br>(if spinning gif appears for > 5sec, check that your postal code is correct)</html>");
 		otherText.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		otherText.setBounds(80, 480, 300, 75);
+		otherText.setBounds(80, 480, 300, 125);
 		otherText.setForeground(Colour.highlight);
 		mapPanel.add(otherText);
 
@@ -226,6 +227,13 @@ public class MapScreen implements ActionListener {
 		info.setBounds(75, 550, 300, 75);
 		info.setForeground(Colour.highlight);
 		distancePanel.add(info);
+
+		JLabel extraInfo = new JLabel(
+				"<html>Impressive as this may seem, errors up to +/-5km <br> may occur. Insufficient budget ):</html>");
+		extraInfo.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		extraInfo.setBounds(350, 550, 300, 75);
+		extraInfo.setForeground(Colour.highlight);
+		distancePanel.add(extraInfo);
 
 		JLabel mapPreviewInfo = new JLabel("You last clicked here:");
 		mapPreviewInfo.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -342,7 +350,7 @@ public class MapScreen implements ActionListener {
 			distance[i].setID(String.format("%02d", i + 1));
 			distance[i].getDot()
 					.setIcon(new ImageIcon(new ImageIcon("./resources/misc/dots-" + distance[i].getID() + ".png")
-							.getImage().getScaledInstance(105 / DOT_SIZE, 105 / DOT_SIZE, 5)));
+							.getImage().getScaledInstance(105 / DOT_SIZE, 105 / DOT_SIZE, 0)));
 			distance[i].getDot().setBounds(distance[i].getX(), distance[i].getY()-150, 105 / DOT_SIZE, 105 / DOT_SIZE);
 		}
 		for (int i = 0; i < 14; i++) {
@@ -392,11 +400,11 @@ public class MapScreen implements ActionListener {
 		double BL = -84.88621;
 		double BR = -74.07128;
 		if(TL<=lat && lat<=TR && BL<=lon && lon<=BR) {
-		    System.out.printf("(lat, lon) of uni = %f %f\n", lat, lon);
-		    double dotLat = googleMap.getX()+googleMap.getWidth()*(lat-TL)/(TR-TL);
-            double dotLon = googleMap.getY()+googleMap.getHeight()*(lon-BR)/(BL-BR);
-            dot.setBounds((int)dotLat, (int)dotLon, 105/DOT_SIZE, 105/DOT_SIZE);
+			double dotLat = googleMap.getY()+googleMap.getHeight()*(TR-lat)/(TR-TL);
+			double dotLon = googleMap.getX()+googleMap.getWidth()*(BL-lon)/(BL-BR);
+            dot.setBounds((int)dotLon-20, (int)dotLat+130-150, 105/DOT_SIZE, 105/DOT_SIZE);
             System.out.printf("%f = %f\n", dotLat, dotLon);
+            System.out.printf("Dot is %d %d\n", dot.getX(), dot.getY());
             dot.setVisible(true);
         } else {
 		    dot.setVisible(false);
@@ -476,7 +484,7 @@ public class MapScreen implements ActionListener {
 
 		try {
 			// this is how the website wants the input to be formated
-			url = new URL("https://geocoder.ca/?locate=" + text.getText() + "&json=1");
+			url = new URL("https://geocoder.ca/?locate=" + text.getText().toUpperCase() + "&json=1");
 			// sending http response
 			httpCon = (HttpURLConnection) url.openConnection();
 			// reading http response
