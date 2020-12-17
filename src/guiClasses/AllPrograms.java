@@ -157,8 +157,8 @@ public class AllPrograms extends JPanel implements ActionListener{
 
             //creates a new unipanel(top right corner), and changes the picture
             uniPanel = createUniPanel(uniArrayCopy.get(currentPage));
-            uniPanel.setBounds(800,0,400,500);
-            add(uniPanel);
+            uniPanel.setBounds(590, 0, 400, 500);
+            overallPanel.add(uniPanel);
 
             overallPanel.repaint();
         }
@@ -189,12 +189,13 @@ public class AllPrograms extends JPanel implements ActionListener{
                 currentPage = maxIndex;
             }
             overallPanel.remove(uniPanel);
-
+            combobox1.setSelectedIndex(currentPage);
+            combobox1.repaint();
             uniPanel = createUniPanel(uniArrayCopy.get(currentPage));
             uniPanel.setBounds(590, 0, 400, 500);
             overallPanel.add(uniPanel);
 
-            combobox1.setSelectedItem(uniArrayCopy.get(currentPage));
+
             overallPanel.repaint();
         }
         //"back" button
@@ -208,12 +209,14 @@ public class AllPrograms extends JPanel implements ActionListener{
                 currentPage = 0;
             }
             overallPanel.remove(uniPanel);
-
+            overallPanel.add(uniPanel);
+            combobox1.setSelectedIndex(currentPage);
             uniPanel = createUniPanel(uniArrayCopy.get(currentPage));
             uniPanel.setBounds(590, 0, 400, 500);
-            overallPanel.add(uniPanel);
-            combobox1.setSelectedItem(uniClass.getUniversities().get(currentPage));
+
+            combobox1.repaint();
             overallPanel.repaint();
+
         }
         if (event.getSource() == resetButton) {
             maxIndex = 14;
@@ -276,10 +279,12 @@ public class AllPrograms extends JPanel implements ActionListener{
             }
             //shows a no matches label if there are no matches
             if (customList.size() == 0){
+                System.out.println("no matches");
                 searchFailed.setText("No Matches");
-                searchFailed.setBounds(600, 150, 100, 30);
+                searchFailed.setBounds(20,300,100,35);
+                searchFailed.setForeground(Colour.strongHighlight);
                 searchFailed.setVisible(true);
-                add(searchFailed);
+                overallPanel.add(searchFailed);
                 searchFailedTF = true;
                 uniArrayCopy = new ArrayList<>(uniClass.getUniversities());
             }
@@ -298,9 +303,11 @@ public class AllPrograms extends JPanel implements ActionListener{
                 maxIndex = customList.size();
                 overallPanel.remove(uniPanel);
                 uniPanel = createUniPanel(uniArrayCopy.get(currentPage));
-                uniPanel.setBounds(800, 0, 400, 500);
+                uniPanel.setBounds(590, 0, 400, 500);
                 combobox2.setSelectedIndex(0);
-                add(uniPanel);
+                combobox2.repaint();
+
+                overallPanel.add(uniPanel);
 
             }
             overallPanel.repaint();
@@ -322,7 +329,7 @@ public class AllPrograms extends JPanel implements ActionListener{
     public JPanel createUniPanel(University uni) {
         JPanel panel = new JPanel();
         panel.setLayout(null);
-        panel.setSize(300, 500);
+        panel.setSize(400, 500);
         JLabel nameLabel = new JLabel(uni.getName());
         JLabel infoLabel = new JLabel("<html>" + uni.getDescription() + "<html>");
         JLabel nationalRankLabel = new JLabel("Rank: " + uni.getNationalRank());

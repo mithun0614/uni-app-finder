@@ -37,6 +37,7 @@ public class MatchmakingAlgorithm {
 
 			uniCutoff[counter] = UniversitiesInformation.universities.get(counter).getCutoff();
 			distance[counter] = UniversitiesInformation.distances.get(0)[counter].getDistance();
+
 			ranking[counter] = UniversitiesInformation.universities.get(counter).getRanking();
 			tuition[counter] = UniversitiesInformation.universities.get(counter).getTuition();
 			uniSize[counter] = UniversitiesInformation.universities.get(counter).getUniSize();

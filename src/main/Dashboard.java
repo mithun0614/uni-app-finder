@@ -60,6 +60,9 @@ public class Dashboard extends JPanel {
 		new AllPrograms();
 		displayPanel.add(AllPrograms.overallPanel);
 
+		new AllPrograms();
+		displayPanel.add(AllPrograms.overallPanel);
+
 		mapScreen.getMapPanel().setBounds(210, 0, 920, 610);
 		displayPanel.add(mapScreen.getMapPanel());
 
@@ -109,8 +112,8 @@ public class Dashboard extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				hidePanel();
 				AllPrograms.overallPanel.setVisible(true);
-			}
-		});
+
+			}});
 		uniInfoButton.setBounds(25, 150, 160, 25);
 		taskbarPanel.add(uniInfoButton);
 
@@ -185,6 +188,7 @@ public class Dashboard extends JPanel {
 //		dashboardPanel.setVisible(false);
 		mapScreen.getMapPanel().setVisible(false);
 		mapScreen.getDistancePanel().setVisible(false);
+
 		UniMatchmaker.accountPanel.setVisible(false);
 		UniMatchmakerInfoEdit.accountEditPanel.setVisible(false);
 		AllPrograms.overallPanel.setVisible(false);
