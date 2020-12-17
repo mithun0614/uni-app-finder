@@ -4,14 +4,18 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 
+import guiClasses.MapScreen;
 import objects.UniversitiesInformation;
 import tools.Colour;
 
@@ -25,12 +29,28 @@ public class UniMatchmaker extends JPanel {
 
 	public static void CreateAccount() {
 
+		Border border = BorderFactory.createLineBorder(Colour.strongHighlight, 3);
+
 		// Create panel
 		accountPanel = new JPanel();
 		Dashboard.displayPanel.add(accountPanel);
 		accountPanel.setBackground(Colour.bg);
 		accountPanel.setLayout(null);
 		accountPanel.setVisible(true);
+
+		JPanel coursesPanel = new JPanel();
+		coursesPanel.setBounds(10, 90, 300, 510);
+		coursesPanel.setBackground(Colour.bg);
+		coursesPanel.setLayout(null);
+		coursesPanel.setBorder(border);
+		accountPanel.add(coursesPanel);
+
+		JPanel externalPanel = new JPanel();
+		externalPanel.setBounds(325, 90, 590, 510);
+		externalPanel.setBackground(Colour.bg);
+		externalPanel.setLayout(null);
+		externalPanel.setBorder(border);
+		accountPanel.add(externalPanel);
 
 		// Create title
 		JLabel titleLabel = new JLabel("University Matchmaker");
@@ -43,19 +63,20 @@ public class UniMatchmaker extends JPanel {
 		JLabel descriptionLabel = new JLabel("External Factors:");
 		descriptionLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		descriptionLabel.setForeground(Colour.strongHighlight);
-		descriptionLabel.setBounds(330, 75, 280, 40);
-		accountPanel.add(descriptionLabel);
+		descriptionLabel.setBounds(25, 15, 280, 40);
+		externalPanel.add(descriptionLabel);
 
 		// Create courses and grades heading
 		JLabel courseGradeLabel = new JLabel("Courses and Grades");
 		courseGradeLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		courseGradeLabel.setForeground(Colour.strongHighlight);
-		courseGradeLabel.setBounds(40, 75, 280, 40);
-		accountPanel.add(courseGradeLabel);
+		courseGradeLabel.setBounds(25, 15, 280, 40);
+		coursesPanel.add(courseGradeLabel);
 
 		// Create edit buttons
 		JButton editButton = new JButton("Edit");
 		editButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		editButton.setBackground(Colour.strike);
 		editButton.setBounds(800, 30, 75, 30);
 		editButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -67,15 +88,20 @@ public class UniMatchmaker extends JPanel {
 
 		JButton resultsButton = new JButton("Results");
 		resultsButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		resultsButton.setBounds(775, 550, 100, 30);
+		resultsButton.setBackground(Colour.strike);
+		resultsButton.setBounds(450, 450, 100, 30);
 		resultsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				accountPanel.setVisible(false);
-				Results.CreateResults();
-				Results.resultsPanel.setVisible(true);
+				if (MapScreen.logic) {
+					Dashboard.hidePanel();
+					Results.CreateResults();
+					Results.resultsPanel.setVisible(true);
+				} else
+					JOptionPane.showMessageDialog(accountPanel,
+							"Wait, first go to the view map tab to set your location!");
 			}
 		});
-		accountPanel.add(resultsButton);
+		externalPanel.add(resultsButton);
 
 		// Create external factors headings
 		headings[0] = new JLabel("Ranking:");
@@ -92,8 +118,8 @@ public class UniMatchmaker extends JPanel {
 							+ UniMatchmakerInfoEdit.gradeTextField[counter].getText() + "%");
 			courseLabel[counter].setFont(new Font("Tahoma", Font.PLAIN, 16));
 			courseLabel[counter].setForeground(Colour.strongHighlight);
-			courseLabel[counter].setBounds(30, 150 + 75 * counter, 250, 40);
-			accountPanel.add(courseLabel[counter]);
+			courseLabel[counter].setBounds(20, 75 + 75 * counter, 250, 40);
+			coursesPanel.add(courseLabel[counter]);
 
 			headings[counter].setFont(new Font("Tahoma", Font.PLAIN, 18));
 			headings[counter].setForeground(Colour.strongHighlight);
@@ -108,18 +134,18 @@ public class UniMatchmaker extends JPanel {
 			importance[counter].setForeground(Colour.strongHighlight);
 
 			if (counter <= 2) {
-				headings[counter].setBounds(330, 150 + 150 * counter, 200, 25);
-				factorValue[counter].setBounds(330, 180 + 150 * counter, 275, 25);
-				importance[counter].setBounds(330, 210 + 150 * counter, 200, 25);
+				headings[counter].setBounds(25, 80 + 150 * counter, 200, 25);
+				factorValue[counter].setBounds(25, 110 + 150 * counter, 275, 25);
+				importance[counter].setBounds(25, 140 + 150 * counter, 200, 25);
 			} else {
-				headings[counter].setBounds(650, 150 + 150 * (counter - 3), 200, 25);
-				factorValue[counter].setBounds(650, 180 + 150 * (counter - 3), 275, 25);
-				importance[counter].setBounds(650, 210 + 150 * (counter - 3), 200, 25);
+				headings[counter].setBounds(275, 80 + 150 * (counter - 3), 200, 25);
+				factorValue[counter].setBounds(275, 110 + 150 * (counter - 3), 275, 25);
+				importance[counter].setBounds(275, 140 + 150 * (counter - 3), 200, 25);
 			}
 
-			accountPanel.add(headings[counter]);
-			accountPanel.add(factorValue[counter]);
-			accountPanel.add(importance[counter]);
+			externalPanel.add(headings[counter]);
+			externalPanel.add(factorValue[counter]);
+			externalPanel.add(importance[counter]);
 
 		}
 

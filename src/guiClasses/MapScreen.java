@@ -62,17 +62,21 @@ public class MapScreen implements ActionListener {
 	private ImageIcon ontarioMap = new ImageIcon(
 			new ImageIcon("./res/ontario-map.png").getImage().getScaledInstance(875 / 2, 611 / 2, 0));
 	private ImageIcon mapIcon = new ImageIcon(new ImageIcon("./res/map.png").getImage().getScaledInstance(600, 360, 0));
-	private ImageIcon blackDot = new ImageIcon(new ImageIcon("./resources/misc/black-dot.png").getImage().getScaledInstance(105 / DOT_SIZE, 105 / DOT_SIZE, 0));
+	private ImageIcon blackDot = new ImageIcon(new ImageIcon("./resources/misc/black-dot.png").getImage()
+			.getScaledInstance(105 / DOT_SIZE, 105 / DOT_SIZE, 0));
 
 	private SwingWorker worker = null;
 
 	private UniversitiesInformation universities;
+
+	public static boolean logic = false;
+
 	private UniversityDistance distance[] = new UniversityDistance[14];
 
 	// constructor to initialize the panels
 	public MapScreen(UniversitiesInformation universities) {
 		this.universities = universities;
-        setupMisc();
+		setupMisc();
 		setupMap();
 		setupDistance();
 	}
@@ -249,22 +253,40 @@ public class MapScreen implements ActionListener {
 		distancePanel.add(userInfo);
 
 		JButton all = new JButton("ALL");
-        all.setBounds(10, 570, 50, 35);
-        all.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                for (int i=0;i<14;i++) {
-                    final int j = i;
-                    switchVisibility(j);
-                }
-            }
-        });
-        all.setForeground(Color.WHITE);
-        all.setBackground(Color.BLACK);
-        all.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        all.setBorderPainted(false);
-        all.setFocusPainted(false);
-        distancePanel.add(all);
+
+		all.setBounds(10, 570, 50, 35);
+		all.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for (int i = 0; i < 14; i++) {
+					final int j = i;
+					switchVisibility(j);
+				}
+			}
+		});
+		all.setForeground(Color.WHITE);
+		all.setBackground(Color.BLACK);
+		all.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+		all.setBorderPainted(false);
+		all.setFocusPainted(false);
+		distancePanel.add(all);
+
+		all.setBounds(10, 570, 50, 35);
+		all.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for (int i = 0; i < 14; i++) {
+					final int j = i;
+					switchVisibility(j);
+				}
+			}
+		});
+		all.setForeground(Color.WHITE);
+		all.setBackground(Color.BLACK);
+		all.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+		all.setBorderPainted(false);
+		all.setFocusPainted(false);
+		distancePanel.add(all);
 
 		// cursor circle to indicate where the map has been clicked on the mapPreview
 		mapPreviewCircle
@@ -273,9 +295,9 @@ public class MapScreen implements ActionListener {
 		mapPreviewCircle.setVisible(false);
 		distancePanel.add(mapPreviewCircle);
 
-		//black dot to locate user in ontario map
-        dot.setIcon(blackDot);
-        distancePanel.add(dot);
+		// black dot to locate user in ontario map
+		dot.setIcon(blackDot);
+		distancePanel.add(dot);
 
 		// map preview of where the user clicked
 		mapPreview.setBounds(700, 20, DISPLAY_MAP_SIZE * 2, DISPLAY_MAP_SIZE * 2);
@@ -309,34 +331,34 @@ public class MapScreen implements ActionListener {
 	}
 
 	private void switchVisibility(int i) {
-        distance[i].getDot().setVisible(distance[i].getVisbility());
-        distance[i].setVisibility(!distance[i].getVisbility());
-    }
+		distance[i].getDot().setVisible(distance[i].getVisbility());
+		distance[i].setVisibility(!distance[i].getVisbility());
+	}
 
-    private void resetDistance() {
-	    for (int i=0;i<14;i++) {
-	        for (int j=i+1;j<14;j++) {
-	            if(distance[j].getName().equals(universities.getUniversities().get(i).getName())) {
-	                UniversityDistance swatch = distance[j];
-	                distance[j] = distance[i];
-	                distance[i] = swatch;
-                }
-            }
-        }
-    }
+	private void resetDistance() {
+		for (int i = 0; i < 14; i++) {
+			for (int j = i + 1; j < 14; j++) {
+				if (distance[j].getName().equals(universities.getUniversities().get(i).getName())) {
+					UniversityDistance swatch = distance[j];
+					distance[j] = distance[i];
+					distance[i] = swatch;
+				}
+			}
+		}
+	}
 
 	// refreshes the labels that display the distance of universities
 	// also updates the mapPreview of where the user clicked (not accurate for areas
 	// clicked near the border)
 	// ^^ too much math to properly implement that
 	public void refresh(boolean click) {
-        UniversityDistance something[] = new UniversityDistance[14];
-        resetDistance();
+		UniversityDistance something[] = new UniversityDistance[14];
+		resetDistance();
 		for (int i = 0; i < 14; i++) {
 			double uniLat = universities.getUniversities().get(i).getLatitude();
 			double uniLon = universities.getUniversities().get(i).getLongitude();
-            something[i] = new UniversityDistance(universities.getUniversities().get(i).getName(),
-                    calculateDistance(lat, lon, uniLat, uniLon));
+			something[i] = new UniversityDistance(universities.getUniversities().get(i).getName(),
+					calculateDistance(lat, lon, uniLat, uniLon));
 			distance[i].setDistance(calculateDistance(lat, lon, uniLat, uniLon));
 		}
 		UniversityDistance copy[] = new UniversityDistance[14]; // need to add a copy that isn't sorted to universities
@@ -350,19 +372,23 @@ public class MapScreen implements ActionListener {
 			distance[i].setID(String.format("%02d", i + 1));
 			distance[i].getDot()
 					.setIcon(new ImageIcon(new ImageIcon("./resources/misc/dots-" + distance[i].getID() + ".png")
-							.getImage().getScaledInstance(105 / DOT_SIZE, 105 / DOT_SIZE, 0)));
-			distance[i].getDot().setBounds(distance[i].getX(), distance[i].getY()-150, 105 / DOT_SIZE, 105 / DOT_SIZE);
+							.getImage().getScaledInstance(105 / DOT_SIZE, 105 / DOT_SIZE, 5)));
+			distance[i].getDot().setBounds(distance[i].getX(), distance[i].getY() - 150, 105 / DOT_SIZE,
+					105 / DOT_SIZE);
 		}
 		for (int i = 0; i < 14; i++) {
 			result[i].setText(distance[i].toString());
-			//need to remove all actionListeners or else they'll pile up on each other
+			// need to remove all actionListeners or else they'll pile up on each other
 			for (ActionListener al : distance[i].getButton().getActionListeners()) {
-			    distance[i].getButton().removeActionListener(al);
-            }
+				distance[i].getButton().removeActionListener(al);
+			}
 			distance[i].getButton().setBounds(result[i].getX() - 65, result[i].getY(), 50, 35);
+
+			System.out.println(result[i].getX() - 65 + " " + result[i].getY());
+
 			distance[i].getButton().setText("SEE");
 			final int tmp = i;
-            distance[i].getButton().addActionListener(e -> switchVisibility(tmp));
+			distance[i].getButton().addActionListener(e -> switchVisibility(tmp));
 			distance[i].getButton().setForeground(Color.WHITE);
 			distance[i].getButton().setBackground(distance[i].getColor());
 			distance[i].getButton().setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -399,16 +425,16 @@ public class MapScreen implements ActionListener {
 		double TR = 46.88475;
 		double BL = -84.88621;
 		double BR = -74.07128;
-		if(TL<=lat && lat<=TR && BL<=lon && lon<=BR) {
-			double dotLat = googleMap.getY()+googleMap.getHeight()*(TR-lat)/(TR-TL);
-			double dotLon = googleMap.getX()+googleMap.getWidth()*(BL-lon)/(BL-BR);
-            dot.setBounds((int)dotLon-20, (int)dotLat+130-150, 105/DOT_SIZE, 105/DOT_SIZE);
-            System.out.printf("%f = %f\n", dotLat, dotLon);
-            System.out.printf("Dot is %d %d\n", dot.getX(), dot.getY());
-            dot.setVisible(true);
-        } else {
-		    dot.setVisible(false);
-        }
+		if (TL <= lat && lat <= TR && BL <= lon && lon <= BR) {
+			System.out.printf("(lat, lon) of uni = %f %f\n", lat, lon);
+			double dotLat = googleMap.getX() + googleMap.getWidth() * (lat - TL) / (TR - TL);
+			double dotLon = googleMap.getY() + googleMap.getHeight() * (lon - BR) / (BL - BR);
+			dot.setBounds((int) dotLat, (int) dotLon, 105 / DOT_SIZE, 105 / DOT_SIZE);
+			System.out.printf("%f = %f\n", dotLat, dotLon);
+			dot.setVisible(true);
+		} else {
+			dot.setVisible(false);
+		}
 	}
 
 	// changes the visibility of the two panels
@@ -425,6 +451,7 @@ public class MapScreen implements ActionListener {
 		if (event.getSource() == goToDistance) {
 			if ((!text.getText().equals("A1B2C3") && text.getText().length() == 6) || (x != -1 && y != -1)) {
 				gif.setVisible(true);
+				logic = true;
 				setupWorker();
 				worker.execute();
 			}
