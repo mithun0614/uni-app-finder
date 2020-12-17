@@ -77,14 +77,12 @@ public class UniversitiesInformation {
 			input.close();
 
 			for (University uni : universities) {
-				System.out.println(path + "/resources/descriptions/" + uni.getName() + " Description.txt");
+
 				try {
 
 					String value = "";
 					input = new Scanner(
 							new File(path + "/resources/descriptions/" + uni.getName() + " Description.txt"));
-					System.out.println("The path is: " + path + "/resources/descriptions/" + uni.getName()
-							+ " Description.txt" + "|");
 					while (input.hasNext()) {
 
 						value = value + " " + input.next();
@@ -102,20 +100,18 @@ public class UniversitiesInformation {
 
 
 			}
-			System.out.println(universities.size());
 
 			for (University university : universities) {
 				try {
 					input = new Scanner(new File(path + "/resources/keyWords/" + university.getName() + ".txt"));
 
 					String keyWords = "";
-					System.out.println(university.getName());
+
 					while (input.hasNext()) {
 						keywords = input.next();
 
 					}
 					university.setKeywords(keywords);
-					System.out.println(keyWords);
 					input.close();
 
 				} catch (FileNotFoundException e) {
