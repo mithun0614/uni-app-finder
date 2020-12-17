@@ -56,7 +56,7 @@ public class Welcome {
 		// Create username textbox
 		usernameField = new JTextField();
 		usernameField.setLayout(null);
-		usernameField.setBounds(725, 150, 300, 25);
+		usernameField.setBounds(775, 150, 300, 25);
 		welcomePanel.add(usernameField);
 
 		// Create password label
@@ -68,7 +68,7 @@ public class Welcome {
 
 		// Create password textbox
 		passwordField = new JPasswordField();
-		passwordField.setBounds(725, 250, 300, 25);
+		passwordField.setBounds(775, 250, 300, 25);
 		welcomePanel.add(passwordField);
 
 		// Create sign in button
@@ -89,7 +89,7 @@ public class Welcome {
 		signInButton.setBackground(Colour.lightBg);
 		signInButton.setBorderPainted(false);
 		signInButton.setFocusPainted(false);
-		signInButton.setBounds(725, 300, 300, 30);
+		signInButton.setBounds(775, 300, 300, 30);
 		welcomePanel.add(signInButton);
 
 		// Create create account button
@@ -105,13 +105,13 @@ public class Welcome {
 		createAccountButton.setBackground(Colour.strike);
 		createAccountButton.setBorderPainted(false);
 		createAccountButton.setFocusPainted(false);
-		createAccountButton.setBounds(725, 350, 300, 30);
+		createAccountButton.setBounds(775, 350, 300, 30);
 		welcomePanel.add(createAccountButton);
 
 		// Create help button
 		JButton helpButton = new JButton("Help");
 		helpButton.setFont(new Font("Georgia", Font.BOLD, 16));
-		helpButton.setBounds(725, 450, 140, 30);
+		helpButton.setBounds(775, 450, 140, 30);
 		helpButton.setForeground(Colour.strongHighlight);
 		helpButton.setBackground(Colour.lightBg);
 		helpButton.setBorderPainted(false);
@@ -126,7 +126,7 @@ public class Welcome {
 			}
 		});
 		quitButton.setFont(new Font("Georgia", Font.BOLD, 16));
-		quitButton.setBounds(885, 450, 140, 30);
+		quitButton.setBounds(935, 450, 140, 30);
 		quitButton.setForeground(Colour.strongHighlight);
 		quitButton.setBackground(Colour.lightBg);
 		quitButton.setBorderPainted(false);

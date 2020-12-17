@@ -1,8 +1,8 @@
-
 package guiClasses;
 
 import objects.UniversitiesInformation;
 import objects.University;
+import tools.Colour;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,8 +10,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import static java.awt.Color.*;
+
 public class AllPrograms extends JPanel implements ActionListener {
-	UniversitiesInformation uniClass = new UniversitiesInformation();
+
 	private JLabel title = new JLabel("All Programs");
 	private JButton nextBtn = new JButton();
 	private JButton backBtn = new JButton();
@@ -19,86 +21,104 @@ public class AllPrograms extends JPanel implements ActionListener {
 	private JComboBox<String> combobox2 = new JComboBox<>();
 	private JLabel sortBy = new JLabel("Sort by:");
 	private JLabel picture = new JLabel();
-	private ArrayList<University> uniArrayCopy = uniClass.getUniversities();
+	private ArrayList<University> uniArrayCopy;
 	private int currentPage = 0;
 	private boolean reversed = false;
-	private int oldLocation = 0;
+	UniversitiesInformation uniClass = new UniversitiesInformation();
 	private JTextField keyword = new JTextField();
 	private JButton searchButton = new JButton("Search");
 	private JLabel searchLabel = new JLabel("Search");
 	private JScrollBar scrollBar = new JScrollBar(JScrollBar.VERTICAL, 0, 1, 0, 14);
 	private String[] sorting = new String[] { "Alpha: A-Z", "Alpha: Z-A", "Average: Low to High",
 			"Average: High to Low" };
-	private String info = "insert info about uni ~~this uni was founded in xxxx~~";
 	private JPanel uniPanel;
+	private ArrayList<University> customList = new ArrayList<>(0);
+	private int maxIndex = 14;
+	private JLabel searchFailed = new JLabel();
+	private boolean searchFailedTF;
+	private JButton resetButton = new JButton();
 	public static JPanel overallPanel = new JPanel();
-	private ImageIcon[] icons = new ImageIcon[14];
-	private boolean resetPage = false;
-	private String[] names = new String[14];
-	private ArrayList<University> customList = new ArrayList<>(14);
 
+	// constructor to setup the GUI screen
 	public AllPrograms() {
-
-		setIcons();
-
-		overallPanel.setBounds(210, 0, 920, 610);
+		overallPanel = new JPanel();
+		overallPanel.setBounds(0, 0, 920, 610);
 		overallPanel.setLayout(null);
 		overallPanel.setVisible(true);
-
-		uniPanel = createUniPanel(uniArrayCopy.get(0).getName(), uniArrayCopy.get(0).getDescription());
-		uniPanel.setBounds(500, 0, 400, 300);
+		overallPanel.setBackground(Colour.bg);
+		// Setting up the GUI panel
+		UniversitiesInformation.setUniversities();
+		uniArrayCopy = new ArrayList<>(uniClass.getUniversities());
+		setLayout(null);
+		System.out.println(uniClass.getUniversities().size());
+		uniPanel = createUniPanel(uniArrayCopy.get(0));
+		uniPanel.setBounds(590, 0, 400, 500);
+		uniPanel.setBackground(Colour.bg);
 		overallPanel.add(uniPanel);
 		uniPanel.setVisible(true);
 
+		// setting up combobox1, with the names of all the unis
 		for (University uni : uniArrayCopy) {
 			combobox1.addItem(uni.getName());
 		}
-
-		picture.setIcon(new ImageIcon("uni-app-finder/resources/uniPictures/Carleton University.jpg"));
-		picture.setBounds(50, 300, 700, 500);
+		// setting up the picture
+		picture.setIcon(uniArrayCopy.get(0).getIcon());
+		picture.setBounds(20, 200, 700, 500);
 		overallPanel.add(picture);
 
-		combobox1.setBounds(50, 50, 200, 40);
+		// setting up the combobox
+		combobox1.setBounds(20, 80, 200, 40);
 		combobox1.addActionListener(this);
 		combobox1.setVisible(true);
 		overallPanel.add(combobox1);
 
+		// setting up the sorting combobox(adding the options)
 		for (String sorting : sorting) {
 			combobox2.addItem(sorting);
 		}
-		combobox2.setBounds(50, 120, 200, 50);
+		combobox2.setBounds(300, 80, 200, 40);
 		combobox2.addActionListener(this);
 		combobox2.setVisible(true);
 		overallPanel.add(combobox2);
 
-		sortBy.setBounds(50, 90, 100, 30);
+		sortBy.setBounds(300, 50, 100, 30);
 		sortBy.setVisible(true);
+		sortBy.setForeground(Colour.strongHighlight);
 		overallPanel.add(sortBy);
 
-		title.setBounds(50, 0, 200, 50);
-		title.setFont(new Font(title.getFont().getName(), Font.PLAIN, 30));
+		title.setBounds(20, 10, 500, 50);
+		title.setFont(new Font(title.getFont().getName(), Font.PLAIN, 40));
+		title.setForeground(Colour.strongHighlight);
 		overallPanel.add(title);
 
+		// setting up the buttons for forward and back
 		nextBtn.setText("Next");
-		nextBtn.setBounds(50, 200, 100, 50);
+		nextBtn.setBounds(300, 200, 100, 50);
 		nextBtn.addActionListener(this);
 		nextBtn.setVisible(true);
 		overallPanel.add(nextBtn);
 
 		backBtn.setText("Back");
-		backBtn.setBounds(150, 200, 100, 50);
+		backBtn.setBounds(400, 200, 100, 50);
 		backBtn.addActionListener(this);
 		backBtn.setVisible(true);
 		overallPanel.add(backBtn);
 
-		keyword.setBounds(300, 60, 150, 40);
+		resetButton.setText("Reset");
+		resetButton.setBounds(450, 30, 80, 30);
+		resetButton.addActionListener(this);
+		resetButton.setVisible(true);
+		overallPanel.add(resetButton);
+
+		keyword.setBounds(20, 180, 200, 30);
 		keyword.addActionListener(this);
 		overallPanel.add(keyword);
 
-		searchLabel.setBounds(300, 30, 50, 30);
+		searchLabel.setBounds(20, 150, 50, 30);
+		searchLabel.setForeground(Colour.strongHighlight);
 		overallPanel.add(searchLabel);
 
-		searchButton.setBounds(300, 100, 100, 35);
+		searchButton.setBounds(20, 210, 100, 35);
 		searchButton.addActionListener(this);
 		overallPanel.add(searchButton);
 
@@ -108,115 +128,186 @@ public class AllPrograms extends JPanel implements ActionListener {
 	// Override Method
 	@Override
 	public void actionPerformed(ActionEvent event) {
-
+		// COMBOBOX2 is the Sorting combobox, changes the uniarraycopy based on which
+		// sorting the user chose
 		if (event.getSource() == combobox2) {
 
 			if (combobox2.getSelectedIndex() == 0) { // if its A-Z
-				uniArrayCopy = uniClass.getUniversities();
-				currentPage = 0;
+				alphaSort();
 				reversed = false;
 			} else if (combobox2.getSelectedIndex() == 1) { // if its Z-A
-				uniArrayCopy = uniClass.getUniversities();
+				alphaSort();
 				reverse();
+				reversed = true;
 				currentPage = 0;
+			} else if (combobox2.getSelectedIndex() == 2) { // Low to High, Average
+				insertionSort();
+			}
+
+			else if (combobox2.getSelectedIndex() == 3) { // high to low, average
+				insertionSort();
+				reverse();
 				reversed = true;
 			}
+			currentPage = 0;
+			overallPanel.remove(uniPanel);
 
-			else if (combobox2.getSelectedIndex() == 2 || combobox2.getSelectedIndex() == 3) { // Low to High, Average
-				uniArrayCopy = uniClass.getUniversities();
-				insertionSort();
-				if (combobox2.getSelectedIndex() == 3) {
-					uniArrayCopy = uniClass.getUniversities();
-					insertionSort();
-					reverse();
-					reversed = true;
-				}
-				currentPage = 0;
-			}
-
-			resetPage = true;
-			remove(uniPanel);
-			uniPanel = createUniPanel(uniArrayCopy.get(0).getName(), uniArrayCopy.get(0).getDescription());
-			uniPanel.setBounds(800, 0, 400, 300);
-			uniPanel.repaint();
-
+			// creates a new unipanel(top right corner), and changes the picture
+			uniPanel = createUniPanel(uniArrayCopy.get(currentPage));
+			uniPanel.setBounds(800, 0, 400, 500);
 			add(uniPanel);
-			uniPanel.setVisible(true);
-			picture.setIcon(uniArrayCopy.get(currentPage).getIcon());
-			picture.setVisible(true);
-			repaint();
+
+			overallPanel.repaint();
 		}
 
+		// COMBOBOX1 is the combobox where you can individually select a university to
+		// look at
 		if (event.getSource() == combobox1) {
 			reversed = false;
+			uniArrayCopy = new ArrayList<>(uniClass.getUniversities());
+			alphaSort();
 			int comboboxIndex = combobox1.getSelectedIndex();
-			if (reversed) {
-				comboboxIndex = 13 - comboboxIndex;
-			}
-			remove(uniPanel);
-			uniPanel = createUniPanel(uniArrayCopy.get(comboboxIndex).getName(),
-					uniArrayCopy.get(comboboxIndex).getDescription());
-			uniPanel.setBounds(800, 0, 500, 500);
-
+			overallPanel.remove(uniPanel);
+			uniPanel = createUniPanel(uniArrayCopy.get(comboboxIndex));
+			uniPanel.setBounds(590, 0, 400, 500);
 			scrollBar.setValue(comboboxIndex);
 			currentPage = comboboxIndex;
-			uniPanel.repaint();
-			uniPanel.setVisible(true);
 			add(uniPanel);
-			picture.setIcon(uniArrayCopy.get(comboboxIndex).getIcon());
-			picture.setVisible(true);
-			repaint();
+
+			overallPanel.repaint();
 		}
+
+		// "next" button
 		if (event.getSource() == nextBtn) {
-			System.out.println(reversed);
 			currentPage += 1;
-			if (currentPage == 14) {
+			if (currentPage == maxIndex) {
 				currentPage = 0;
 			}
 			if (currentPage == -1) {
-				currentPage = 13;
+				currentPage = maxIndex;
 			}
-			System.out.println(currentPage);
-			remove(uniPanel);
-			uniPanel = createUniPanel(uniArrayCopy.get(currentPage).getName(),
-					uniClass.getUniversities().get(currentPage).getDescription());
-			uniPanel.setBounds(800, 0, 400, 300);
-			uniPanel.setVisible(true);
-			add(uniPanel);
-			picture.setIcon(uniArrayCopy.get(currentPage).getIcon());
-			picture.setVisible(true);
-			repaint();
-		}
+			overallPanel.remove(uniPanel);
 
+			uniPanel = createUniPanel(uniArrayCopy.get(currentPage));
+			uniPanel.setBounds(590, 0, 400, 500);
+			overallPanel.add(uniPanel);
+
+			combobox1.setSelectedItem(uniArrayCopy.get(currentPage));
+			overallPanel.repaint();
+		}
+		// "back" button
 		if (event.getSource() == backBtn) {
 
 			currentPage -= 1;
 			if (currentPage == -1) {
-				currentPage = 13;
+				currentPage = maxIndex - 1;
 			}
-			if (currentPage == 14) {
+			if (currentPage == maxIndex) {
 				currentPage = 0;
 			}
-			remove(uniPanel);
-			uniPanel = createUniPanel(uniArrayCopy.get(currentPage).getName(),
-					uniArrayCopy.get(currentPage).getDescription());
+			overallPanel.remove(uniPanel);
 
-			uniPanel.setBounds(800, 0, 400, 300);
-			uniPanel.setVisible(true);
-			add(uniPanel);
-			picture.setIcon(uniArrayCopy.get(currentPage).getIcon());
+			uniPanel = createUniPanel(uniArrayCopy.get(currentPage));
+			uniPanel.setBounds(590, 0, 400, 500);
+			overallPanel.add(uniPanel);
+			combobox1.setSelectedItem(uniClass.getUniversities().get(currentPage));
+			overallPanel.repaint();
+		}
+		if (event.getSource() == resetButton) {
+			maxIndex = 14;
+			uniArrayCopy = new ArrayList<>(uniClass.getUniversities());
+			keyword.setText("");
+			currentPage = 0;
+			overallPanel.remove(uniPanel);
 
-			picture.setVisible(true);
-			repaint();
+			// creates a new unipanel(top right corner), and changes the picture
+			uniPanel = createUniPanel(uniArrayCopy.get(currentPage));
+			uniPanel.setBounds(590, 0, 400, 500);
+			overallPanel.add(uniPanel);
+
+			combobox2.setSelectedIndex(0);
+			overallPanel.repaint();
 		}
 
+		// button to start search
 		if (event.getSource() == searchButton) {
+			customList.clear();
+			// tempnames is the names of the university without the "university of" and
+			// lowercase, ex. University of Toronto --> toronto
+			ArrayList<String> tempNames = new ArrayList<>();
+			for (University uni : uniClass.getUniversities()) {
+				tempNames.add(uni.getName());
+			}
+			for (int x = 0; x < tempNames.size(); x++) {
+				tempNames.set(x, replaceFiller(tempNames.get(x)));
+			}
+			currentPage = 0;
+
 			String text = keyword.getText();
+			text = replaceFiller(text);
+
+			// checks if what the user entered is the university name
+			for (int i = 0; i < tempNames.size(); i++) {
+				if (text.equalsIgnoreCase(tempNames.get(i))) {
+					customList.add(uniClass.getUniversities().get(i));
+				}
+			}
+
+			// checks if what the user entered falls into a list of keywords associated with
+			// the university
+			for (University unis : uniClass.getUniversities()) {
+				String keywords;
+				keywords = unis.getKeywords();
+
+				if (keywords.contains(text)) {
+					if (customList.size() != 0) {
+						for (int i = 0; i < customList.size(); i++) {
+							if ((!unis.getName().equals(customList.get(i).getName()))) {
+								customList.add(unis);
+								break;
+							}
+						}
+					} else {
+						customList.add(unis);
+					}
+				}
+			}
+			// shows a no matches label if there are no matches
+			if (customList.size() == 0) {
+				searchFailed.setText("No Matches");
+				searchFailed.setBounds(600, 150, 100, 30);
+				searchFailed.setVisible(true);
+				add(searchFailed);
+				searchFailedTF = true;
+				uniArrayCopy = new ArrayList<>(uniClass.getUniversities());
+			} else if (text.equalsIgnoreCase("")) {
+				maxIndex = 14;
+				uniArrayCopy = new ArrayList<>(uniClass.getUniversities());
+			}
+
+			// updates the uriarraycopy with the matching universities
+			else {
+				if (searchFailedTF)
+					overallPanel.remove(searchFailed);
+				searchFailedTF = false;
+				currentPage = 0;
+				uniArrayCopy = new ArrayList<>(customList);
+				maxIndex = customList.size();
+				overallPanel.remove(uniPanel);
+				uniPanel = createUniPanel(uniArrayCopy.get(currentPage));
+				uniPanel.setBounds(800, 0, 400, 500);
+				combobox2.setSelectedIndex(0);
+				add(uniPanel);
+
+			}
+			overallPanel.repaint();
+
 		}
 	}
 
+	// reverses the uniarraycopy
 	public void reverse() {
-		ArrayList<University> temp = new ArrayList<University>(14);
+		ArrayList<University> temp = new ArrayList<>(14);
 
 		for (int i = uniArrayCopy.size(); i > 0; i--) {
 			temp.add(uniArrayCopy.get(i - 1));
@@ -224,21 +315,36 @@ public class AllPrograms extends JPanel implements ActionListener {
 		uniArrayCopy = temp;
 	}
 
-	public JPanel createUniPanel(String name, String info) {
+	// creates the text info and the pictures of each uni
+	public JPanel createUniPanel(University uni) {
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setSize(300, 500);
-		JLabel nameLabel = new JLabel(name);
-		JLabel infoLabel = new JLabel("<html>" + info + "<html>");
+		JLabel nameLabel = new JLabel(uni.getName());
+		JLabel infoLabel = new JLabel("<html>" + uni.getDescription() + "<html>");
+		JLabel nationalRankLabel = new JLabel("Rank: " + uni.getNationalRank());
+		JLabel logo = new JLabel();
+
+		logo.setIcon(uni.getLogo());
+		logo.setBounds(0, 70, 300, 200);
 
 		nameLabel.setBounds(0, 0, 500, 80);
 		nameLabel.setFont(new Font(title.getFont().getName(), Font.PLAIN, 30));
-		infoLabel.setBounds(0, 50, 300, 350);
+		nameLabel.setForeground(Colour.strongHighlight);
+		nationalRankLabel.setBounds(0, 30, 500, 80);
+		nationalRankLabel.setFont(new Font(title.getFont().getName(), Font.PLAIN, 14));
+		nationalRankLabel.setForeground(Colour.strongHighlight);
+		infoLabel.setBounds(0, 120, 300, 500);
 		infoLabel.setFont(new Font(title.getFont().getName(), Font.PLAIN, 12));
-		panel.setOpaque(false);
+		infoLabel.setForeground(Colour.strongHighlight);
+		panel.add(logo);
 		panel.add(nameLabel);
+		panel.add(nationalRankLabel);
 		panel.add(infoLabel);
-
+		picture.setIcon(uniArrayCopy.get(currentPage).getIcon());
+		picture.setVisible(true);
+		panel.setBackground(Colour.bg);
+		repaint();
 		return panel;
 
 	}
@@ -260,7 +366,6 @@ public class AllPrograms extends JPanel implements ActionListener {
 				}
 			}
 		}
-
 	}
 
 	public void swap(ArrayList<University> universities, int x, int smallest) {
@@ -269,9 +374,26 @@ public class AllPrograms extends JPanel implements ActionListener {
 		universities.set(smallest, temp);
 	}
 
-	public void setIcons() {
-		for (int i = 0; i < 14; i++) {
-			names[i] = uniArrayCopy.get(i).getName();
+	public void alphaSort() {
+		University temp;
+		for (int i = 0; i < uniArrayCopy.size(); i++) {
+			for (int j = i + 1; j < uniArrayCopy.size(); j++) {
+				if (uniArrayCopy.get(i).getName().compareTo(uniArrayCopy.get(j).getName()) > 0) {
+					temp = uniArrayCopy.get(i);
+					uniArrayCopy.set(i, uniArrayCopy.get(j));
+					uniArrayCopy.set(j, temp);
+				}
+			}
 		}
+	}
+
+	public String replaceFiller(String text) {
+		text = text.toLowerCase();
+		text = text.replace("university", "");
+		text = text.replace("of", "");
+		while (text.contains(" ")) {
+			text = text.replace(" ", "");
+		}
+		return text;
 	}
 }

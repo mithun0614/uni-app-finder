@@ -100,6 +100,8 @@ public class UniversitiesInformation {
 				}
 
 				uni.setIcon(new ImageIcon(path + "/resources/uniPictures/" + uni.getName() + ".jpg"));
+				uni.setLogo(new ImageIcon(path + "/resources/uniLogos/" + uni.getName() + ".png"));
+
 
 			}
 			System.out.println(universities.size());
@@ -124,7 +126,6 @@ public class UniversitiesInformation {
 				}
 
 			}
-
 		} catch (FileNotFoundException e) {
 			System.out.println("File not Found :( (all other fields)");
 		}
