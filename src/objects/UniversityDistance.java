@@ -30,6 +30,9 @@ public class UniversityDistance implements Comparable<UniversityDistance> {
 	public void setVisibility(boolean visibility) {
 		this.visibility = visibility;
 	}
+	public void reinit() {
+		button = new JButton();
+	}
 	public boolean getVisbility() {
 		return visibility;
 	}
